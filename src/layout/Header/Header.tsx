@@ -1,5 +1,3 @@
-import React from "react";
-
 const menu = [
   {
     label: "Home",
@@ -65,7 +63,7 @@ export default function Header() {
           </svg>
         </div>
         <div className="menu md:grid grid-flow-col md:grid md:grid-flow-col gap-4 font">
-          {menu.map((value, index) => {
+          {menu.map((value) => {
             return (
               <a href="/tri" className="font-semibold">
                 {value.label}
