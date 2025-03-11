@@ -4,6 +4,7 @@ import GooglePlay from "../assets/ggplay.svg";
 import QR from "../assets/QR.svg";
 import Appstore from "../assets/Appstore.svg";
 import ItemListV2 from "../components/ItemList/ItemListV2";
+import ItemListV1 from "../components/ItemList/ItemListV1";
 
 export default function Home() {
   return (
@@ -45,8 +46,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="main-content max-w-screen-2xl">
+      <div className="main-content p-8 mb-6 rounded-xl shadow-md max-w-screen-xl mx-auto">
         <ItemListV2 />
+      </div>
+      <div className="main-content p-8 mb-6 rounded-xl shadow-md max-w-screen-xl mx-auto">
+        <ItemListV1 />
       </div>
     </div>
   );
