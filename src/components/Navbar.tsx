@@ -2,6 +2,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 interface Option {
   name: string;
@@ -23,7 +24,14 @@ export default function Navbar() {
   ];
 
   const renderOptions = (options: Option[]) => {
-    return options.map((option) => <div>{option.name}</div>);
+    return options.map((option) => (
+      <Link
+        to={option.path}
+        className="hover:text-primary transition-all duration-300"
+      >
+        {option.name}
+      </Link>
+    ));
   };
   return (
     <div className="font-spartan">
