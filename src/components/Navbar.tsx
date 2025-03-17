@@ -3,8 +3,8 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
-import { useUser } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/userContext";
 
 interface Option {
   name: string;
@@ -96,7 +96,10 @@ export default function Navbar() {
         )}
       </div>
 
-      <Sidebar isSidebarOpen={isSidebarOpen} />
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
     </div>
   );
 }
