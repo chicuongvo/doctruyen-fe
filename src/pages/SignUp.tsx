@@ -52,10 +52,6 @@ function SignUp() {
       const data = await response.json();
 
       if (data.success === true) {
-        api.success({
-          message: "SIGN UP",
-          description: "Registration was successful!",
-        });
         setUserChanged(true);
         navigate("/");
       } else {
