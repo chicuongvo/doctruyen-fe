@@ -1,9 +1,9 @@
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserCircle, LogOut } from "lucide-react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import Button from "./Button";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
+import { useUser } from "../contexts/userContext";
 
 interface Option {
   name: string;
@@ -12,6 +12,7 @@ interface Option {
 
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { userProfile } = useUser();
 
   const handleOnClick = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -29,25 +30,36 @@ export default function Navbar() {
       <Link
         to={option.path}
         className="hover:text-primary transition-all duration-300"
+        key={option.path}
       >
         {option.name}
       </Link>
     ));
   };
+
   return (
-    <div className="font-spartan">
-      <div className="w-screen bg-zinc-800 border-b border-zinc-700 h-[60px] md:h-[64px] flex items-center p-5 justify-between text-[20px] shadow-xl sticky top-0 z-20">
+    <div className="font-spartan sticky top-0 z-50">
+      <div className="w-full bg-zinc-800 border-b border-zinc-700 h-[60px] md:h-[64px] flex items-center p-5 justify-between text-[20px] shadow-xl z-20">
         <Logo />
-        <div className="md:w-max md:flex md:flex-row md:gap-10 text-[#e5e7e3] hidden text-[18px] font-semibold relative">
+        <div className="md:flex md:flex-row md:gap-10 text-[#e5e7e3] hidden text-[18px] font-semibold md:block">
           {renderOptions(options)}
         </div>
 
-        <Button
-          text="Sign Up"
-          width="w-[124px]"
-          height="h-[50px]"
-          decoration="hidden md:block"
-        />
+        {userProfile ? (
+          <div className="md:flex-row text-white md:flex md:gap-3 hidden md:block">
+            <div>
+              <UserCircle className="hover:text-primary transition-all duration-500 cursor-pointer" />
+              {/* <span>{userData?.username || ""}</span> */}
+            </div>
+            <LogOut className="hover:text-primary transition-all duration-500 cursor-pointer" />
+          </div>
+        ) : (
+          <Link to="/signup">
+            <button className="w-[124px] h-[50px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer hidden md:block">
+              Sign Up
+            </button>
+          </Link>
+        )}
 
         {/* Mobile-sidebar */}
         {isSidebarOpen ? (

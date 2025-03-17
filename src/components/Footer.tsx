@@ -18,6 +18,7 @@ const renderOptions = (options: Option[]) => {
     <Link
       to={option.path}
       className="hover:text-primary transition-all duration-300"
+      key={option.path}
     >
       {option.name}
     </Link>
@@ -26,7 +27,7 @@ const renderOptions = (options: Option[]) => {
 
 function Footer() {
   return (
-    <footer className="border-b border-zinc-700 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 ">
+    <footer className="border-t border-zinc-700 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 ">
       <div className="border-b border-zinc-700 py-5 flex justify-between items-center">
         <Logo />
         <div className="lg:block hidden flex space-x-5">

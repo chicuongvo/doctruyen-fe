@@ -1,5 +1,5 @@
-// import { Link } from "react-router-dom";
-import Button from "./Button";
+import { Link } from "react-router-dom";
+import { useUser } from "../contexts/userContext";
 
 interface Option {
   name: string;
@@ -15,23 +15,40 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
 
   const renderOptions = (options: Option[]) => {
     return options.map((option) => (
-      <div
-        key={option.path}
-        className="text-white h-[54px] w-full text-[16px] font-semibold font-spartan flex relative "
-      >
-        {option.name}
-      </div>
+      <Link to={option.path} key={option.path}>
+        <div
+          key={option.path}
+          className="text-white h-[54px] w-full text-[16px] font-semibold font-spartan flex "
+        >
+          {option.name}
+        </div>
+      </Link>
     ));
   };
 
+  const { userProfile } = useUser();
+
   return (
     <div
-      className={`fixed top-[60px] right-0 h-screen w-screen bg-dark shadow-xl transition-transform duration-500 flex flex-col items-center p-5 ${
+      className={`fixed top-[60px] right-0 h-screen w-screen bg-dark shadow-xl transition-transform duration-500 flex z-30 flex-col items-center p-5 ${
         isSidebarOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
       {renderOptions(options)}
-      <Button text="Sign Up" width="w-full" height="h-[52px]" />
+      {userProfile ? (
+        <button className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer ">
+          Sign Out
+        </button>
+      ) : (
+        <Link
+          to="/signup"
+          className="w-full py-3 border-b border-t border-zinc-700"
+        >
+          <button className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer ">
+            Sign Up
+          </button>
+        </Link>
+      )}
     </div>
   );
 }
