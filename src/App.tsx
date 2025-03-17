@@ -8,6 +8,7 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import VerifyAccount from "./pages/VerifyAccount";
 import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
 
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/admin", element: <Admin /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignUp /> },
+      { path: "/verifyaccount", element: <VerifyAccount /> },
     ],
   },
 ]);

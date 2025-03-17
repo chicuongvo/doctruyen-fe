@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { useUser } from "../contexts/userContext";
+import { useNavigate } from "react-router-dom";
 
 interface Option {
   name: string;
@@ -12,7 +13,7 @@ interface Option {
 
 export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { userProfile } = useUser();
+  const { userProfile, setUserChanged } = useUser();
 
   const handleOnClick = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -37,6 +38,26 @@ export default function Navbar() {
     ));
   };
 
+  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
+  const navigate = useNavigate();
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch(`${API_URL}/auth/sign-out`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUserChanged(true);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("Error sign out:", error);
+    }
+  };
+
   return (
     <div className="font-spartan sticky top-0 z-50">
       <div className="w-full bg-zinc-800 border-b border-zinc-700 h-[60px] md:h-[64px] flex items-center p-5 justify-between text-[20px] shadow-xl z-20">
@@ -47,11 +68,11 @@ export default function Navbar() {
 
         {userProfile ? (
           <div className="md:flex-row text-white md:flex md:gap-3 hidden md:block">
-            <div>
-              <UserCircle className="hover:text-primary transition-all duration-500 cursor-pointer" />
-              {/* <span>{userData?.username || ""}</span> */}
-            </div>
-            <LogOut className="hover:text-primary transition-all duration-500 cursor-pointer" />
+            <UserCircle className="hover:text-primary transition-all duration-500 cursor-pointer" />
+            <LogOut
+              className="hover:text-primary transition-all duration-500 cursor-pointer"
+              onClick={handleSignOut}
+            />
           </div>
         ) : (
           <Link to="/signup">

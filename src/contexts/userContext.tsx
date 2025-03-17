@@ -2,10 +2,9 @@ import { createContext, useState, useContext, useEffect } from "react";
 import { ReactNode } from "react";
 
 interface UserProfile {
-  fullname: string;
+  username: string;
   email: string;
-  phoneNumber: string;
-  address: string;
+  phone_number: string;
 }
 
 interface UserContextType {
@@ -41,17 +40,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
         const data = await response.json();
 
-        if (data.success === true) {
+        if (data.success) {
           setUserProfile(data.data);
+          setUserChanged(false);
         } else {
           setUserProfile(null);
+          setUserChanged(false);
         }
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
     };
     fetchUserProfile();
-  });
+  }, [userChanged]);
 
   return (
     <UserContext.Provider

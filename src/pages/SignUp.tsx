@@ -4,6 +4,8 @@ import { EyeClosed } from "lucide-react";
 import { useState } from "react";
 import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useUser } from "../contexts/userContext";
 
 function SignUp() {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -28,6 +30,8 @@ function SignUp() {
   const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const navigate = useNavigate();
 
+  const { setUserChanged } = useUser();
+
   const handleSignUp = async () => {
     try {
       const response = await fetch(`${API_URL}/auth/sign-up`, {
@@ -50,8 +54,9 @@ function SignUp() {
       if (data.success === true) {
         api.success({
           message: "SIGN UP",
-          description: "Registration was successful! Please sign in",
+          description: "Registration was successful!",
         });
+        setUserChanged(true);
         navigate("/");
       } else {
         api.error({
@@ -59,10 +64,8 @@ function SignUp() {
           description: data.message,
         });
       }
-      console.log("Server response:", data.success);
     } catch (error) {
       console.log("Error during sign-up:", error);
-      console.log(username, email, password, confirm_password);
     }
   };
 
@@ -83,100 +86,109 @@ function SignUp() {
           />
         </div>
 
-        <form className="flex flex-col w-full gap-5">
-          <div className="flex flex-col text-white text-[18px] gap-2">
-            <label htmlFor="username" className="font-semibold">
-              Username
-            </label>
-            <input
-              type="text"
-              name="username"
-              placeholder="Enter your username"
-              required
-              className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
+        <div className="flex flex-col justify-center items-center gap-5">
+          <form className="flex flex-col w-full gap-5">
+            <div className="flex flex-col text-white text-[18px] gap-2">
+              <label htmlFor="username" className="font-semibold">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter your username"
+                required
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
 
-          <div className="flex flex-col text-white text-[18px] gap-2">
-            <label htmlFor="email" className="font-semibold">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+            <div className="flex flex-col text-white text-[18px] gap-2">
+              <label htmlFor="email" className="font-semibold">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-          <div className="flex flex-col text-white text-[18px] gap-2">
-            <label htmlFor="phone" className="font-semibold">
-              Phone number
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Enter your phone number"
-              required
-              className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-          </div>
+            <div className="flex flex-col text-white text-[18px] gap-2">
+              <label htmlFor="phone" className="font-semibold">
+                Phone number
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Enter your phone number"
+                required
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
 
-          <div className="flex flex-col text-white text-[18px] gap-2 relative ">
-            <label htmlFor="password" className="font-semibold">
-              Password
-            </label>
-            <input
-              type={isVisiblePassword ? "text" : "password"}
-              name="password"
-              placeholder="Enter your password"
-              required
-              className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-              className="absolute right-2 bottom-3 text-zinc-400"
-              onClick={handleVisiblePassword}
-              type="button"
-            >
-              {isVisiblePassword ? <Eye /> : <EyeClosed />}
-            </button>
-          </div>
+            <div className="flex flex-col text-white text-[18px] gap-2 relative ">
+              <label htmlFor="password" className="font-semibold">
+                Password
+              </label>
+              <input
+                type={isVisiblePassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                required
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                className="absolute right-2 bottom-3 text-zinc-400"
+                onClick={handleVisiblePassword}
+                type="button"
+              >
+                {isVisiblePassword ? <Eye /> : <EyeClosed />}
+              </button>
+            </div>
 
-          <div className="flex flex-col text-white text-[18px] gap-2 relative">
-            <label htmlFor="confirm_password" className="font-semibold">
-              Confirm password
-            </label>
-            <input
-              type={isVisibleConfirmPassword ? "text" : "password"}
-              name="confirm_password"
-              placeholder="Confirm your password"
-              required
-              className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <button
-              className="absolute right-2 bottom-3 text-zinc-400"
-              onClick={handleVisibleConfirmPassword}
-              type="button"
-            >
-              {isVisibleConfirmPassword ? <Eye /> : <EyeClosed />}
-            </button>
+            <div className="flex flex-col text-white text-[18px] gap-2 relative">
+              <label htmlFor="confirm_password" className="font-semibold">
+                Confirm password
+              </label>
+              <input
+                type={isVisibleConfirmPassword ? "text" : "password"}
+                name="confirm_password"
+                placeholder="Confirm your password"
+                required
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <button
+                className="absolute right-2 bottom-3 text-zinc-400"
+                onClick={handleVisibleConfirmPassword}
+                type="button"
+              >
+                {isVisibleConfirmPassword ? <Eye /> : <EyeClosed />}
+              </button>
+            </div>
+            <div className="w-full items-center flex justify-center pt-5">
+              <button
+                className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
+                onClick={handleSignUp}
+                type="button"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+
+          <div className="flex flex-row gap-2 ">
+            <div className="text-white">Already have an account? </div>
+            <Link to="/login" className="text-primary underline">
+              Sign In
+            </Link>
           </div>
-          <div className="w-full items-center flex justify-center">
-            <button
-              className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
-              onClick={handleSignUp}
-              type="button"
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
