@@ -1,3 +1,3 @@
 export default function VerifyAccount() {
-  <div>VerifyAccount</div>;
+  return <div className="text-white font-poppins">VerifyAccount </div>;
 }

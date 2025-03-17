@@ -44,7 +44,7 @@ function Login() {
           description: "Signing in successfully!",
         });
         setUserChanged(true);
-        navigate("/verifyaccount");
+        navigate("/get-verify-token");
       } else {
         api.error({
           message: "SIGN IN",
