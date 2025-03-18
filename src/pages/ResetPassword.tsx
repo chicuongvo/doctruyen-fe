@@ -59,7 +59,7 @@ function ResetPassword() {
         });
       }
     } catch (error) {
-      console.log("Error during sign-in:", error);
+      console.log("Error during reset password:", error);
     }
   };
 

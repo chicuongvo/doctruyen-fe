@@ -1,12 +1,12 @@
 import mail from "../assets/images/mail.png";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { notification } from "antd";
 
 function ResetPasswordToken() {
   const [email, setEmail] = useState("");
 
   const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
-  const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   const handleSend = async () => {
     try {
@@ -24,17 +24,24 @@ function ResetPasswordToken() {
       const data = await response.json();
 
       if (data.success === true) {
-        navigate("/get-verify-token");
+        api.success({
+          message: "Send email",
+          description: "Send email successfully!",
+        });
       } else {
-        console.log(data.message);
+        api.error({
+          message: "Send email",
+          description: data.message,
+        });
       }
     } catch (error) {
-      console.log("Error during sign-in:", error);
+      console.log("Error during get reset password token:", error);
     }
   };
 
   return (
     <div className="bg-black font-spartan px-5 py-5 lg:px-60 ">
+      {contextHolder}
       <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 ">
         <div className="text-white flex flex-col justify-center items-center gap-3">
           <div className="font-bold text-3xl ">Restore Password</div>
