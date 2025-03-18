@@ -8,12 +8,14 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Genres from "./pages/Genres";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
   },
+  { path: "genres/:genre", element: <Genres /> },
   { path: "/search", element: <Search /> },
   { path: "/story/:id", element: <StoryOverview /> },
   { path: "/story/:id/:chapter", element: <Story /> },
