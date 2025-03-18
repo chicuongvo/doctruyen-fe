@@ -44,7 +44,9 @@ function Login() {
           description: "Signing in successfully!",
         });
         setUserChanged(true);
-        navigate("/get-verify-token");
+
+        if (data.data.is_verified) navigate("/");
+        else navigate("/get-verify-token");
       } else {
         api.error({
           message: "SIGN IN",
@@ -121,11 +123,23 @@ function Login() {
             </div>
           </form>
 
-          <div className="flex flex-row gap-2 ">
-            <div className="text-white">Already have an account? </div>
-            <Link to="/login" className="text-primary underline">
-              Sign In
-            </Link>
+          <div className="flex flex-col gap-2 w-full items-center justify-center">
+            <div className="flex flex-row w-ful gap-2">
+              <div className="text-white ">Don't have an account yet? </div>
+              <Link to="/signup" className="text-primary underline">
+                Sign Up
+              </Link>
+            </div>
+
+            <div className="flex flex-row gap-2">
+              <div className="text-white ">Forgot your password? </div>
+              <Link
+                to="/get-reset-password-token"
+                className="text-primary underline"
+              >
+                Reset
+              </Link>
+            </div>
           </div>
         </div>
       </div>

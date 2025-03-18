@@ -5,6 +5,7 @@ interface UserProfile {
   username: string;
   email: string;
   phone_number: string;
+  is_verified: boolean;
 }
 
 interface UserContextType {

@@ -10,6 +10,8 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import GetVerifyToken from "./pages/GetVerifyToken";
 import VerifyAccount from "./pages/VerifyAccount";
+import ResetPasswordToken from "./pages/ResetPasswordToken";
+import ResetPassword from "./pages/ResetPassword";
 import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
 
@@ -31,6 +33,11 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignUp /> },
       { path: "/get-verify-token", element: <GetVerifyToken /> },
       { path: "/verify-account", element: <VerifyAccount /> },
+      { path: "/get-reset-password-token", element: <ResetPasswordToken /> },
+      {
+        path: "/reset-password/:reset_password_token",
+        element: <ResetPassword />,
+      },
     ],
   },
 ]);
