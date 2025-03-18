@@ -53,7 +53,7 @@ function SignUp() {
 
       if (data.success === true) {
         setUserChanged(true);
-        navigate("/");
+        navigate("/get-verify-token");
       } else {
         api.error({
           message: "SIGN UP",
