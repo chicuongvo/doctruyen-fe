@@ -33,7 +33,7 @@ export default function Home() {
           className="w-full h-full absolute top-0 left-0 object-cover object-[54%_100%]"
           src={Banner}
         />
-        <div className="relative mx-auto px-[1rem]">
+        <div className="max-w-screen-xl relative mx-auto px-[1rem]">
           <div className="w-6/12 max-lg:w-8/12 max-md:w-full">
             <div className="text-4xl text-white font-bold md:text-7xl md:mb-10 md:leading-[68px]">
               The Merciless
