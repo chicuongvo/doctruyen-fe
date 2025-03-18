@@ -6,6 +6,7 @@ import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
+import user from "../assets/images/user.png";
 
 function SignUp() {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -46,6 +47,7 @@ function SignUp() {
           password,
           confirm_password,
           phone_number,
+          profile_pic: user,
         }),
       });
 

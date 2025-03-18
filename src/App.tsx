@@ -14,6 +14,7 @@ import ResetPasswordToken from "./pages/ResetPasswordToken";
 import ResetPassword from "./pages/ResetPassword";
 import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
         path: "/reset-password/:reset_password_token",
         element: <ResetPassword />,
       },
+      { path: "/profile", element: <Profile /> },
     ],
   },
 ]);
