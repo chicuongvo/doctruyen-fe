@@ -6,9 +6,11 @@ import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
-import user from "../assets/images/user.png";
+import user from "../assets/images/user.jpg";
 
 function SignUp() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
     useState(false);
@@ -34,6 +36,8 @@ function SignUp() {
   const { setUserChanged } = useUser();
 
   const handleSignUp = async () => {
+    setIsLoading(true);
+
     try {
       const response = await fetch(`${API_URL}/auth/sign-up`, {
         method: "POST",
@@ -65,6 +69,7 @@ function SignUp() {
     } catch (error) {
       console.log("Error during sign-up:", error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -174,8 +179,9 @@ function SignUp() {
                 className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleSignUp}
                 type="button"
+                disabled={isLoading}
               >
-                Sign Up
+                {isLoading ? "Please wait..." : "Sign Up"}
               </button>
             </div>
           </form>

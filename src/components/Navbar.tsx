@@ -1,4 +1,4 @@
-import { Menu, X, UserCircle, LogOut } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
@@ -101,7 +101,7 @@ export default function Navbar() {
               <img
                 src={userProfile?.profile_pic}
                 alt="avatar"
-                className="w-[40px] h-[40px] rounded-full "
+                className="w-[40px] h-[40px] rounded-full object-cover"
               />
             </Link>
             <Menu

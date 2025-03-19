@@ -37,7 +37,7 @@ export default function Profile() {
 
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        setProfilePic(reader.result); // Ensure it's a string
+        setProfilePic(reader.result);
       } else {
         console.error("Unexpected result type:", reader.result);
       }
@@ -50,7 +50,10 @@ export default function Profile() {
 
   const [api, contextHolder] = notification.useNotification();
   const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
+  const [isLoading, setIsLoading] = useState(false);
   const handleUpdate = async () => {
+    setIsLoading(true);
+
     try {
       const response = await fetch(`${API_URL}/auth/update`, {
         method: "PUT",
@@ -85,6 +88,8 @@ export default function Profile() {
       console.log("Error updating user:", error);
       console.log(profile_pic);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -98,7 +103,10 @@ export default function Profile() {
             Here you can make changes to your account
           </div>
           <div className="w-full flex  flex-col items-center justify-center">
-            <img src={profile_pic} className=" w-[120px] md:w-[180px]" />
+            <img
+              src={profile_pic}
+              className=" w-[120px] h-[120px] md:h-[180px] md:w-[180px] object-cover rounded-full"
+            />
             <form>
               <input
                 type="file"
@@ -185,8 +193,9 @@ export default function Profile() {
                 className="w-[140px] h-[54px] font-spartan text-[18px] text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleUpdate}
                 type="button"
+                disabled={isLoading}
               >
-                Save changes
+                {isLoading ? "Please wait..." : "Save changes"}
               </button>
 
               <button

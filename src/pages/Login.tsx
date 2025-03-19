@@ -21,8 +21,10 @@ function Login() {
   const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const navigate = useNavigate();
   const { setUserChanged } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/auth/sign-in`, {
         method: "POST",
@@ -56,6 +58,7 @@ function Login() {
     } catch (error) {
       console.log("Error during sign-in:", error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -117,8 +120,9 @@ function Login() {
                 className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleSignIn}
                 type="button"
+                disabled={isLoading}
               >
-                Sign In
+                {isLoading ? "Please wait..." : "Sign In"}
               </button>
             </div>
           </form>

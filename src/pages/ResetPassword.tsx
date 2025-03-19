@@ -26,8 +26,10 @@ function ResetPassword() {
   const navigate = useNavigate();
   const { reset_password_token } = useParams();
   const [api, contextHolder] = notification.useNotification();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleResetPassword = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${API_URL}/auth/reset-password/${reset_password_token}`,
@@ -61,6 +63,7 @@ function ResetPassword() {
     } catch (error) {
       console.log("Error during reset password:", error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -123,8 +126,9 @@ function ResetPassword() {
                 className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleResetPassword}
                 type="button"
+                disabled={isLoading}
               >
-                Reset Password
+                {isLoading ? "Please wait..." : "Reset Password"}
               </button>
             </div>
           </form>

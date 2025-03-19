@@ -7,10 +7,11 @@ export default function VerifyAccount() {
   const [verificationToken, setVerificationToken] = useState("");
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
+  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const handleVerifyAccount = async () => {
-    const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
-
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/auth/verify`, {
         method: "POST",
@@ -41,6 +42,7 @@ export default function VerifyAccount() {
     } catch (error) {
       console.log("Error verify account:", error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -63,8 +65,9 @@ export default function VerifyAccount() {
             type="button"
             className="bg-primary w-4/5 text-white py-3 rounded-[15px] font-semibold text-md hover:bg-secondary transition-all duration-300 cursor-pointer"
             onClick={handleVerifyAccount}
+            disabled={isLoading}
           >
-            Verify Email
+            {isLoading ? "Please wait..." : "Verify Email"}
           </button>
         </form>
       </div>
