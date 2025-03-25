@@ -74,16 +74,20 @@ export default function Home() {
       </div>
       <div className="main-content py-8 px-[1rem] max-w-screen-xl mx-auto mb-6 rounded-xl mx-auto box-border">
         <div className="mb-6">
-          <ItemListV2 />
+          <ItemListV2 showButton={false} title="Editor's Choice" />
         </div>
-        <div className="p-8 mb-6 rounded-xl shadow-md mx-auto">
-          <ItemListV1 showButton={true} />
+        <div className="mb-6">
+          <ItemListV1 showButton={false} title="Top Trending" />
         </div>
+        <div className="mb-6">
+          <BlogList showButton={true} title="Recent Blogs" />
+        </div>
+        <div className="mb-6">
+          <BlogList showButton={true} title="Recent Reviews" />
+        </div>
+
         <div className="rounded-xl mb-6">
-          <BlogList />
-        </div>
-        <div>
-          <ItemListV2 />
+          <ItemListV2 showButton={true} title="Top Romance" />
         </div>
       </div>
     </div>
