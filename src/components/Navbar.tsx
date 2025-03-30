@@ -72,7 +72,7 @@ export default function Navbar() {
               <img
                 src={userProfile.profile_pic}
                 alt="avatar"
-                className="w-[40px] h-[40px] rounded-full hidden md:block"
+                className="w-[40px] h-[40px] rounded-full hidden md:block object-cover"
               />
             </Link>
             <LogOut
@@ -101,7 +101,7 @@ export default function Navbar() {
               <img
                 src={userProfile?.profile_pic}
                 alt="avatar"
-                className="w-[40px] h-[40px] rounded-full object-cover"
+                className={`w-[40px] h-[40px] rounded-full object-cover ${userProfile ? "block" : "hidden"}`}
               />
             </Link>
             <Menu

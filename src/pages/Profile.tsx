@@ -55,7 +55,7 @@ export default function Profile() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/update`, {
+      const response = await fetch(`${API_URL}/auth/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

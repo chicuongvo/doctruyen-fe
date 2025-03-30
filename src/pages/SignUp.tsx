@@ -90,7 +90,7 @@ function SignUp() {
         </div>
 
         <div className="flex flex-col justify-center items-center gap-5">
-          <form className="flex flex-col w-full gap-5">
+          <form className="flex flex-col w-9/10  gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="username" className="font-semibold">
                 Username

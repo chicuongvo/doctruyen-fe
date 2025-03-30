@@ -79,7 +79,7 @@ function Login() {
         </div>
 
         <div className="flex flex-col justify-center items-center gap-5">
-          <form className="flex flex-col w-full gap-5">
+          <form className="flex flex-col w-9/10 gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="identifier" className="font-semibold">
                 Username/Phone number/Email
@@ -87,7 +87,7 @@ function Login() {
               <input
                 type="text"
                 name="identifier"
-                placeholder="Enter your username/phone number/email"
+                placeholder="Username/Phone number/Email"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setIdentifer(e.target.value)}
@@ -101,7 +101,7 @@ function Login() {
               <input
                 type={isVisiblePassword ? "text" : "password"}
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Password"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setPassword(e.target.value)}
