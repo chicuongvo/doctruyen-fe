@@ -15,6 +15,7 @@ import ResetPassword from "./pages/ResetPassword";
 import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
 import Profile from "./pages/Profile";
+import Chatbot from "./pages/Chatbot";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
         element: <ResetPassword />,
       },
       { path: "/profile", element: <Profile /> },
+      { path: "/chatbot", element: <Chatbot /> },
     ],
   },
 ]);

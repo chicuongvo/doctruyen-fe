@@ -126,8 +126,8 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center gap-5">
-          <form className="flex flex-col w-full gap-5">
+        <div className="flex flex-col justify-center items-center gap-5 w-full">
+          <form className="flex flex-col w-4/5 gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="fullname" className="font-semibold">
                 Fullname
