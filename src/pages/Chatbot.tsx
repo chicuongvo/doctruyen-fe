@@ -30,8 +30,10 @@ export default function Chatbot() {
   }, [messages]);
 
   const [question, setQuestion] = useState("");
+  const [formData, setFormData] = useState("");
 
   const { userProfile } = useUser();
+  const [sendingMessage, setSendingMessage] = useState(false);
 
   const renderMessages = (messages: message[]) => {
     return messages.map((message, idx) => {
@@ -44,17 +46,17 @@ export default function Chatbot() {
           }`}
         >
           {isBot && (
-            <div className="bg-violet-200 rounded-full p-1">
-              <Bot className="text-secondary w-8 h-8" />
+            <div className="bg-violet-200 rounded-full p-2">
+              <Bot className="text-secondary w-6 h-6" />
             </div>
           )}
 
           <div>
-            <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[300px] break-words">
+            <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[400px] break-words">
               {message.content}
             </div>
             <div
-              className={`text-zinc-400 text-xs mt-1 ${isBot ? "text-start" : "text-end"}`}
+              className={`text-zinc-400 text-xs mt-1 ${isBot ? "text-start" : "text-end"} `}
             >
               {message.timestamps.toLocaleTimeString([], {
                 hour: "2-digit",
@@ -85,7 +87,12 @@ export default function Chatbot() {
     });
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    setSendingMessage(true);
+    setFormData("");
+
     e.preventDefault();
 
     if (userProfile) {
@@ -97,14 +104,36 @@ export default function Chatbot() {
           timestamps: new Date(),
         },
       ]);
+
+      const response = await fetch(`${API_URL}/chatbot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: question }),
+      });
+
+      setQuestion("");
+      const data = await response.json();
+
+      if (data.success) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            content: data.message,
+            timestamps: new Date(),
+          },
+        ]);
+      }
     }
 
-    setQuestion("");
+    setSendingMessage(false);
   };
 
   return (
     <div className="bg-black w-full h-max flex justify-center items-center font-spartan">
-      <div className=" w-9/10 h-[450px] md:h-[600px] bg-zinc-800 my-10 rounded-[20px] text-white flex flex-col justify-between">
+      <div className=" w-9/10 lg:w-2/3 h-[450px] md:h-[600px] bg-zinc-800 my-10 rounded-[20px] text-white flex flex-col justify-between">
         <div className="flex flex-row px-5 py-4 gap-4 w-full bg-gradient-to-r from-violet-600 via-primary to-secondary rounded-t-[15px] items-center">
           <div>
             <BotMessageSquare className="w-8 h-8" />
@@ -117,17 +146,32 @@ export default function Chatbot() {
           ref={messagesEndRef}
         >
           {renderMessages(messages)}
+          {sendingMessage && (
+            <div className="flex flex-row justify-start gap-3">
+              <div className="bg-violet-200 rounded-full p-1">
+                <Bot className="text-secondary w-8 h-8" />
+              </div>
+              <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[300px] break-words flex justify-center items-center">
+                <div className="w-full gap-x-2 flex justify-center items-center">
+                  <div className="w-2 bg-primary animate-pulse h-2 rounded-full animate-bounce flex justify-center items-center"></div>
+                  <div className="w-2 animate-pulse h-2 bg-secondary rounded-full animate-bounce flex justify-center items-center"></div>
+                  <div className="w-2 h-2 animate-pulse bg-violet-300 rounded-full animate-bounce flex justify-center items-center"></div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="border-t border-zinc-500">
-          <form className="px-2 py-3 flex flex-row gap-3">
+          <form className="px-4 py-3 flex flex-row gap-3">
             <input
-              className="border border-zinc-500 rounded-[15px] w-full px-2 py-3"
+              className="border border-zinc-500 rounded-[15px] w-full px-2 py-3 focus:outline-primary"
               type="text"
-              value={question}
+              value={formData}
               placeholder="Type your message..."
               onChange={(e) => {
                 setQuestion(e.target.value);
+                setFormData(e.target.value);
                 console.log(question);
               }}
             />
@@ -136,6 +180,7 @@ export default function Chatbot() {
               type="submit"
               className="bg-secondary rounded-[15px] hover:bg-primary transtion-all duration-300 cursor-pointer"
               onClick={handleSendMessage}
+              disabled={question.length === 0}
             >
               <div className="px-5 py-2 ">
                 <Send className="w-6 h-6 " />
