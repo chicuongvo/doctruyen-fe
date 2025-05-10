@@ -23,7 +23,7 @@ const Blogs = () => {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [novels, setNovels] = useState<Novel[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 5; // Số lượng bài viết trên mỗi trang
+  const blogsPerPage = 5; // Số lượng bài viết/trang
 
   useEffect(() => {
     setBlogs([
