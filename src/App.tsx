@@ -1,11 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import StoryOverview from "./pages/StoryOverview";
 import Story from "./pages/Story";
 import Blogs from "./pages/Blogs";
 import Blog from "./pages/Blog";
-import Admin from "./pages/Admin";
+import Admin from "./pages/admin/Admin";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import GetVerifyToken from "./pages/GetVerifyToken";
@@ -16,6 +18,17 @@ import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
 import Profile from "./pages/Profile";
 import Chatbot from "./pages/Chatbot";
+import UserList from "./pages/admin/users/UserList";
+import UserDetail from "./pages/admin/users/UserDetail";
+import StoryList from "./pages/admin/stories/StoryList";
+import StoryDetail from "./pages/admin/stories/StoryDetail";
+import StoryEdit from "./pages/admin/stories/StoryEdit";
+import StoryNew from "./pages/admin/stories/StoryNew";
+import ChapterDetail from "./pages/admin/stories/chapters/ChapterDetail";
+import ChapterEdit from "./pages/admin/stories/chapters/ChapterEdit";
+import ChapterNew from "./pages/admin/stories/chapters/ChapterNew";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -30,7 +43,6 @@ const router = createBrowserRouter([
       { path: "/story/:id/:chapter", element: <Story /> },
       { path: "/blogs", element: <Blogs /> },
       { path: "/blog/:id", element: <Blog /> },
-      { path: "/admin", element: <Admin /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/get-verify-token", element: <GetVerifyToken /> },
@@ -42,15 +54,44 @@ const router = createBrowserRouter([
       },
       { path: "/profile", element: <Profile /> },
       { path: "/chatbot", element: <Chatbot /> },
+      {
+        path: "/admin",
+        element: <Admin />,
+        children: [
+          { path: "/admin/users", element: <UserList /> },
+          {
+            path: "/admin/users/:userId",
+            element: <UserDetail />,
+          },
+          { path: "/admin/stories", element: <StoryList /> },
+          { path: "/admin/stories/:storyId/edit", element: <StoryEdit /> },
+          { path: "/admin/stories/:storyId", element: <StoryDetail /> },
+          { path: "/admin/stories/new", element: <StoryNew /> },
+          {
+            path: "/admin/stories/:storyId/chapters/:chapterId",
+            element: <ChapterDetail />,
+          },
+          {
+            path: "/admin/stories/:storyId/chapters/:chapterId/edit",
+            element: <ChapterEdit />,
+          },
+          {
+            path: "/admin/stories/:storyId/chapters/new",
+            element: <ChapterNew />,
+          },
+        ],
+      },
     ],
   },
 ]);
 
 function App() {
   return (
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </QueryClientProvider>
   );
 }
 
