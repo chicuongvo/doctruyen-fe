@@ -107,34 +107,14 @@ export const blogColumns: ColumnDef<Blog>[] = [
   {
     accessorKey: "author",
     header: "Author",
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
-      return (
-        <Badge
-          variant={
-            status === "published"
-              ? "default"
-              : status === "draft"
-                ? "outline"
-                : "secondary"
-          }
-        >
-          {status}
-        </Badge>
-      );
+      const author = row.getValue("author") as { username: string };
+      return <p>{author.username}</p>;
     },
   },
   {
-    accessorKey: "publishedAt",
-    header: "Published At",
+    accessorKey: "created_at",
+    header: "Created At",
   },
   {
     id: "actions",
@@ -152,14 +132,10 @@ export const blogColumns: ColumnDef<Blog>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={`/blogs/${blog.blog_id}`}>View details</Link>
+              <Link to={`${blog.blog_id}`}>View details</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to={`/blogs/${blog.blog_id}/edit`}>Edit</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
-              Delete
+              <Link to={`${blog.blog_id}/edit`}>Edit</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

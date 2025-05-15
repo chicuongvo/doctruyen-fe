@@ -84,18 +84,6 @@ interface StoryData {
   progress: string;
 }
 
-// Function to fetch story data by ID
-async function getStory(id: string): Promise<StoryResponse["data"]> {
-  try {
-    // Need to cast the response to StoryResponse type since the API returns a different structure
-    const response = (await getStoryById(id)) as unknown as StoryResponse;
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching story data:", error);
-    throw new Error("Failed to fetch story data");
-  }
-}
-
 export default function StoryDetail() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const navigate = useNavigate();

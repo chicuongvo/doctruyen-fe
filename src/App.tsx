@@ -27,6 +27,10 @@ import StoryNew from "./pages/admin/stories/StoryNew";
 import ChapterDetail from "./pages/admin/stories/chapters/ChapterDetail";
 import ChapterEdit from "./pages/admin/stories/chapters/ChapterEdit";
 import ChapterNew from "./pages/admin/stories/chapters/ChapterNew";
+import BlogList from "./pages/admin/blogs/BlogList";
+import BlogDetail from "./pages/admin/blogs/BlogDetail";
+import BlogEdit from "./pages/admin/blogs/BlogEdit";
+import BlogNew from "./pages/admin/blogs/BlogNew";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +82,22 @@ const router = createBrowserRouter([
           {
             path: "/admin/stories/:storyId/chapters/new",
             element: <ChapterNew />,
+          },
+          {
+            path: "/admin/blogs",
+            element: <BlogList />,
+          },
+          {
+            path: "/admin/blogs/:blogId",
+            element: <BlogDetail />,
+          },
+          {
+            path: "/admin/blogs/:blogId/edit",
+            element: <BlogEdit />,
+          },
+          {
+            path: "/admin/blogs/new",
+            element: <BlogNew />,
           },
         ],
       },
