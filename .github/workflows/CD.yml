@@ -1,0 +1,23 @@
+name: Staging CD workflow
+on:
+  workflow_run:
+    workflows: ["Staging CI workflow"]
+    types:
+      - completed
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+      - name: Conpy artifact to server
+        run: |
+          ssh triuq@sitedoctruyen.id.vn << EOF
+            
+          EOF

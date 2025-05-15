@@ -12,6 +12,7 @@
   "dependencies": {
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/vite": "^4.0.9",
+    "axios": "^1.9.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.5.3",
