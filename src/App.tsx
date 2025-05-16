@@ -8,13 +8,47 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+<<<<<<< HEAD
 import Genres from "./pages/Genres";
+=======
+import GetVerifyToken from "./pages/GetVerifyToken";
+import VerifyAccount from "./pages/VerifyAccount";
+import ResetPasswordToken from "./pages/ResetPasswordToken";
+import ResetPassword from "./pages/ResetPassword";
+import AppLayout from "./components/AppLayout";
+import { UserProvider } from "./contexts/userContext";
+import Profile from "./pages/Profile";
+import Chatbot from "./pages/Chatbot";
+>>>>>>> 1bc7c042781a1bbf5da0d8ca0d6a480e0ecaf873
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      { path: "/search", element: <Search /> },
+      { path: "/story/:id", element: <StoryOverview /> },
+      { path: "/story/:id/:chapter", element: <Story /> },
+      { path: "/blogs", element: <Blogs /> },
+      { path: "/blog/:id", element: <Blog /> },
+      { path: "/admin", element: <Admin /> },
+      { path: "/login", element: <Login /> },
+      { path: "/signup", element: <SignUp /> },
+      { path: "/get-verify-token", element: <GetVerifyToken /> },
+      { path: "/verify-account", element: <VerifyAccount /> },
+      { path: "/get-reset-password-token", element: <ResetPasswordToken /> },
+      {
+        path: "/reset-password/:reset_password_token",
+        element: <ResetPassword />,
+      },
+      { path: "/profile", element: <Profile /> },
+      { path: "/chatbot", element: <Chatbot /> },
+    ],
   },
+<<<<<<< HEAD
   { path: "genres/:genre", element: <Genres /> },
   { path: "/search", element: <Search /> },
   { path: "/story/:id", element: <StoryOverview /> },
@@ -24,10 +58,16 @@ const router = createBrowserRouter([
   { path: "/admin", element: <Admin /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
+=======
+>>>>>>> 1bc7c042781a1bbf5da0d8ca0d6a480e0ecaf873
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  );
 }
 
 export default App;

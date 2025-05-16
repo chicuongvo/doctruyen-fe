@@ -13,3 +13,9 @@
   --font-spartan: "League Spartan", sans-serif;
   --font-poppins: "Poppins", sans-serif;
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
