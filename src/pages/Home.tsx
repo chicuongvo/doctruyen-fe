@@ -1,6 +1,6 @@
 import Banner from "../assets/banner.png";
 import GooglePlay from "../assets/ggplay.svg";
-import QR from "../assets/QR.svg";
+import QR from "../assets/qr.svg";
 import Appstore from "../assets/Appstore.svg";
 import ItemListV2 from "../components/ItemList/ItemListV2";
 import ItemListV1 from "../components/ItemList/ItemListV1";
