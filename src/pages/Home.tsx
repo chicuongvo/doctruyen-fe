@@ -28,7 +28,7 @@ function AppDownloadIcon(src: string) {
 export default function Home() {
   return (
     <div className="">
-      <div className="banner py-20 relative w-full border-box">
+      <div className="banner py-20 relative w-full border-box font-spartan">
         <img
           className="w-full h-full absolute top-0 left-0 object-cover object-[54%_100%]"
           src={Banner}

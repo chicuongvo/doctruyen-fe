@@ -2,7 +2,7 @@ export default function ItemCardV2(props: { showTags: boolean }) {
   const { showTags } = props;
 
   return (
-    <div className="item-card-v2 flex-none w-[116px] md:w-[186px] items-stretch">
+    <div className="item-card-v2 flex-none w-[116px] md:w-[186px] items-stretch font-spartan">
       <div className="relative">
         <a href="/">
           <img
