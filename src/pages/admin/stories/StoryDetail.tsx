@@ -1,0 +1,325 @@
+import { Button } from "@/components/ui/button";
+// import { PageHeader } from "@/components/page-header";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Edit, Trash2, Plus, ListRestart } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { DataTable } from "@/components/DataTable/DataTable";
+import {
+  chapterColumns,
+  type Chapter as ChapterTableType,
+} from "@/components/DataTable/Column";
+import {
+  deleteStory,
+  getStoryById,
+  // getChaptersByStoryId,
+  // type Chapter,
+  // deleteStory,
+} from "@/api/stories.api";
+import { useState, useEffect } from "react";
+// import { useParams, useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useMutation, useQuery } from "@tanstack/react-query";
+// import { useToast } from "@/components/ui/use-toast";
+
+// Type definition for the response from the backend
+interface StoryResponse {
+  success: boolean;
+  data: {
+    story_id: string;
+    title: string;
+    author_name: string;
+    description: string;
+    cover_image: string;
+    price: number;
+    status: string;
+    progress: string;
+    published_at: string;
+    like_counts: number;
+    rating_avg: number;
+    story_genres: {
+      genre: {
+        genre_id: string;
+        name: string;
+      };
+    }[];
+    story_comments: any[];
+    story_chapters: any[];
+  };
+}
+
+interface StoryData {
+  id: string;
+  title: string;
+  author: string;
+  genre: string;
+  synopsis: string;
+  status: string;
+  tags: {
+    genre: {
+      genre_id: string;
+      name: string;
+    };
+  }[];
+  publishedAt: string;
+  coverImage: string;
+  rating: number;
+  reads: number;
+  progress: string;
+}
+
+export default function StoryDetail() {
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const navigate = useNavigate();
+  const params = useParams();
+  const storyId = params.storyId!;
+
+  const { data, isLoading } = useQuery({
+    queryFn: () => getStoryById(storyId),
+    queryKey: ["story", storyId],
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteStory,
+  });
+
+  const storyData = data?.data?.data;
+  const storyChapters = storyData?.story_chapters ?? [];
+  console.log(storyData);
+
+  const handleDeleteStory = async () => {
+    mutate(storyId, {
+      onSuccess: () => navigate("/admin/stories"),
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        Loading story data...
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* <PageHeader
+        title={storyData.title}
+        description={`${storyData.genre} • ${storyChapters.length} chapters`}
+        breadcrumbs={[
+          { label: "Stories", to: "/stories" },
+          { label: storyData.title },
+        ]}
+        actions={
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" asChild>
+              <Link to="/stories">
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to={`/stories/${storyData.id}/edit`}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </Link>
+            </Button>
+            <AlertDialog
+              open={openDeleteDialog}
+              onOpenChange={setOpenDeleteDialog}
+            >
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="icon">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Story</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to delete "{storyData.title}"? This
+                    action cannot be undone and will permanently delete the
+                    story and all its chapters.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteStory}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? "Deleting..." : "Delete"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        }
+      /> */}
+      <div className="self-end">
+        <Button variant="outline" asChild className="mr-3">
+          <Link to={`edit`}>
+            <Edit className="mr-2 h-4 w-4" />
+            Edit
+          </Link>
+        </Button>
+        <AlertDialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="icon">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Story</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete "{storyData.title}"? This action
+                cannot be undone and will permanently delete the story and all
+                its chapters.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteStory}
+                disabled={isPending}
+              >
+                {isPending ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="chapters">Chapters</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Synopsis</CardTitle>
+                <CardDescription>Story summary and overview</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="prose max-w-none dark:prose-invert">
+                  {storyData.description}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Story Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h3 className="text-sm font-medium mb-1">Author</h3>
+                    <p className="text-sm">{storyData.author_name}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium mb-1">Genre</h3>
+                    <p className="text-sm">
+                      {storyData.story_genres
+                        .map(
+                          ({ genre }: { genre: { name: string } }) => genre.name
+                        )
+                        .join(", ") || "None"}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium mb-1">Status</h3>
+                    <p className="text-sm capitalize">{storyData.status}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium mb-1">Progress</h3>
+                    <p className="text-sm capitalize">
+                      {storyData.progress || "Unknown"}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium mb-1">Published</h3>
+                    <p className="text-sm">
+                      {storyData.published_at || "Not published"}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Cover Image</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="aspect-[2/3] relative overflow-hidden rounded-md">
+                    <img
+                      src={storyData.cover_image || "/placeholder.svg"}
+                      alt={`Cover for ${storyData.title}`}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="chapters" className="space-y-4">
+          <div className="flex flex-wrap justify-between items-center gap-4">
+            <h2 className="text-xl font-semibold">Chapters</h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button asChild>
+                <Link to={`/admin/stories/${storyData.story_id}/chapters/new`}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Chapter
+                </Link>
+              </Button>
+            </div>
+          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>All Chapters</CardTitle>
+              <CardDescription>
+                <Link
+                  to={`/stories/${storyData.id}/chapters`}
+                  className="text-primary hover:underline"
+                >
+                  View all chapters
+                </Link>
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                columns={chapterColumns}
+                data={storyChapters}
+                searchKey="title"
+                searchPlaceholder="Search chapters..."
+                total={storyChapters?.length}
+                pageCount={1}
+                currentPage={1}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
