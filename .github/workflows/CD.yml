@@ -29,7 +29,10 @@ jobs:
       - name: deploy in remote server
         run: |
           ssh triuq@sitedoctruyen.id.vn << 'EOF'
+          rm -rf ~/doctruyen/fe
+          mkdir -p ~/doctruyen/fe
           cd ~/doctruyen/fe
           tar -xzf dist.tar.gz
           rm -rf dist.tar.gz
           sudo systemctl restart nginx
+          EOF
