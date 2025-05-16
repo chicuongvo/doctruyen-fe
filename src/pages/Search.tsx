@@ -1,4 +1,3 @@
-import x from "../assets/search.svg";
 import StoryCollection from "../components/StoryCollection";
 
 const tags = [

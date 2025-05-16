@@ -7,16 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+// import { useMutation } from "@tanstack/react-query";
 import { createBlog } from "@/api/blogs.api";
-import Spinner from "@/components/Spinner";
+// import Spinner from "@/components/Spinner";
 import { Link } from "react-router-dom";
 
-interface BlogData {
-  title: string;
-  content: string;
-  cover_image: string;
-}
+// interface BlogData {
+//   title: string;
+//   content: string;
+//   cover_image: string;
+// }
 
 export default function BlogNew() {
   const [isLoading, setIsLoading] = useState(false);

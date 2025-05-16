@@ -1,6 +1,6 @@
 import { createBlog, getBlogById } from "@/api/blogs.api";
 import { Link, useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "@/components/Spinner";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -38,7 +38,7 @@ export default function EditBlogPage() {
     }
   }
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     await updateBlog(formData);

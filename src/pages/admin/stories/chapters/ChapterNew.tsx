@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 // import { PageHeader } from "@/components/page-header";
@@ -14,36 +14,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { Save } from "lucide-react";
 // import { useToast } from "@/components/ui/use-toast";
-import { getStoryById, createChapter } from "@/api/stories.api";
+import { createChapter } from "@/api/stories.api";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
-interface StoryResponse {
-  success: boolean;
-  data: {
-    story_id: string;
-    title: string;
-    author_name: string;
-    description: string;
-    cover_image: string;
-    price: number;
-    status: string;
-    progress: string;
-    published_at: string;
-    like_counts: number;
-    rating_avg: number;
-    story_genres: {
-      genre: {
-        genre_id: string;
-        name: string;
-      };
-    }[];
-    story_comments: any[];
-    story_chapters: any[];
-  };
-}
+// interface StoryResponse {
+//   success: boolean;
+//   data: {
+//     story_id: string;
+//     title: string;
+//     author_name: string;
+//     description: string;
+//     cover_image: string;
+//     price: number;
+//     status: string;
+//     progress: string;
+//     published_at: string;
+//     like_counts: number;
+//     rating_avg: number;
+//     story_genres: {
+//       genre: {
+//         genre_id: string;
+//         name: string;
+//       };
+//     }[];
+//     story_comments: any[];
+//     story_chapters: any[];
+//   };
+// }
 
 export default function ChapterNew() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,22 +66,22 @@ export default function ChapterNew() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, status: value }));
+    setFormData((prev) => ({ ...prev, status: value }));
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: parseInt(value) || 0 }));
+    setFormData((prev) => ({ ...prev, [id]: parseInt(value) || 0 }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+    console.log(isSubmitting);
     try {
       const chapterData = {
         title: formData.title,

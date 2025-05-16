@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Chapter from "../components/Chapter";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";

@@ -1,11 +1,10 @@
-import React from "react";
 import ItemCardV1 from "../ItemCard/ItemCardV1";
-import ArrowIcon from "../../assets/arrow-icon.svg";
+// import ArrowIcon from "../../assets/arrow-icon.svg";
 import ListHeader from "../ListHeader";
 
 export default function ItemListV1(props: { showButton: boolean }) {
   const { showButton } = props;
-
+  console.log(showButton);
   return (
     <div>
       <ListHeader title="Editor’s Choice-x" />

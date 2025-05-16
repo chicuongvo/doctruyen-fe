@@ -10,9 +10,7 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-<<<<<<< HEAD
 import Genres from "./pages/Genres";
-=======
 import GetVerifyToken from "./pages/GetVerifyToken";
 import VerifyAccount from "./pages/VerifyAccount";
 import ResetPasswordToken from "./pages/ResetPasswordToken";
@@ -21,9 +19,7 @@ import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
 import Profile from "./pages/Profile";
 import Chatbot from "./pages/Chatbot";
-<<<<<<< HEAD
->>>>>>> 1bc7c042781a1bbf5da0d8ca0d6a480e0ecaf873
-=======
+
 import UserList from "./pages/admin/users/UserList";
 import UserDetail from "./pages/admin/users/UserDetail";
 import StoryList from "./pages/admin/stories/StoryList";
@@ -39,7 +35,6 @@ import BlogEdit from "./pages/admin/blogs/BlogEdit";
 import BlogNew from "./pages/admin/blogs/BlogNew";
 
 const queryClient = new QueryClient();
->>>>>>> a2575b5ed527841d23d7772b865af28523c16eef
 
 const router = createBrowserRouter([
   {
@@ -110,7 +105,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-<<<<<<< HEAD
   { path: "genres/:genre", element: <Genres /> },
   { path: "/search", element: <Search /> },
   { path: "/story/:id", element: <StoryOverview /> },
@@ -120,8 +114,6 @@ const router = createBrowserRouter([
   { path: "/admin", element: <Admin /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
-=======
->>>>>>> 1bc7c042781a1bbf5da0d8ca0d6a480e0ecaf873
 ]);
 
 function App() {

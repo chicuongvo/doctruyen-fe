@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 // import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -16,16 +16,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createStory, getGenres } from "@/api/stories.api";
 import { useQuery } from "@tanstack/react-query";
 // import { useToast } from "@/components/ui/use-toast";
 
-interface Genre {
-  genre_id: string;
-  name: string;
-}
+// interface Genre {
+//   genre_id: string;
+//   name: string;
+// }
 
 interface StoryFormData {
   title: string;
@@ -83,20 +83,20 @@ export default function StoryNew() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleGenreChange = (value: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const genres = prev.genres.includes(value)
-        ? prev.genres.filter(g => g !== value)
+        ? prev.genres.filter((g) => g !== value)
         : [...prev.genres, value];
       return { ...prev, genres };
     });
   };
 
   const handleStatusChange = (value: string) => {
-    setFormData(prev => ({ ...prev, status: value }));
+    setFormData((prev) => ({ ...prev, status: value }));
   };
 
   return (
@@ -155,7 +155,7 @@ export default function StoryNew() {
                   <SelectContent>
                     {isLoadingGenres
                       ? []
-                      : genres.map(genre => (
+                      : genres.map((genre: any) => (
                           <SelectItem key={genre.genre_id} value={genre.name}>
                             {genre.name}
                           </SelectItem>
@@ -164,8 +164,10 @@ export default function StoryNew() {
                 </Select>
                 {formData.genres.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.genres.map(genreName => {
-                      const genre = genres.find(g => g.name === genreName);
+                    {formData.genres.map((genreName) => {
+                      const genre = genres.find(
+                        (g: any) => g.name === genreName
+                      );
                       return (
                         <div
                           key={genreName}

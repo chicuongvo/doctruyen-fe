@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-const Chapter = ({ id, chapter }: { id: string; chapter: number }) => {
+const Chapter = ({
+  id,
+  chapter,
+}: {
+  id: string | undefined;
+  chapter: number;
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {

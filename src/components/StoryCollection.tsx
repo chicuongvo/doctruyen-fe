@@ -1,4 +1,3 @@
-import React from "react";
 import ItemCardV1 from "./ItemCard/ItemCardV1";
 import { useState } from "react";
 
@@ -59,8 +58,8 @@ export default function StoryCollection(props: {
   title: string;
   showFilter: boolean;
 }) {
-  const { title, description, serverURL, clientURL, showFilter } = props;
-  const [page, setPage] = useState(1);
+  const { title, description, showFilter } = props;
+  const [page] = useState(1);
 
   return (
     <div className="lg:flex">

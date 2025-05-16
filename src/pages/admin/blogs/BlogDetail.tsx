@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Edit, Trash2, Pencil } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { formatDate } from "@/utils/date";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";

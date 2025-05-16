@@ -35,6 +35,8 @@ export default function BlogList() {
         searchKey="title"
         searchPlaceholder="Search blogs..."
         total={blogs.length}
+        pageCount={1}
+        currentPage={1}
       />
     </div>
   );

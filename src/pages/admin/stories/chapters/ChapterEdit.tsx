@@ -14,9 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { Save } from "lucide-react";
 // import { useToast } from "@/components/ui/use-toast";
-import { getStoryById, getChapterById, updateChapter } from "@/api/stories.api";
+import { getChapterById, updateChapter } from "@/api/stories.api";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -31,40 +31,40 @@ interface ChapterData {
   created_at?: string;
 }
 
-interface StoryResponse {
-  success: boolean;
-  data: {
-    story_id: string;
-    title: string;
-    author_name: string;
-    description: string;
-    cover_image: string;
-    price: number;
-    status: string;
-    progress: string;
-    published_at: string;
-    like_counts: number;
-    rating_avg: number;
-    story_genres: {
-      genre: {
-        genre_id: string;
-        name: string;
-      };
-    }[];
-    story_comments: any[];
-    story_chapters: any[];
-  };
-}
+// interface StoryResponse {
+//   success: boolean;
+//   data: {
+//     story_id: string;
+//     title: string;
+//     author_name: string;
+//     description: string;
+//     cover_image: string;
+//     price: number;
+//     status: string;
+//     progress: string;
+//     published_at: string;
+//     like_counts: number;
+//     rating_avg: number;
+//     story_genres: {
+//       genre: {
+//         genre_id: string;
+//         name: string;
+//       };
+//     }[];
+//     story_comments: any[];
+//     story_chapters: any[];
+//   };
+// }
 
 export default function ChapterEdit() {
   // const { toast } = useToast();
   // const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [storyData, setStoryData] = useState<StoryResponse["data"] | null>(
-    null
-  );
-  const { chapterId, storyId } = useParams();
+  // const [loading, setLoading] = useState(true);
+  // const [storyData, setStoryData] = useState<StoryResponse["data"] | null>(
+  //   null
+  // );
+  const { chapterId } = useParams();
 
   const { data, isLoading: isLoadingChapter } = useQuery({
     queryFn: () => getChapterById(chapterId!),
@@ -93,16 +93,16 @@ export default function ChapterEdit() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, status: value }));
+    setFormData((prev) => ({ ...prev, status: value }));
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: parseInt(value) || 1 }));
+    setFormData((prev) => ({ ...prev, [id]: parseInt(value) || 1 }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -8,12 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Edit, Trash2, Plus, ListRestart } from "lucide-react";
+import { Edit, Trash2, Plus } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DataTable } from "@/components/DataTable/DataTable";
 import {
   chapterColumns,
-  type Chapter as ChapterTableType,
+  // type Chapter as ChapterTableType,
 } from "@/components/DataTable/Column";
 import {
   deleteStory,
@@ -22,7 +22,7 @@ import {
   // type Chapter,
   // deleteStory,
 } from "@/api/stories.api";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import { useParams, useRouter } from "next/navigation";
 import {
   AlertDialog,
@@ -39,50 +39,50 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 // import { useToast } from "@/components/ui/use-toast";
 
 // Type definition for the response from the backend
-interface StoryResponse {
-  success: boolean;
-  data: {
-    story_id: string;
-    title: string;
-    author_name: string;
-    description: string;
-    cover_image: string;
-    price: number;
-    status: string;
-    progress: string;
-    published_at: string;
-    like_counts: number;
-    rating_avg: number;
-    story_genres: {
-      genre: {
-        genre_id: string;
-        name: string;
-      };
-    }[];
-    story_comments: any[];
-    story_chapters: any[];
-  };
-}
+// interface StoryResponse {
+//   success: boolean;
+//   data: {
+//     story_id: string;
+//     title: string;
+//     author_name: string;
+//     description: string;
+//     cover_image: string;
+//     price: number;
+//     status: string;
+//     progress: string;
+//     published_at: string;
+//     like_counts: number;
+//     rating_avg: number;
+//     story_genres: {
+//       genre: {
+//         genre_id: string;
+//         name: string;
+//       };
+//     }[];
+//     story_comments: any[];
+//     story_chapters: any[];
+//   };
+// }
 
-interface StoryData {
-  id: string;
-  title: string;
-  author: string;
-  genre: string;
-  synopsis: string;
-  status: string;
-  tags: {
-    genre: {
-      genre_id: string;
-      name: string;
-    };
-  }[];
-  publishedAt: string;
-  coverImage: string;
-  rating: number;
-  reads: number;
-  progress: string;
-}
+// interface StoryData {
+//   id: string;
+//   title: string;
+//   author: string;
+//   genre: string;
+//   synopsis: string;
+//   status: string;
+//   tags: {
+//     genre: {
+//       genre_id: string;
+//       name: string;
+//     };
+//   }[];
+//   publishedAt: string;
+//   coverImage: string;
+//   rating: number;
+//   reads: number;
+//   progress: string;
+// }
 
 export default function StoryDetail() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);

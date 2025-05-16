@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save, ImageIcon } from "lucide-react";
+import { Save, ImageIcon } from "lucide-react";
 // import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getGenres, getStoryById, updateStory } from "@/api/stories.api";
@@ -92,19 +92,19 @@ export default function StoryEdit() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSelectChange = (field: string, value: string) => {
     // console.log("Value", value);
     if (!value) return;
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleGenreChange = (value: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const genres = prev.genres.includes(value)
-        ? prev.genres.filter(g => g !== value)
+        ? prev.genres.filter((g) => g !== value)
         : [...prev.genres, value];
       return { ...prev, genres };
     });
@@ -232,7 +232,7 @@ export default function StoryEdit() {
                       <Label htmlFor="status">Status</Label>
                       <Select
                         value={formData.status}
-                        onValueChange={value =>
+                        onValueChange={(value) =>
                           handleSelectChange("status", value)
                         }
                       >
@@ -251,7 +251,7 @@ export default function StoryEdit() {
                       <Label htmlFor="progress">Progress</Label>
                       <Select
                         value={formData.progress}
-                        onValueChange={value =>
+                        onValueChange={(value) =>
                           handleSelectChange("progress", value)
                         }
                       >
@@ -310,7 +310,7 @@ export default function StoryEdit() {
                     <SelectContent>
                       {isLoadingGenres
                         ? []
-                        : genres.map(genre => (
+                        : genres.map((genre: any) => (
                             <SelectItem key={genre.genre_id} value={genre.name}>
                               {genre.name}
                             </SelectItem>
@@ -319,8 +319,10 @@ export default function StoryEdit() {
                   </Select>
                   {formData.genres.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {formData.genres.map(genreName => {
-                        const genre = genres.find(g => g.name === genreName);
+                      {formData.genres.map((genreName) => {
+                        const genre = genres.find(
+                          (g: any) => g.name === genreName
+                        );
                         return (
                           <div
                             key={genreName}
@@ -352,7 +354,7 @@ export default function StoryEdit() {
                     <Label htmlFor="publishStatus">Publication Status</Label>
                     <Select
                       value={formData.status}
-                      onValueChange={value =>
+                      onValueChange={(value) =>
                         handleSelectChange("status", value)
                       }
                     >

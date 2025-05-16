@@ -8,10 +8,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Edit, Trash2, ArrowUp, ArrowDown } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getStoryById, getChapterById, deleteChapter } from "@/api/stories.api";
-import { useState, useEffect } from "react";
+import { getChapterById, deleteChapter } from "@/api/stories.api";
+import { useState } from "react";
 // import { useRouter } from "next/navigation";
 // import { useToast } from "@/components/ui/use-toast";
 import {
@@ -27,17 +27,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-interface ChapterData {
-  chapter_id: string;
-  story_id: string;
-  storyTitle: string;
-  title: string;
-  chapter_number: number;
-  status: string;
-  wordCount: number;
-  published_at: string;
-  content: string;
-}
+// interface ChapterData {
+//   chapter_id: string;
+//   story_id: string;
+//   storyTitle: string;
+//   title: string;
+//   chapter_number: number;
+//   status: string;
+//   wordCount: number;
+//   published_at: string;
+//   content: string;
+// }
 
 export default function ChapterDetail() {
   // const router = useRouter();
@@ -45,8 +45,8 @@ export default function ChapterDetail() {
   const { chapterId, storyId } = useParams();
   const navigate = useNavigate();
   // const [chapterData, setChapterData] = useState<ChapterData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState(false);
+  // const [loading, setLoading] = useState(true);
+  // const [isDeleting, setIsDeleting] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const { data, isLoading: isLoadingChapter } = useQuery({
@@ -186,7 +186,9 @@ export default function ChapterDetail() {
               <div className="prose max-w-none dark:prose-invert">
                 {chapterData.content
                   ?.split("\n\n")
-                  .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                  .map((paragraph: any, index: any) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
               </div>
             </CardContent>
           </Card>

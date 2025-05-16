@@ -1,7 +1,7 @@
 import axiosClient from "@/lib/axios/axiosClient";
 
 // Get all blogs
-export const getBlogs = async params => {
+export const getBlogs = async (params: any) => {
   return axiosClient.get(`/blogs?filter_value=${params.title}`);
 };
 
@@ -11,12 +11,12 @@ export const getBlogById = async (id: string) => {
 };
 
 // Create blog
-export const createBlog = async blogData => {
+export const createBlog = async (blogData: any) => {
   return axiosClient.post(`/blogs`, blogData);
 };
 
 // Update blog
-export const updateBlog = async (id: string, blogData) => {
+export const updateBlog = async (id: string, blogData: any) => {
   return axiosClient.put(`/blogs/${id}`, blogData);
 };
 
