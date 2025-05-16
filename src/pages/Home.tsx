@@ -5,7 +5,6 @@ import Appstore from "../assets/appstore.svg";
 import ItemListV2 from "../components/ItemList/ItemListV2";
 import ItemListV1 from "../components/ItemList/ItemListV1";
 import BlogList from "../components/ItemList/BlogList";
-
 function AppDownloadIcon(src: string) {
   return (
     <div>
@@ -74,16 +73,16 @@ export default function Home() {
       </div>
       <div className="main-content py-8 px-[1rem] max-w-screen-xl mx-auto mb-6 rounded-xl mx-auto box-border">
         <div className="mb-6">
-          <ItemListV2 />
+          <ItemListV2 title="Truyện hàng đầu" />
         </div>
         <div className="p-8 mb-6 rounded-xl shadow-md mx-auto">
-          <ItemListV1 showButton={true} />
+          <ItemListV1 showButton={true} title="Truyện nên đọc" />
         </div>
         <div className="rounded-xl mb-6">
-          <BlogList />
+          <BlogList title="Các blogs gần đây" />
         </div>
         <div>
-          <ItemListV2 />
+          <ItemListV2 title="Truyện cho trẻ" />
         </div>
       </div>
     </div>

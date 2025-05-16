@@ -1,17 +1,32 @@
 import ItemCardV2 from "../ItemCard/ItemCardV2";
 import ListHeader from "../ListHeader";
-export default function ItemListV2() {
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../constants/api";
+export default function ItemListV2(props: { title: string }) {
+  const [stories, setStories] = useState<[]>([]);
+  const { title } = props;
+  useEffect(() => {
+    const fetchStories = async () => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/stories?limit=6&&page=3`
+        ).then((res) => res.json());
+        setStories(response.data);
+      } catch (error) {
+        console.error("Error fetching stories:", error);
+      }
+    };
+    fetchStories();
+  }, []);
   return (
     <>
-      <div className="shadow-xl px-3">
-        <ListHeader title="Editor’s Choice" />
+      <div className="shadow-xl px-3 py-5">
+        <ListHeader title={title} />
         <div className="flex gap-2 overflow-auto gap-3 scrollbar-hidden justify-center">
-          <ItemCardV2 showTags={true} />
-          <ItemCardV2 showTags={true} />
-          <ItemCardV2 showTags={true} />
-          <ItemCardV2 showTags={true} />
-          <ItemCardV2 showTags={true} />
-          <ItemCardV2 showTags={true} />
+          {stories.length > 0 &&
+            stories.map((story: any) => {
+              return <ItemCardV2 showTags={false} story={story} />;
+            })}
         </div>
       </div>
     </>

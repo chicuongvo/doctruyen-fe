@@ -1,15 +1,31 @@
 import BlogCard from "../ItemCard/BlogCard";
 import ListHeader from "../ListHeader";
-
-export default function BlogList() {
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../constants/api";
+export default function BlogList(props: { title: string }) {
+  const [blogs, setBlogs] = useState<[]>([]);
+  const { title } = props;
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/blogs?limit=4`).then(
+          (res) => res.json()
+        );
+        setBlogs(response.data);
+      } catch (error) {
+        console.error("Error fetching stories:", error);
+      }
+    };
+    fetchBlogs();
+  }, []);
   return (
     <div>
-      <ListHeader title="Recent blogs" />
+      <ListHeader title={title} />
       <div className="blog-items grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
+        {blogs.length > 0 &&
+          blogs.map((blog: any) => {
+            return <BlogCard blog={blog} />;
+          })}
       </div>
     </div>
   );
