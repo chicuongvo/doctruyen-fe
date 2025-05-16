@@ -40,14 +40,18 @@ jobs:
           ssh-keyscan -H sitedoctruyen.id.vn > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_rsa
           chmod 644 ~/.ssh/known_hosts
+      - name: Remove old source in remote server
+        run: |
+          ssh triuq@sitedoctruyen.id.vn << 'EOF'
+          rm -rf ~/doctruyen/fe
+          mkdir -p ~/doctruyen/fe
+          EOF
       - name: Conpy artifact to server
         run: |
           scp -i ~/.ssh/id_rsa dist.tar.gz triuq@sitedoctruyen.id.vn:~/doctruyen/fe
       - name: deploy in remote server
         run: |
           ssh triuq@sitedoctruyen.id.vn << 'EOF'
-          rm -rf ~/doctruyen/fe
-          mkdir -p ~/doctruyen/fe
           cd ~/doctruyen/fe
           tar -xzf dist.tar.gz
           rm -rf dist.tar.gz
