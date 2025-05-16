@@ -105,7 +105,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "genres/:genre", element: <Genres /> },
+  { path: "stories", element: <Genres /> },
   { path: "/search", element: <Search /> },
   { path: "/story/:id", element: <StoryOverview /> },
   { path: "/story/:id/:chapter", element: <Story /> },
