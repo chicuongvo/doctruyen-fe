@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const options = [
     { name: "Home", path: "/" },
-    { name: "Stories", path: "/story" },
+    { name: "Stories", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
     { name: "Search", path: "/search" },
   ];
