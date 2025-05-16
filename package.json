@@ -25,11 +25,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0",
-<<<<<<< HEAD
     "swiper": "^11.2.5",
-=======
     "react-toastify": "^11.0.5",
->>>>>>> 1bc7c042781a1bbf5da0d8ca0d6a480e0ecaf873
     "tailwindcss": "^4.0.9"
   },
   "devDependencies": {
