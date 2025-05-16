@@ -8,7 +8,14 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import GetVerifyToken from "./pages/GetVerifyToken";
+import VerifyAccount from "./pages/VerifyAccount";
+import ResetPasswordToken from "./pages/ResetPasswordToken";
+import ResetPassword from "./pages/ResetPassword";
 import AppLayout from "./components/AppLayout";
+import { UserProvider } from "./contexts/userContext";
+import Profile from "./pages/Profile";
+import Chatbot from "./pages/Chatbot";
 
 const router = createBrowserRouter([
   {
@@ -26,12 +33,25 @@ const router = createBrowserRouter([
       { path: "/admin", element: <Admin /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignUp /> },
+      { path: "/get-verify-token", element: <GetVerifyToken /> },
+      { path: "/verify-account", element: <VerifyAccount /> },
+      { path: "/get-reset-password-token", element: <ResetPasswordToken /> },
+      {
+        path: "/reset-password/:reset_password_token",
+        element: <ResetPassword />,
+      },
+      { path: "/profile", element: <Profile /> },
+      { path: "/chatbot", element: <Chatbot /> },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  );
 }
 
 export default App;
