@@ -20,7 +20,7 @@ export default function ItemListV2(props: { title: string }) {
   }, []);
   return (
     <>
-      <div className="shadow-xl px-3 py-5">
+      <div className="">
         <ListHeader title={title} />
         <div className="flex gap-2 overflow-auto gap-3 scrollbar-hidden justify-center">
           {stories.length > 0 &&

@@ -60,6 +60,8 @@ const router = createBrowserRouter([
       },
       { path: "/profile", element: <Profile /> },
       { path: "/chatbot", element: <Chatbot /> },
+      { path: "stories", element: <Genres /> },
+      { path: "/search", element: <Search /> },
       {
         path: "/admin",
         element: <Admin />,
@@ -105,8 +107,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "stories", element: <Genres /> },
-  { path: "/search", element: <Search /> },
   { path: "/story/:id", element: <StoryOverview /> },
   { path: "/story/:id/:chapter", element: <Story /> },
   { path: "/blogs", element: <Blogs /> },

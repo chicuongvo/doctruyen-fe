@@ -72,7 +72,7 @@ export default function Home() {
         </div>
       </div>
       <div className="main-content py-8 px-[1rem] max-w-screen-xl mx-auto mb-6 rounded-xl mx-auto box-border">
-        <div className="mb-6">
+        <div className="mb-6 p-8 mb-6 rounded-xl shadow-md mx-auto">
           <ItemListV2 title="Truyện hàng đầu" />
         </div>
         <div className="p-8 mb-6 rounded-xl shadow-md mx-auto">

@@ -2,7 +2,7 @@ import StoryCollection from "../components/StoryCollection";
 
 function Genres() {
   return (
-    <div className="max-w-screen-xl p-[1rem] mx-auto">
+    <div className="max-w-screen-xl p-[1rem] mx-auto ">
       <StoryCollection
         title="Werewolf Novels & Books"
         showFilter={true}
