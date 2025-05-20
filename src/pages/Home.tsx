@@ -5,13 +5,11 @@ import Appstore from "../assets/appstore.svg";
 import ItemListV2 from "../components/ItemList/ItemListV2";
 import ItemListV1 from "../components/ItemList/ItemListV1";
 import BlogList from "../components/ItemList/BlogList";
+import { Link } from "react-router-dom";
 function AppDownloadIcon(src: string) {
   return (
     <div>
-      <a
-        href="https://play.google.com/store/apps/details?id=com.fiction.me"
-        aria-label="play store"
-      >
+      <Link to="/">
         <img
           width="170"
           height="56"
@@ -20,7 +18,7 @@ function AppDownloadIcon(src: string) {
           src={src}
           className="w-full max-w-[170px] h-auto"
         />
-      </a>
+      </Link>
     </div>
   );
 }
@@ -31,6 +29,7 @@ export default function Home() {
         <img
           className="w-full h-full absolute top-0 left-0 object-cover object-[54%_100%]"
           src={Banner}
+          alt="Ảnh bìa trang chủ"
         />
         <div className="max-w-screen-xl relative mx-auto px-[1rem]">
           <div className="w-6/12 max-lg:w-8/12 max-md:w-full">

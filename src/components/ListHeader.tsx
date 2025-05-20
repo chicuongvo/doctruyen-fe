@@ -14,7 +14,7 @@ export default function ListHeader({
       <Link to={link}>
         <div className="text-sm text-violet-600 cursor-pointer p-2 bg border border-violet-600 flex font-semibold items-center justify-between rounded relative">
           <span className="h-[22px]">See all</span>
-          <img className="" src={ArrowIcon} />
+          <img className="" src={ArrowIcon} alt="Mũi tên icon" />
         </div>
       </Link>
     </div>
