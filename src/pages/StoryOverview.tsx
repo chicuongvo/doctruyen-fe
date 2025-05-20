@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Tag from "../components/Tag";
 import Comment from "../components/Comment";
 import Chapter from "../components/Chapter";
-
+import { useUser } from "../contexts/userContext";
 interface Genre {
   genre: {
     genre_id: string;
@@ -35,9 +35,16 @@ interface StoryData {
   rating_avg: number;
 }
 
+interface UserData {
+  username: string;
+}
 interface CommentData {
-  user_id: string;
+  comment_id: string;
+  commented_at: string;
   content: string;
+  story_id: string;
+  user: UserData;
+  user_id: string;
 }
 
 const StoryOverview = () => {
@@ -45,6 +52,7 @@ const StoryOverview = () => {
   const [story, setStory] = useState<StoryData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [newComment, setNewComment] = useState<string>("");
+  const { userProfile } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +63,8 @@ const StoryOverview = () => {
         );
         setStory(res.data.data);
         setComments(res.data.data.story_comments);
+
+        console.log(res.data.data.story_comments);
       } catch (error) {
         console.error("Không thể lấy dữ liệu truyện", error);
       }
@@ -66,24 +76,39 @@ const StoryOverview = () => {
   const handleAddComment = async () => {
     if (newComment.trim() !== "") {
       try {
-        const response = await axios.post(
-          `https://doctruyen-be-e07.onrender.com/api/stories/${id}/comment`,
+        const res = await axios.post(
+          `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/comment`,
           {
             content: newComment,
+          },
+          {
+            withCredentials: true,
           }
         );
 
-        if (response.status === 200 || response.status === 201) {
-          setComments([
-            ...comments,
-            { user_id: "Bạn", content: response.data.content || newComment },
-          ]);
+        if (
+          (res.status === 200 || res.status === 201) &&
+          res.data.success &&
+          userProfile
+        ) {
+          const newCommentData = res.data.data;
+
+          const updatedComment = {
+            comment_id: newCommentData.comment_id,
+            commented_at: newCommentData.commented_at,
+            content: newCommentData.content,
+            user_id: newCommentData.user_id,
+            story_id: newCommentData.story_id,
+            user: { username: userProfile.username },
+          };
+
+          setComments([...comments, updatedComment]);
           setNewComment("");
         } else {
-          console.error("Failed to add comment:", response.statusText);
+          console.error("Failed to add comment:", res.statusText);
         }
-      } catch (error: any) {
-        console.error("Error adding comment:", error.message);
+      } catch (error) {
+        console.error("Error adding comment:", error);
       }
     }
   };
@@ -115,13 +140,13 @@ const StoryOverview = () => {
           <div className="space-y-4">
             <h1 className="text-3xl font-bold text-white">{story.title}</h1>
 
-            <div className="text-[#A1A1A1] space-y-1">
+            <div className="text-white space-y-1">
               <p>
-                <span className="font-semibold text-white">Tác giả:</span>{" "}
+                <span className="font-semibold text-[#5C5C5C]">Tác giả:</span>{" "}
                 {story.author_name}
               </p>
               <p>
-                <span className="font-semibold text-white">Tiến độ:</span>{" "}
+                <span className="font-semibold text-[#5C5C5C]">Tiến độ:</span>{" "}
                 {story.progress}
               </p>
             </div>
@@ -132,30 +157,29 @@ const StoryOverview = () => {
               ))}
             </div>
 
-            <p className="text-gray-300 break-words leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 break-words leading-relaxed">
               {story.description}
             </p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 mt-6">
             <button
-              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 bg-gradient-to-r from-[#7F6A93] to-[#C3B1E1] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
             </button>
 
-            <button className="flex-1 bg-gradient-to-r from-blue-500 to-blue-300 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
+            <button className="flex-1 bg-gradient-to-r from-[#C3B1E1] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
               Đọc Tiếp
             </button>
 
-            <button className="flex-1 bg-gradient-to-r from-pink-500 to-pink-300 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
+            <button className="flex-1 bg-gradient-to-r from-[#7F6A93] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
               Thêm Vào Yêu Thích
             </button>
           </div>
         </div>
       </div>
-
       {/* Danh sách chương */}
       <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
@@ -169,15 +193,15 @@ const StoryOverview = () => {
           ))}
         </div>
       </div>
-
       {/* Bình luận */}
+
       <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10">
         <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
         <div className="flex flex-col space-y-3 max-h-[300px] overflow-y-auto">
           {comments.map((comment, index) => (
             <Comment
               key={index}
-              user_id={comment.user_id}
+              username={comment.user.username || "Ẩn danh"}
               content={comment.content}
             />
           ))}
