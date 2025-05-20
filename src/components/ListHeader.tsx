@@ -5,7 +5,7 @@ export default function ListHeader({ title }: { title: string }) {
     <div className="title font-semibold text-2xl flex justify-between mb-4 font-spartan">
       <span className="">{title}</span>
       <div className="">
-        <a className="text-sm text-primary cursor-pointer p-2 bg border border-primary flex font-semibold items-center justify-between rounded relative">
+        <a className="text-sm text-violet-600 cursor-pointer p-2 bg border border-violet-600 flex font-semibold items-center justify-between rounded relative">
           <span className="h-[22px]">See all</span>
           <img className="" src={ArrowIcon} />
         </a>

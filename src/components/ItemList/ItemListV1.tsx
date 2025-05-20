@@ -6,7 +6,7 @@ export default function ItemListV1(props: {
   showButton: boolean;
   title: string;
 }) {
-  const [stories, setStories] = useState<[]>([]);
+  const [stories, setStories] = useState<any[]>([1, 2, 3, 4, 5, 6]);
 
   useEffect(() => {
     const fetchStories = async () => {

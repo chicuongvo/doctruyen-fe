@@ -3,7 +3,7 @@ import ListHeader from "../ListHeader";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../constants/api";
 export default function ItemListV2(props: { title: string }) {
-  const [stories, setStories] = useState<[]>([]);
+  const [stories, setStories] = useState<any[]>([1, 2, 3, 4, 5, 6]);
   const { title } = props;
   useEffect(() => {
     const fetchStories = async () => {

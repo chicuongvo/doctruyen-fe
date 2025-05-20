@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
-
+import ImagePlaceholder from "../../assets/image-placeholder.svg";
 export default function ItemCardV2(props: { showTags: boolean; story: any }) {
   const { showTags, story } = props;
 
   return (
     <Link to={`/story/${story.story_id}`}>
-      <div className="item-card-v2 font-spartan flex-none w-[116px] md:w-[186px]">
-        <div className="relative">
+      <div className="item-card-v2 rounded-lg font-spartan flex-none w-[116px] md:w-[186px]">
+        <div className="relative h-[160px] md:h-[260px] bg-gray-900 rounded-lg overflow-hidden">
           <a href={`story/${story.story_id}`}>
             <img
               className="object-cover object-center rounded-lg w-full w-[116px] md:w-[186px] h-[160px] md:h-[260px]"
-              src={story.cover_image}
-              alt="Ảnh truyện tranh"
+              src={story.cover_image || ImagePlaceholder}
+              alt="Ảnh bìa truyện tranh"
             />
           </a>
           {showTags && (

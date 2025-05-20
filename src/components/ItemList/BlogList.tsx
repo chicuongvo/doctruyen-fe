@@ -3,7 +3,7 @@ import ListHeader from "../ListHeader";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../constants/api";
 export default function BlogList(props: { title: string }) {
-  const [blogs, setBlogs] = useState<[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([1, 2, 3, 4]);
   const { title } = props;
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -19,7 +19,7 @@ export default function BlogList(props: { title: string }) {
     fetchBlogs();
   }, []);
   return (
-    <div>
+    <div className="">
       <ListHeader title={title} />
       <div className="blog-items grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {blogs.length > 0 &&
