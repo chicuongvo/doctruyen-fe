@@ -21,7 +21,7 @@ export default function ItemListV2(props: { title: string }) {
   return (
     <>
       <div className="">
-        <ListHeader title={title} />
+        <ListHeader title={title} link="/stories" />
         <div className="flex gap-2 overflow-auto gap-3 scrollbar-hidden justify-center">
           {stories.length > 0 &&
             stories.map((story: any) => {

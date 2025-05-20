@@ -20,7 +20,7 @@ export default function BlogList(props: { title: string }) {
   }, []);
   return (
     <div className="">
-      <ListHeader title={title} />
+      <ListHeader title={title} link="/blogs" />
       <div className="blog-items grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {blogs.length > 0 &&
           blogs.map((blog: any) => {
