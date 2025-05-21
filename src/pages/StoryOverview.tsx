@@ -6,6 +6,7 @@ import Comment from "../components/Comment";
 import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
 import StorySkeleton from "../components/StorySkeleton";
+
 interface Genre {
   genre: {
     genre_id: string;
@@ -76,6 +77,10 @@ const StoryOverview = () => {
   }, [id]);
 
   const handleAddComment = async () => {
+    if (userProfile === null) {
+      alert("Please login to comment!");
+    }
+
     if (newComment.trim() !== "") {
       try {
         const res = await axios.post(
@@ -157,7 +162,7 @@ const StoryOverview = () => {
               </p>
               <p>
                 <span className="font-semibold text-[#5C5C5C]">Tiến độ:</span>{" "}
-                {story.progress}
+                {story.progress === "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
               </p>
             </div>
 
@@ -237,6 +242,22 @@ const StoryOverview = () => {
           >
             Gửi
           </button>
+        </div>
+      </div>
+
+      {/* Suggested story */}
+      <div className="bg-dark mt-15 p-8 rounded-xl">
+        <h3 className="text-xl font-semibold text-white">
+          Có thể bạn cũng thích
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+          {[1, 2, 3, 4].map((item) => (
+            <div key={item} className="bg-transparent p-4 rounded-lg shadow">
+              <div className="bg-gray-300 h-32 rounded-lg mb-2"></div>
+              <p className="text-white font-medium">story Title {item}</p>
+              <p className="text-xs text-gray-500">Author Name</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
