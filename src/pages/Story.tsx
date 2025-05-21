@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Chapter from "../components/Chapter";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
 interface ChapterData {
   chapter_id: string;
   title: string;
@@ -14,7 +15,9 @@ interface ChapterData {
 
 const Story = () => {
   const navigate = useNavigate();
-  const { id, chapter } = useParams();
+
+  const id = useParams().id || "1";
+  const chapter = useParams().chapter || "1";
   const [chapters, setChapters] = useState<ChapterData[]>([]);
   const [currentChapter, setCurrentChapter] = useState<ChapterData>({
     chapter_id: "",
@@ -53,13 +56,25 @@ const Story = () => {
         setChapters(res.data.data.story_chapters);
         setCurrentChapter(res.data.data.story_chapters[chapterNumber - 1]);
       } catch (error) {
-        console.error("Không thể lấy dữ liệu truyện", error);
+        console.error("Error getting story data", error);
       }
     };
 
     fetchStory();
   }, [id, chapter]);
 
+  useEffect(() => {
+    const currentChapter: string = chapter;
+    const mangaId: string = id;
+
+    const savedProgress = JSON.parse(
+      localStorage.getItem("readingProgress") || "{}"
+    );
+
+    savedProgress[mangaId] = currentChapter;
+
+    localStorage.setItem("readingProgress", JSON.stringify(savedProgress));
+  }, [id, chapter]);
   const handlePreviousChapter = () => {
     const chapterNumber = parseInt(chapter || "1", 10);
     navigate(`/story/${id}/${chapterNumber - 1}`);
@@ -69,12 +84,17 @@ const Story = () => {
     const chapterNumber = parseInt(chapter || "1", 10);
     navigate(`/story/${id}/${chapterNumber + 1}`);
   };
+
+  if (!chapters.length) {
+    return <StoryReadingSkeleton />;
+  }
+
   return (
     <div className="bg-black p-8 text-white">
       {/* Chapter Content */}
       <div className="p-8 max-w-[800px] w-full m-auto max-md:p-4 overflow-hidden">
         <h2 className="text-3xl font-bold mb-8 max-md:text-2xl text-white">
-          <strong>Chapter {currentChapter.chapter_number}</strong>
+          <strong>Chương {currentChapter.chapter_number}</strong>
         </h2>
         <div className=" text-white leading-relaxed whitespace-pre-wrap text-xl mb-8">
           {currentChapter.content}
@@ -105,9 +125,7 @@ const Story = () => {
                   d="M15 19l-7-7 7-7"
                 ></path>
               </svg>
-              <span className="transition-all duration-300">
-                Previous Chapter
-              </span>
+              <span className="transition-all duration-300">Chương Trước</span>
             </span>
           </button>
         )}
@@ -119,7 +137,7 @@ const Story = () => {
           onClick={handleNextChapter}
         >
           <span className="flex justify-center gap-1 leading-none">
-            Next Chapter
+            Chương Sau
             <svg
               className="w-5 h-5"
               fill="none"
@@ -141,7 +159,7 @@ const Story = () => {
       {/* All chapters */}
 
       <div className="bg-dark text-white p-6 rounded-xl mt-15">
-        <h2 className="text-2xl font-bold mb-4">All chapters</h2>
+        <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
 
         <div
           ref={listRef}
@@ -168,7 +186,9 @@ const Story = () => {
 
       {/* Suggested story */}
       <div className="bg-dark mt-15 p-8 rounded-xl">
-        <h3 className="text-xl font-semibold text-white">You Might Like</h3>
+        <h3 className="text-xl font-semibold text-white">
+          Có thể bạn cũng thích
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           {[1, 2, 3, 4].map((item) => (
             <div key={item} className="bg-transparent p-4 rounded-lg shadow">

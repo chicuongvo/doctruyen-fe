@@ -5,6 +5,7 @@ import Tag from "../components/Tag";
 import Comment from "../components/Comment";
 import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
+import StorySkeleton from "../components/StorySkeleton";
 interface Genre {
   genre: {
     genre_id: string;
@@ -48,7 +49,8 @@ interface CommentData {
 }
 
 const StoryOverview = () => {
-  const { id } = useParams();
+  const id = useParams().id || "1";
+
   const [story, setStory] = useState<StoryData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [newComment, setNewComment] = useState<string>("");
@@ -66,7 +68,7 @@ const StoryOverview = () => {
 
         console.log(res.data.data.story_comments);
       } catch (error) {
-        console.error("Không thể lấy dữ liệu truyện", error);
+        console.error("Error getting story data", error);
       }
     };
 
@@ -116,8 +118,16 @@ const StoryOverview = () => {
     navigate(`/story/${id}/${1}`);
   };
 
+  const handleReadLastChapter = () => {
+    const savedProgress = JSON.parse(
+      localStorage.getItem("readingProgress") || "{}"
+    );
+
+    navigate(`/story/${id}/${savedProgress[id] || "1"}`);
+  };
+
   if (!story) {
-    return <div className="text-white p-8">Đang tải...</div>;
+    return <StorySkeleton />;
   }
 
   return (
@@ -170,7 +180,10 @@ const StoryOverview = () => {
               Đọc Chương 1
             </button>
 
-            <button className="flex-1 bg-gradient-to-r from-[#C3B1E1] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
+            <button
+              className="flex-1 bg-gradient-to-r from-[#C3B1E1] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              onClick={handleReadLastChapter}
+            >
               Đọc Tiếp
             </button>
 

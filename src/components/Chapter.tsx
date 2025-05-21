@@ -18,7 +18,7 @@ const Chapter = ({
       onClick={handleClick}
       className="bg-black px-4 py-3 rounded-xl text-lg cursor-pointer transition duration-300 hover:text-primary"
     >
-      Chapter {chapter}
+      Chương {chapter}
     </div>
   );
 };
