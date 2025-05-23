@@ -26,17 +26,20 @@ function Login() {
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_URL}/auth/sign-in`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          identifier,
-          password,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/sign-in`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            identifier,
+            password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -90,7 +93,7 @@ function Login() {
                 placeholder="Username/Phone number/Email"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-                onChange={(e) => setIdentifer(e.target.value)}
+                onChange={e => setIdentifer(e.target.value)}
               />
             </div>
 
@@ -104,7 +107,7 @@ function Login() {
                 placeholder="Password"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               />
               <button
                 className="absolute right-2 bottom-3 text-zinc-400"
