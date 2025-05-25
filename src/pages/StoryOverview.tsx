@@ -6,7 +6,7 @@ import Comment from "../components/Comment";
 import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
 import StorySkeleton from "../components/StorySkeleton";
-
+import { motion } from "framer-motion";
 interface Genre {
   genre: {
     genre_id: string;
@@ -55,8 +55,10 @@ const StoryOverview = () => {
   const [story, setStory] = useState<StoryData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [newComment, setNewComment] = useState<string>("");
+  const [similarStories, setSimilarStories] = useState<StoryData[]>([]);
   const { userProfile } = useUser();
   const navigate = useNavigate();
+  const [showLoginWarning, setShowLoginWarning] = useState(false);
 
   useEffect(() => {
     const fetchStory = async () => {
@@ -67,7 +69,11 @@ const StoryOverview = () => {
         setStory(res.data.data);
         setComments(res.data.data.story_comments);
 
-        console.log(res.data.data.story_comments);
+        // Fetch similar stories
+        const similarRes = await axios.get(
+          `http://localhost:5001/api/stories/${id}/similar`
+        );
+        setSimilarStories(similarRes.data.data.slice(0, 6));
       } catch (error) {
         console.error("Error getting story data", error);
       }
@@ -76,9 +82,19 @@ const StoryOverview = () => {
     fetchStory();
   }, [id]);
 
+  useEffect(() => {
+    if (showLoginWarning) {
+      const timer = setTimeout(() => {
+        setShowLoginWarning(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLoginWarning]);
+
   const handleAddComment = async () => {
     if (userProfile === null) {
-      alert("Please login to comment!");
+      setShowLoginWarning(true);
+      return;
     }
 
     if (newComment.trim() !== "") {
@@ -137,16 +153,47 @@ const StoryOverview = () => {
 
   return (
     <div className="bg-black p-4 md:p-8 text-white">
+      {showLoginWarning && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-2xl"
+        >
+          <div
+            role="alert"
+            className="alert alert-warning shadow-lg p-4 md:p-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <span className="text-base md:text-lg">Vui lòng đăng nhập!</span>
+          </div>
+        </motion.div>
+      )}
       {/* Phần giới thiệu */}
       <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl dark:border-zinc-700 dark:bg-zinc-800 gap-6 md:gap-8 mt-4">
         {/* Ảnh bìa */}
         <div className="md:max-w-md mx-auto md:mx-0 flex-shrink-0">
           <div className="w-full h-[360px] bg-black flex items-center justify-center rounded-lg">
-            <img
-              src={story.cover_image}
-              alt="Bìa truyện"
-              className="w-full h-full object-contain rounded-lg"
-            />
+            <div className="relative w-full h-[70%] bg-zinc-900 flex items-center justify-center">
+              <img
+                src={story.cover_image}
+                alt={story.title}
+                className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                style={{ background: "#222" }}
+              />
+            </div>
           </div>
         </div>
 
@@ -246,17 +293,38 @@ const StoryOverview = () => {
       </div>
 
       {/* Suggested story */}
-      <div className="bg-dark mt-15 p-8 rounded-xl">
-        <h3 className="text-xl font-semibold text-white">
+      <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
+        <h3
+          className="text-3xl font-bold text-white mb-8"
+          style={{ fontFamily: "inherit" }}
+        >
           Có thể bạn cũng thích
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="bg-transparent p-4 rounded-lg shadow">
-              <div className="bg-gray-300 h-32 rounded-lg mb-2"></div>
-              <p className="text-white font-medium">story Title {item}</p>
-              <p className="text-xs text-gray-500">Author Name</p>
-            </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
+          {similarStories.map((story) => (
+            <motion.div
+              key={story.story_id}
+              className="group bg-zinc-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col w-[186px] h-[270px] cursor-pointer"
+              whileHover={{ y: -5 }}
+              onClick={() => navigate(`/story/${story.story_id}`)}
+            >
+              <div className="relative w-full h-[70%] bg-zinc-900 flex items-center justify-center">
+                <img
+                  src={story.cover_image}
+                  alt={story.title}
+                  className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  style={{ background: "#222" }}
+                />
+              </div>
+              <div className="p-3 flex-1 flex flex-col">
+                <h4 className="text-white font-bold text-base mb-1 truncate">
+                  {story.title}
+                </h4>
+                <p className="text-gray-300 text-sm mb-2 truncate">
+                  {story.author_name}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
