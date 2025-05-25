@@ -1,0 +1,36 @@
+name: Staging CD workflow
+on:
+  workflow_run:
+    workflows: ["Staging CI workflow"]
+    types: ["completed"]
+jobs:
+  deploy:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+      - name: Copy ssh-key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-key-scan -H sitedoctruyen.id.vn > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_rsa
+          chmod 644 ~/.ssh/known_hosts
+      - name: Conpy artifact to server
+        run: |
+          scp -i ~/.ssh/id_rsa dist.tar.gz triuq@sitedoctruyen.id.vn:~/doctruyen/fe
+      - name: deploy in remote server
+        run: |
+          ssh triuq@sitedoctruyen.id.vn << 'EOF'
+          rm -rf ~/doctruyen/fe
+          mkdir -p ~/doctruyen/fe
+          cd ~/doctruyen/fe
+          tar -xzf dist.tar.gz
+          rm -rf dist.tar.gz
+          sudo systemctl restart nginx
+          EOF

@@ -13,7 +13,7 @@ export default function Sidebar({
 }) {
   const options = [
     { name: "Home", path: "/" },
-    { name: "Stories", path: "/story" },
+    { name: "Stories", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
     { name: "Search", path: "/search" },
   ];
@@ -59,7 +59,7 @@ export default function Sidebar({
   };
 
   return (
-    <div
+    <header
       className={`fixed top-[60px] right-0 h-screen w-screen bg-dark shadow-xl transition-transform duration-500 flex z-30 flex-col items-center p-5 ${
         isSidebarOpen ? "translate-x-0" : "translate-x-full"
       }`}
@@ -85,6 +85,6 @@ export default function Sidebar({
           </button>
         </Link>
       )}
-    </div>
+    </header>
   );
 }
