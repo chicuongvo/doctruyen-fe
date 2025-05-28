@@ -19,6 +19,7 @@ import { Save } from "lucide-react";
 import { createChapter } from "@/api/stories.api";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 // interface StoryResponse {
 //   success: boolean;
@@ -46,7 +47,6 @@ import { useMutation } from "@tanstack/react-query";
 // }
 
 export default function ChapterNew() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { storyId } = useParams();
   const [formData, setFormData] = useState({
@@ -59,47 +59,45 @@ export default function ChapterNew() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createChapter,
-    onSuccess: () => navigate(`/admin/stories/${storyId}`),
+    onSuccess: () => {
+      toast.success("Tạo chương thành công", {
+        onClose() {
+          navigate(`/admin/stories/${storyId}`);
+        },
+      });
+    },
+    onError: () => {
+      toast.error("Có lỗi xảy ra khi tạo chương");
+    },
   });
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSelectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, status: value }));
+    setFormData(prev => ({ ...prev, status: value }));
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: parseInt(value) || 0 }));
+    setFormData(prev => ({ ...prev, [id]: parseInt(value) || 0 }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    console.log(isSubmitting);
-    try {
-      const chapterData = {
-        title: formData.title,
-        chapter_number: formData.chapter_number,
-        content: formData.content,
-        status: formData.status,
-        story_id: storyId,
-      };
+    const chapterData = {
+      title: formData.title,
+      chapter_number: formData.chapter_number,
+      content: formData.content,
+      status: formData.status,
+      story_id: storyId,
+    };
 
-      mutate(chapterData);
-
-      // Navigate back to story page
-      // router.push(`/stories/${params.id}`);
-    } catch (error) {
-      console.error("Error creating chapter:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    mutate(chapterData);
   };
 
   return (
@@ -127,10 +125,10 @@ export default function ChapterNew() {
         <Card>
           <CardContent className="space-y-4 pt-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Chapter Title</Label>
+              <Label htmlFor="title">Tiêu đề chương</Label>
               <Input
                 id="title"
-                placeholder="Enter chapter title"
+                placeholder="Nhập tiêu đề chương"
                 value={formData.title}
                 onChange={handleInputChange}
                 required
@@ -139,7 +137,7 @@ export default function ChapterNew() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="chapter_number">Chapter Number</Label>
+                <Label htmlFor="chapter_number">Số chương</Label>
                 <Input
                   id="chapter_number"
                   type="number"
@@ -150,27 +148,27 @@ export default function ChapterNew() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Trạng thái</Label>
                 <Select
                   value={formData.status}
                   onValueChange={handleSelectChange}
                 >
                   <SelectTrigger id="status">
-                    <SelectValue placeholder="Select status" />
+                    <SelectValue placeholder="Chọn trạng thái" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="DRAFT">Draft</SelectItem>
-                    <SelectItem value="PUBLISHED">Published</SelectItem>
+                    <SelectItem value="DRAFT">Bản nháp</SelectItem>
+                    <SelectItem value="PUBLISHED">Đã xuất bản</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content">Chapter Content</Label>
+              <Label htmlFor="content">Nội dung chương</Label>
               <Textarea
                 id="content"
-                placeholder="Write your chapter content here..."
+                placeholder="Viết nội dung chương tại đây..."
                 value={formData.content}
                 onChange={handleInputChange}
                 rows={15}
@@ -180,11 +178,11 @@ export default function ChapterNew() {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" asChild>
-              <Link to={`admin/stories/${storyId}`}>Cancel</Link>
+              <Link to={`/admin/stories/${storyId}`}>Hủy</Link>
             </Button>
             <Button type="submit" disabled={isPending}>
               <Save className="mr-2 h-4 w-4" />
-              {isPending ? "Saving..." : "Save Chapter"}
+              {isPending ? "Đang lưu..." : "Lưu chương"}
             </Button>
           </CardFooter>
         </Card>

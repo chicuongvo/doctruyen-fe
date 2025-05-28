@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-// import { PageHeader } from "@/components/page-header";
 import {
   Card,
   CardContent,
@@ -12,8 +11,6 @@ import { Edit, Trash2 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getChapterById, deleteChapter } from "@/api/stories.api";
 import { useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +23,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { formatDate } from "@/utils/date";
+import Spinner from "@/components/Spinner";
+import { Textarea } from "@/components/ui/textarea";
 
 // interface ChapterData {
 //   chapter_id: string;
@@ -62,16 +63,21 @@ export default function ChapterDetail() {
 
   const handleDeleteChapter = async () => {
     mutate(chapterId!, {
-      onSuccess: () => navigate(`/admin/stories/${storyId}`),
+      onSuccess: () => {
+        toast.success("Xóa chương thành công", {
+          onClose() {
+            navigate(`/admin/stories/${storyId}`);
+          },
+        });
+      },
+      onError: () => {
+        toast.error("Có lỗi xảy ra khi xóa chương");
+      },
     });
   };
 
   if (isLoadingChapter || !chapterData) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        Loading chapter data...
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
@@ -141,7 +147,7 @@ export default function ChapterDetail() {
         <Button variant="outline" asChild className="mr-3">
           <Link to={`edit`}>
             <Edit className="mr-2 h-4 w-4" />
-            Edit
+            Chỉnh sửa
           </Link>
         </Button>
         <AlertDialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
@@ -152,20 +158,19 @@ export default function ChapterDetail() {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete Story</AlertDialogTitle>
+              <AlertDialogTitle>Xóa chương</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to delete "{chapterData.title}"? This
-                action cannot be undone and will permanently delete the story
-                and all its chapters.
+                Bạn chắc chắn muốn xóa chương "{chapterData.title}"? Hành động
+                này không thể hoàn tác.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>Hủy</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteChapter}
                 disabled={isPending}
               >
-                {isPending ? "Deleting..." : "Delete"}
+                {isPending ? "Đang xóa..." : "Xóa"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -173,8 +178,8 @@ export default function ChapterDetail() {
       </div>
       <Tabs defaultValue="content" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="content">Nội dung</TabsTrigger>
+          <TabsTrigger value="settings">Thông tin phụ</TabsTrigger>
         </TabsList>
 
         <TabsContent value="content" className="space-y-4">
@@ -184,11 +189,11 @@ export default function ChapterDetail() {
             </CardHeader>
             <CardContent>
               <div className="prose max-w-none dark:prose-invert">
-                {chapterData.content
-                  ?.split("\n\n")
-                  .map((paragraph: any, index: any) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
+                <Textarea
+                  disabled
+                  value={chapterData.content || "Chưa có nội dung"}
+                  className="min-h-[400px] resize-none"
+                />
               </div>
             </CardContent>
           </Card>
@@ -197,31 +202,40 @@ export default function ChapterDetail() {
         <TabsContent value="settings" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Chapter Settings</CardTitle>
+              <CardTitle>Thông tin chương</CardTitle>
               <CardDescription>
-                Manage chapter metadata and publishing options
+                Quản lý metadata và tùy chọn xuất bản chương
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Status</h3>
-                  <p className="text-sm capitalize">{chapterData.status}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium mb-2">Word Count</h3>
-                  <p className="text-sm">
-                    {chapterData.content.split(" ").length} words
+                  <h3 className="text-sm font-medium mb-2">Trạng thái</h3>
+                  <p className="text-sm capitalize">
+                    {chapterData.status === "PUBLISHED"
+                      ? "Đã xuất bản"
+                      : "Bản nháp"}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Chapter Order</h3>
+                  <h3 className="text-sm font-medium mb-2">Số từ</h3>
+                  <p className="text-sm">
+                    {chapterData.content
+                      ? chapterData.content.split(" ").length
+                      : 0}{" "}
+                    từ
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium mb-2">Thứ tự chương</h3>
                   <p className="text-sm">{chapterData.chapter_number}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Published Date</h3>
+                  <h3 className="text-sm font-medium mb-2">Ngày xuất bản</h3>
                   <p className="text-sm">
-                    {chapterData.published_at || "Not published"}
+                    {chapterData.published_at
+                      ? formatDate(chapterData.published_at)
+                      : "Chưa xuất bản"}
                   </p>
                 </div>
               </div>

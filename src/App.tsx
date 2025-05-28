@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from "react-toastify";
 
 import Home from "./pages/Home";
 import Search from "./pages/Search";
@@ -121,6 +122,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <UserProvider>
         <RouterProvider router={router} />
+        <ToastContainer />
       </UserProvider>
     </QueryClientProvider>
   );

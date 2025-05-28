@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { formatDate } from "@/utils/date";
 
 // User columns
 export type User = {
@@ -102,19 +103,22 @@ export type Blog = {
 export const blogColumns: ColumnDef<Blog>[] = [
   {
     accessorKey: "title",
-    header: "Title",
+    header: "Tiêu đề",
   },
   {
     accessorKey: "author",
-    header: "Author",
+    header: "Tác giả",
     cell: ({ row }) => {
       const author = row.getValue("author") as { username: string };
-      return <p>{author.username}</p>;
+      return <span>{author.username}</span>;
     },
   },
   {
     accessorKey: "created_at",
-    header: "Created At",
+    header: "Ngày tạo",
+    cell: ({ row }) => {
+      return <span>{formatDate(row.getValue("created_at"))}</span>;
+    },
   },
   {
     id: "actions",
@@ -129,13 +133,13 @@ export const blogColumns: ColumnDef<Blog>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={`${blog.blog_id}`}>View details</Link>
+              <Link to={`${blog.blog_id}`}>Xem chi tiết</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to={`${blog.blog_id}/edit`}>Edit</Link>
+              <Link to={`${blog.blog_id}/edit`}>Chỉnh sửa</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -158,15 +162,15 @@ export type Story = {
 export const storyColumns: ColumnDef<Story>[] = [
   {
     accessorKey: "title",
-    header: "Title",
+    header: "Tên truyện",
   },
   {
     accessorKey: "author_name",
-    header: "Author",
+    header: "Tác giả",
   },
   {
     accessorKey: "story_chapters",
-    header: "Chapters",
+    header: "Số chương",
     cell: ({ row }) => {
       const chapters = row.getValue("story_chapters") as any;
       return <p>{chapters.length}</p>;
@@ -174,7 +178,7 @@ export const storyColumns: ColumnDef<Story>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Trạng thái",
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
@@ -186,7 +190,10 @@ export const storyColumns: ColumnDef<Story>[] = [
   },
   {
     accessorKey: "published_at",
-    header: "Published At",
+    header: "Ngày phát hành",
+    cell: ({ row }) => {
+      return <span>{formatDate(row.getValue("published_at"))}</span>;
+    },
   },
   {
     id: "actions",
@@ -201,13 +208,15 @@ export const storyColumns: ColumnDef<Story>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={`/admin/stories/${story.story_id}`}>View details</Link>
+              <Link to={`/admin/stories/${story.story_id}`}>Xem chi tiết</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to={`/admin/stories/${story.story_id}/edit`}>Edit</Link>
+              <Link to={`/admin/stories/${story.story_id}/edit`}>
+                Chỉnh sửa
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -231,11 +240,11 @@ export type Chapter = {
 export const chapterColumns: ColumnDef<Chapter>[] = [
   {
     accessorKey: "title",
-    header: "Title",
+    header: "Tên chương",
   },
   {
     accessorKey: "content",
-    header: "Word Count",
+    header: "Số chữ",
     cell: ({ row }) => {
       const content = row.getValue("content") as string;
       const wordArr = content.split(" ");
@@ -244,7 +253,7 @@ export const chapterColumns: ColumnDef<Chapter>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Trạng thái",
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
@@ -256,7 +265,10 @@ export const chapterColumns: ColumnDef<Chapter>[] = [
   },
   {
     accessorKey: "published_at",
-    header: "Published At",
+    header: "Ngày đăng",
+    cell: ({ row }) => {
+      return <span>{formatDate(row.getValue("published_at"))}</span>;
+    },
   },
   {
     id: "actions",
@@ -271,13 +283,13 @@ export const chapterColumns: ColumnDef<Chapter>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={`chapters/${chapter.chapter_id}`}>View details</Link>
+              <Link to={`chapters/${chapter.chapter_id}`}>Xem chi tiết</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to={`chapters/${chapter.chapter_id}/edit`}>Edit</Link>
+              <Link to={`chapters/${chapter.chapter_id}/edit`}>Chỉnh sửa</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

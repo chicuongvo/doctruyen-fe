@@ -18,7 +18,6 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const [api, contextHolder] = notification.useNotification();
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const navigate = useNavigate();
   const { setUserChanged } = useUser();
   const [isLoading, setIsLoading] = useState(false);

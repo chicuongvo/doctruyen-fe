@@ -1,12 +1,6 @@
 import { deleteBlog, getBlogById } from "@/api/blogs.api";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -26,6 +20,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "react-toastify";
 
 export default function BlogDetail() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -42,7 +38,13 @@ export default function BlogDetail() {
 
   const handleDeleteBlog = async () => {
     mutate(blogId!, {
-      onSuccess: () => navigate("/admin/blogs"),
+      onSuccess: () => {
+        toast.success("Xóa blog thành công", {
+          onClose() {
+            navigate(`/admin/blogs`);
+          },
+        });
+      },
     });
   };
 
@@ -56,7 +58,7 @@ export default function BlogDetail() {
         <Button variant="outline" asChild className="mr-3">
           <Link to={`edit`}>
             <Edit className="mr-2 h-4 w-4" />
-            Edit
+            Chỉnh sửa
           </Link>
         </Button>
         <AlertDialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
@@ -67,18 +69,18 @@ export default function BlogDetail() {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete Story</AlertDialogTitle>
+              <AlertDialogTitle>Xóa truyện</AlertDialogTitle>
               <AlertDialogDescription>
                 Bạn chắc chắn muốn xóa blog "{blog.title}"?
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>Hủy</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteBlog}
                 disabled={isPending}
               >
-                {isPending ? "Deleting..." : "Delete"}
+                {isPending ? "Đang xóa..." : "Xóa"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -86,24 +88,27 @@ export default function BlogDetail() {
       </div>
       <Tabs defaultValue="content" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="content">Nội dung</TabsTrigger>
+          <TabsTrigger value="settings">Thông tin phụ</TabsTrigger>
         </TabsList>
 
         <TabsContent value="content" className="space-y-4">
           <Card>
+            <CardContent>
+              <div className="aspect-[2/3] w-[50%] relative overflow-hidden rounded-md">
+                <img
+                  src={blog.cover_image || "/placeholder.svg"}
+                  alt={`Cover for ${blog.title}`}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            </CardContent>
             <CardHeader>
               <CardTitle>{blog.title}</CardTitle>
-              <CardDescription>
-                The main content of your blog post
-              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="prose max-w-none dark:prose-invert">
-                {/* {blog.content.split("\n\n").map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))} */}
-                {blog.content}
+                <Textarea disabled value={blog.content} />
               </div>
             </CardContent>
           </Card>
@@ -111,20 +116,14 @@ export default function BlogDetail() {
 
         <TabsContent value="settings" className="space-y-4">
           <Card>
-            <CardHeader>
-              <CardTitle>Blog Settings</CardTitle>
-              <CardDescription>
-                Manage blog metadata and publishing options
-              </CardDescription>
-            </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Author</h3>
+                  <h3 className="text-sm font-medium mb-2">Tác giả</h3>
                   <p className="text-sm">{blog.author.username}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Published Date</h3>
+                  <h3 className="text-sm font-medium mb-2">Ngày tạo</h3>
                   <p className="text-sm">{formatDate(blog.created_at)}</p>
                 </div>
               </div>

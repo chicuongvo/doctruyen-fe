@@ -47,7 +47,7 @@ function StoryList() {
         <Button asChild className="ml-auto">
           <Link to="new">
             <Plus className="mr-2 h-4 w-4" />
-            New Story
+            Tạo truyện mới
           </Link>
         </Button>
       </div>
@@ -55,7 +55,7 @@ function StoryList() {
         columns={storyColumns}
         data={stories}
         searchKey="title"
-        searchPlaceholder="Search stories..."
+        searchPlaceholder="Tìm kiếm truyện..."
         pageCount={Math.ceil(data?.data?.total / limit)}
         currentPage={currentPage}
         total={data?.data?.total}

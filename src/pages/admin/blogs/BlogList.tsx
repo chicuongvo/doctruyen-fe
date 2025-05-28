@@ -25,7 +25,7 @@ export default function BlogList() {
         <Button asChild className="ml-auto">
           <Link to="new">
             <Plus className="mr-2 h-4 w-4" />
-            New Blog
+            Tạo blog
           </Link>
         </Button>
       </div>
@@ -33,7 +33,7 @@ export default function BlogList() {
         columns={blogColumns}
         data={blogs}
         searchKey="title"
-        searchPlaceholder="Search blogs..."
+        searchPlaceholder="Tìm kiếm blogs..."
         total={blogs.length}
         pageCount={1}
         currentPage={1}

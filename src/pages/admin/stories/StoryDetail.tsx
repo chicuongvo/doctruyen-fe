@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-// import { PageHeader } from "@/components/page-header";
 import {
   Card,
   CardContent,
@@ -11,19 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Edit, Trash2, Plus } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DataTable } from "@/components/DataTable/DataTable";
-import {
-  chapterColumns,
-  // type Chapter as ChapterTableType,
-} from "@/components/DataTable/Column";
-import {
-  deleteStory,
-  getStoryById,
-  // getChaptersByStoryId,
-  // type Chapter,
-  // deleteStory,
-} from "@/api/stories.api";
+import { chapterColumns } from "@/components/DataTable/Column";
+import { deleteStory, getStoryById } from "@/api/stories.api";
 import { useState } from "react";
-// import { useParams, useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +25,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { formatDate } from "@/utils/date";
+import Spinner from "@/components/Spinner";
 // import { useToast } from "@/components/ui/use-toast";
 
 // Type definition for the response from the backend
@@ -105,16 +97,21 @@ export default function StoryDetail() {
 
   const handleDeleteStory = async () => {
     mutate(storyId, {
-      onSuccess: () => navigate("/admin/stories"),
+      onSuccess: () => {
+        toast.success("Xóa truyện thành công", {
+          onClose() {
+            navigate("/admin/stories");
+          },
+        });
+      },
+      onError: () => {
+        toast.error("Có lỗi xảy ra khi xóa truyện");
+      },
     });
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        Loading story data...
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
@@ -175,7 +172,7 @@ export default function StoryDetail() {
         <Button variant="outline" asChild className="mr-3">
           <Link to={`edit`}>
             <Edit className="mr-2 h-4 w-4" />
-            Edit
+            Chỉnh sửa
           </Link>
         </Button>
         <AlertDialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
@@ -186,20 +183,20 @@ export default function StoryDetail() {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete Story</AlertDialogTitle>
+              <AlertDialogTitle>Xóa truyện</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to delete "{storyData.title}"? This action
-                cannot be undone and will permanently delete the story and all
-                its chapters.
+                Bạn chắc chắn muốn xóa truyện "{storyData.title}"? Hành động này
+                không thể hoàn tác và sẽ xóa vĩnh viễn truyện cùng tất cả các
+                chương.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>Hủy</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteStory}
                 disabled={isPending}
               >
-                {isPending ? "Deleting..." : "Delete"}
+                {isPending ? "Đang xóa..." : "Xóa"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -207,16 +204,16 @@ export default function StoryDetail() {
       </div>
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="chapters">Chapters</TabsTrigger>
+          <TabsTrigger value="overview">Tổng quan</TabsTrigger>
+          <TabsTrigger value="chapters">Chương</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="md:col-span-2">
               <CardHeader>
-                <CardTitle>Synopsis</CardTitle>
-                <CardDescription>Story summary and overview</CardDescription>
+                <CardTitle>Mô tả</CardTitle>
+                <CardDescription>Tóm tắt và tổng quan truyện</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="prose max-w-none dark:prose-invert">
@@ -228,37 +225,47 @@ export default function StoryDetail() {
             <div className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Story Details</CardTitle>
+                  <CardTitle>Thông tin truyện</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-medium mb-1">Author</h3>
+                    <h3 className="text-sm font-medium mb-1">Tác giả</h3>
                     <p className="text-sm">{storyData.author_name}</p>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium mb-1">Genre</h3>
+                    <h3 className="text-sm font-medium mb-1">Thể loại</h3>
                     <p className="text-sm">
                       {storyData.story_genres
                         .map(
                           ({ genre }: { genre: { name: string } }) => genre.name
                         )
-                        .join(", ") || "None"}
+                        .join(", ") || "Không có"}
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium mb-1">Status</h3>
-                    <p className="text-sm capitalize">{storyData.status}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium mb-1">Progress</h3>
+                    <h3 className="text-sm font-medium mb-1">Trạng thái</h3>
                     <p className="text-sm capitalize">
-                      {storyData.progress || "Unknown"}
+                      {storyData.status === "PUBLISHED"
+                        ? "Đã xuất bản"
+                        : "Bản nháp"}
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium mb-1">Published</h3>
+                    <h3 className="text-sm font-medium mb-1">Tiến độ</h3>
+                    <p className="text-sm capitalize">
+                      {storyData.progress === "ONGOING"
+                        ? "Đang cập nhật"
+                        : storyData.progress === "COMPLETED"
+                          ? "Hoàn thành"
+                          : storyData.progress || "Không rõ"}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium mb-1">Ngày xuất bản</h3>
                     <p className="text-sm">
-                      {storyData.published_at || "Not published"}
+                      {storyData.published_at
+                        ? formatDate(storyData.published_at)
+                        : "Chưa xuất bản"}
                     </p>
                   </div>
                 </CardContent>
@@ -266,13 +273,13 @@ export default function StoryDetail() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Cover Image</CardTitle>
+                  <CardTitle>Ảnh bìa</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-[2/3] relative overflow-hidden rounded-md">
                     <img
                       src={storyData.cover_image || "/placeholder.svg"}
-                      alt={`Cover for ${storyData.title}`}
+                      alt={`Ảnh bìa cho ${storyData.title}`}
                       className="object-cover w-full h-full"
                     />
                   </div>
@@ -284,34 +291,27 @@ export default function StoryDetail() {
 
         <TabsContent value="chapters" className="space-y-4">
           <div className="flex flex-wrap justify-between items-center gap-4">
-            <h2 className="text-xl font-semibold">Chapters</h2>
+            <h2 className="text-xl font-semibold">Chương</h2>
             <div className="flex flex-wrap items-center gap-2">
               <Button asChild>
                 <Link to={`/admin/stories/${storyData.story_id}/chapters/new`}>
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Chapter
+                  Thêm chương
                 </Link>
               </Button>
             </div>
           </div>
           <Card>
             <CardHeader>
-              <CardTitle>All Chapters</CardTitle>
-              <CardDescription>
-                <Link
-                  to={`/stories/${storyData.id}/chapters`}
-                  className="text-primary hover:underline"
-                >
-                  View all chapters
-                </Link>
-              </CardDescription>
+              <CardTitle>Tất cả chương</CardTitle>
+              <CardDescription>Quản lý các chương của truyện</CardDescription>
             </CardHeader>
             <CardContent>
               <DataTable
                 columns={chapterColumns}
                 data={storyChapters}
                 searchKey="title"
-                searchPlaceholder="Search chapters..."
+                searchPlaceholder="Tìm kiếm chương..."
                 total={storyChapters?.length}
                 pageCount={1}
                 currentPage={1}

@@ -2,9 +2,8 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-// import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,10 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Save, ImageIcon } from "lucide-react";
-// import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getGenres, getStoryById, updateStory } from "@/api/stories.api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
+import { formatDate } from "@/utils/date";
 
 interface StoryResponse {
   story_id: string;
@@ -45,9 +46,7 @@ interface StoryResponse {
 }
 
 export default function StoryEdit() {
-  // const { toast } = useToast();
-  // const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("basic");
   const params = useParams();
   const storyId = params.storyId!;
@@ -71,6 +70,21 @@ export default function StoryEdit() {
     queryFn: getGenres,
     queryKey: ["genres"],
   });
+
+  const { mutate: updateStoryMutation, isPending } = useMutation({
+    mutationFn: (updateData: any) => updateStory(storyId, updateData),
+    onSuccess: () => {
+      toast.success("Cập nhật truyện thành công", {
+        onClose() {
+          navigate(`/admin/stories/${storyId}`);
+        },
+      });
+    },
+    onError: () => {
+      toast.error("Có lỗi xảy ra khi cập nhật truyện");
+    },
+  });
+
   const genres = genreData?.data.data ?? [];
   const storyData: StoryResponse = data?.data?.data;
 
@@ -92,19 +106,19 @@ export default function StoryEdit() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSelectChange = (field: string, value: string) => {
     // console.log("Value", value);
     if (!value) return;
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleGenreChange = (value: string) => {
-    setFormData((prev) => {
+    setFormData(prev => {
       const genres = prev.genres.includes(value)
-        ? prev.genres.filter((g) => g !== value)
+        ? prev.genres.filter(g => g !== value)
         : [...prev.genres, value];
       return { ...prev, genres };
     });
@@ -112,39 +126,23 @@ export default function StoryEdit() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
-    try {
-      const updateData = {
-        title: formData.title,
-        author_name: formData.author_name,
-        description: formData.description,
-        cover_image: formData.cover_image,
-        price: formData.price,
-        status: formData.status,
-        progress: formData.progress,
-        genres: formData.genres,
-      };
+    const updateData = {
+      title: formData.title,
+      author_name: formData.author_name,
+      description: formData.description,
+      cover_image: formData.cover_image,
+      price: formData.price,
+      status: formData.status,
+      progress: formData.progress,
+      genres: formData.genres,
+    };
 
-      console.log(updateData);
-
-      await updateStory(storyId, updateData);
-
-      // Redirect back to story page
-      // router.push(`/stories/${storyId}`);
-    } catch (error) {
-      console.error("Error updating story:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    updateStoryMutation(updateData);
   };
 
   if (isLoading || !storyData) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        Loading story data...
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
@@ -156,17 +154,17 @@ export default function StoryEdit() {
           className="space-y-4"
         >
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-            <TabsTrigger value="basic">Basic Info</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="basic">Thông tin cơ bản</TabsTrigger>
+            <TabsTrigger value="content">Nội dung</TabsTrigger>
             <TabsTrigger value="metadata">Metadata</TabsTrigger>
-            <TabsTrigger value="publishing">Publishing</TabsTrigger>
+            <TabsTrigger value="publishing">Xuất bản</TabsTrigger>
           </TabsList>
 
           <TabsContent value="basic" className="space-y-4">
             <Card>
               <CardContent className="space-y-4 pt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="title">Tiêu đề</Label>
                   <Input
                     id="title"
                     value={formData.title}
@@ -177,7 +175,7 @@ export default function StoryEdit() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="author_name">Author</Label>
+                    <Label htmlFor="author_name">Tác giả</Label>
                     <Input
                       id="author_name"
                       value={formData.author_name}
@@ -186,7 +184,7 @@ export default function StoryEdit() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="price">Price</Label>
+                    <Label htmlFor="price">Giá</Label>
                     <Input
                       id="price"
                       type="number"
@@ -197,7 +195,7 @@ export default function StoryEdit() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="cover_image">Cover Image URL</Label>
+                  <Label htmlFor="cover_image">URL ảnh bìa</Label>
                   <div className="flex gap-2">
                     <Input
                       id="cover_image"
@@ -211,57 +209,59 @@ export default function StoryEdit() {
                       className="flex-shrink-0"
                     >
                       <ImageIcon className="h-4 w-4 mr-2" />
-                      Browse
+                      Duyệt
                     </Button>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                   <div className="space-y-2">
-                    <Label>Cover Preview</Label>
+                    <Label>Xem trước ảnh bìa</Label>
                     <div className="aspect-[2/3] relative overflow-hidden rounded-md border">
                       <img
                         src={formData.cover_image || "/placeholder.svg"}
-                        alt={`Cover for ${formData.title}`}
+                        alt={`Ảnh bìa cho ${formData.title}`}
                         className="object-cover w-full h-full"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <div className="space-y-2">
-                      <Label htmlFor="status">Status</Label>
+                      <Label htmlFor="status">Trạng thái</Label>
                       <Select
                         value={formData.status}
-                        onValueChange={(value) =>
+                        onValueChange={value =>
                           handleSelectChange("status", value)
                         }
                       >
                         <SelectTrigger id="status">
-                          <SelectValue placeholder="Select status" />
+                          <SelectValue placeholder="Chọn trạng thái" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="DRAFT">Draft</SelectItem>
-                          <SelectItem value="PUBLISHED">Published</SelectItem>
-                          <SelectItem value="ARCHIVED">Archived</SelectItem>
+                          <SelectItem value="DRAFT">Bản nháp</SelectItem>
+                          <SelectItem value="PUBLISHED">Đã xuất bản</SelectItem>
+                          <SelectItem value="ARCHIVED">Lưu trữ</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className="pt-2">
-                      <Label htmlFor="progress">Progress</Label>
+                      <Label htmlFor="progress">Tiến độ</Label>
                       <Select
                         value={formData.progress}
-                        onValueChange={(value) =>
+                        onValueChange={value =>
                           handleSelectChange("progress", value)
                         }
                       >
                         <SelectTrigger id="progress">
-                          <SelectValue placeholder="Select progress" />
+                          <SelectValue placeholder="Chọn tiến độ" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ON_GOING">On Going</SelectItem>
-                          <SelectItem value="COMPLETED">Completed</SelectItem>
-                          <SelectItem value="HIATUS">Hiatus</SelectItem>
+                          <SelectItem value="ON_GOING">
+                            Đang cập nhật
+                          </SelectItem>
+                          <SelectItem value="COMPLETED">Hoàn thành</SelectItem>
+                          <SelectItem value="HIATUS">Tạm ngưng</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -275,7 +275,7 @@ export default function StoryEdit() {
             <Card>
               <CardContent className="space-y-4 pt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">Mô tả</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
@@ -284,8 +284,8 @@ export default function StoryEdit() {
                     required
                   />
                   <p className="text-sm text-muted-foreground">
-                    A compelling description helps readers understand what your
-                    story is about.
+                    Mô tả hấp dẫn giúp độc giả hiểu được nội dung truyện của
+                    bạn.
                   </p>
                 </div>
 
@@ -299,13 +299,13 @@ export default function StoryEdit() {
               <CardContent className="space-y-4 pt-0">
                 {/* You could add more metadata fields here */}
                 <div className="space-y-2">
-                  <Label htmlFor="genre">Genre</Label>
+                  <Label htmlFor="genre">Thể loại</Label>
                   <Select
                     onValueChange={handleGenreChange}
                     value={formData.genres[0]}
                   >
                     <SelectTrigger id="genre">
-                      <SelectValue placeholder="Select genre" />
+                      <SelectValue placeholder="Chọn thể loại" />
                     </SelectTrigger>
                     <SelectContent>
                       {isLoadingGenres
@@ -319,7 +319,7 @@ export default function StoryEdit() {
                   </Select>
                   {formData.genres.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {formData.genres.map((genreName) => {
+                      {formData.genres.map(genreName => {
                         const genre = genres.find(
                           (g: any) => g.name === genreName
                         );
@@ -351,32 +351,32 @@ export default function StoryEdit() {
               <CardContent className="space-y-4 pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="publishStatus">Publication Status</Label>
+                    <Label htmlFor="publishStatus">Trạng thái xuất bản</Label>
                     <Select
                       value={formData.status}
-                      onValueChange={(value) =>
+                      onValueChange={value =>
                         handleSelectChange("status", value)
                       }
                     >
                       <SelectTrigger id="publishStatus">
-                        <SelectValue placeholder="Select status" />
+                        <SelectValue placeholder="Chọn trạng thái" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="DRAFT">Draft</SelectItem>
-                        <SelectItem value="PUBLISHED">Published</SelectItem>
-                        <SelectItem value="ARCHIVED">Archived</SelectItem>
+                        <SelectItem value="DRAFT">Bản nháp</SelectItem>
+                        <SelectItem value="PUBLISHED">Đã xuất bản</SelectItem>
+                        <SelectItem value="ARCHIVED">Lưu trữ</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Publication Date</Label>
+                    <Label>Ngày xuất bản</Label>
                     <p className="text-sm pt-2">
                       {storyData.published_at
-                        ? new Date(storyData.published_at).toLocaleDateString()
-                        : "Not published"}
+                        ? formatDate(storyData.published_at)
+                        : "Chưa xuất bản"}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Publication date is automatically set when publishing
+                      Ngày xuất bản sẽ được tự động thiết lập khi xuất bản
                     </p>
                   </div>
                 </div>
@@ -389,11 +389,11 @@ export default function StoryEdit() {
 
         <div className="flex justify-end gap-2 mt-4">
           <Button variant="outline" asChild>
-            <Link to={`/stories/${storyData.story_id}`}>Cancel</Link>
+            <Link to={`/admin/stories/${storyData.story_id}`}>Hủy</Link>
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isPending}>
             <Save className="mr-2 h-4 w-4" />
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isPending ? "Đang lưu..." : "Lưu thay đổi"}
           </Button>
         </div>
       </form>

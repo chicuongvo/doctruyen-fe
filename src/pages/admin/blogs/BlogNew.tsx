@@ -1,25 +1,19 @@
-"use client";
-
 import { useState } from "react";
+import { ArrowLeft, Save } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Save } from "lucide-react";
-// import { useMutation } from "@tanstack/react-query";
-import { createBlog } from "@/api/blogs.api";
-// import Spinner from "@/components/Spinner";
-import { Link } from "react-router-dom";
 
-// interface BlogData {
-//   title: string;
-//   content: string;
-//   cover_image: string;
-// }
+import { createBlog } from "@/api/blogs.api";
 
 export default function BlogNew() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -31,20 +25,16 @@ export default function BlogNew() {
     const cover_image = formData.get("cover_image") as string;
 
     try {
-      await createBlog({ title, content, cover_image });
-
-      // if (!response.ok) {
-      //   const error = await response.json();
-      //   throw new Error(error.message || "Failed to create blog");
-      // }
-
-      // const data = await response.json();
-      // toast.success("Blog created successfully");
-      // router.push(`/blogs/${data.id}`);
+      await toast.promise(() => createBlog({ title, content, cover_image }), {
+        pending: "Đang tạo blog...",
+      });
+      toast.success("Tạo blog thành công", {
+        onClose() {
+          navigate(`/admin/blogs`);
+        },
+      });
     } catch (error) {
-      // toast.error(
-      //   error instanceof Error ? error.message : "Failed to create blog"
-      // );
+      toast.error(error instanceof Error ? error.message : "Tạo blog thất bại");
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +46,7 @@ export default function BlogNew() {
         <Card>
           <CardContent className="space-y-4 pt-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">Tiêu đề</Label>
               <Input
                 id="title"
                 name="title"
@@ -67,7 +57,7 @@ export default function BlogNew() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="cover_image">Cover Image URL</Label>
+              <Label htmlFor="cover_image">Link ảnh bìa</Label>
               <Input
                 id="cover_image"
                 name="cover_image"
@@ -77,7 +67,7 @@ export default function BlogNew() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content">Content</Label>
+              <Label htmlFor="content">Nội dung</Label>
               <Textarea
                 id="content"
                 name="content"
@@ -90,14 +80,14 @@ export default function BlogNew() {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" asChild disabled={isLoading}>
-              <Link to="/blogs">
+              <Link to="/admin/blogs">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Cancel
+                Hủy
               </Link>
             </Button>
             <Button type="submit" disabled={isLoading}>
               <Save className="mr-2 h-4 w-4" />
-              {isLoading ? "Creating..." : "Create Blog"}
+              {isLoading ? "Đang tạo..." : "Tạo blog"}
             </Button>
           </CardFooter>
         </Card>

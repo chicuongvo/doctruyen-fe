@@ -17,10 +17,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Save } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createStory, getGenres } from "@/api/stories.api";
-import { useQuery } from "@tanstack/react-query";
-// import { useToast } from "@/components/ui/use-toast";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 // interface Genre {
 //   genre_id: string;
@@ -38,12 +39,26 @@ interface StoryFormData {
 }
 
 export default function StoryNew() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
   const { data, isLoading: isLoadingGenres } = useQuery({
     queryFn: getGenres,
     queryKey: ["genres"],
   });
   const genres = data?.data.data;
+
+  const { mutate: createStoryMutation, isPending } = useMutation({
+    mutationFn: createStory,
+    onSuccess: data => {
+      toast.success("Tạo truyện thành công", {
+        onClose() {
+          navigate(`/admin/stories/${data.data.data.story_id}`);
+        },
+      });
+    },
+    onError: () => {
+      toast.error("Có lỗi xảy ra khi tạo truyện");
+    },
+  });
 
   const [formData, setFormData] = useState<StoryFormData>({
     title: "",
@@ -57,7 +72,6 @@ export default function StoryNew() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     const storyData = {
       title: formData.title,
       description: formData.synopsis,
@@ -67,76 +81,53 @@ export default function StoryNew() {
       author_name: formData.author,
     };
 
-    console.log(JSON.stringify(storyData));
-
-    try {
-      const { data } = await createStory(JSON.stringify(storyData));
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    createStoryMutation(JSON.stringify(storyData));
   };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleGenreChange = (value: string) => {
-    setFormData((prev) => {
+    setFormData(prev => {
       const genres = prev.genres.includes(value)
-        ? prev.genres.filter((g) => g !== value)
+        ? prev.genres.filter(g => g !== value)
         : [...prev.genres, value];
       return { ...prev, genres };
     });
   };
 
   const handleStatusChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, status: value }));
+    setFormData(prev => ({ ...prev, status: value }));
   };
+
+  if (isLoadingGenres) {
+    return <Spinner />;
+  }
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <PageHeader
-        title="Create New Story"
-        description="Create a new story for your readers"
-        breadcrumbs={[
-          { label: "Stories", href: "/stories" },
-          { label: "New Story" },
-        ]}
-        actions={
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" asChild>
-              <Link href="/stories">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        }
-      /> */}
-
       <form onSubmit={handleSubmit}>
         <Card>
           <CardContent className="space-y-4 pt-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">Tiêu đề</Label>
               <Input
                 id="title"
-                placeholder="Enter story title"
+                placeholder="Nhập tiêu đề truyện"
                 required
                 value={formData.title}
                 onChange={handleInputChange}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="author">Author</Label>
+              <Label htmlFor="author">Tác giả</Label>
               <Input
                 id="author"
-                placeholder="Enter story author"
+                placeholder="Nhập tên tác giả"
                 required
                 value={formData.author}
                 onChange={handleInputChange}
@@ -144,27 +135,25 @@ export default function StoryNew() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="genre">Genre</Label>
+                <Label htmlFor="genre">Thể loại</Label>
                 <Select
                   onValueChange={handleGenreChange}
                   value={formData.genres[0]}
                 >
                   <SelectTrigger id="genre">
-                    <SelectValue placeholder="Select genre" />
+                    <SelectValue placeholder="Chọn thể loại" />
                   </SelectTrigger>
                   <SelectContent>
-                    {isLoadingGenres
-                      ? []
-                      : genres.map((genre: any) => (
-                          <SelectItem key={genre.genre_id} value={genre.name}>
-                            {genre.name}
-                          </SelectItem>
-                        ))}
+                    {genres?.map((genre: any) => (
+                      <SelectItem key={genre.genre_id} value={genre.name}>
+                        {genre.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 {formData.genres.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.genres.map((genreName) => {
+                    {formData.genres.map(genreName => {
                       const genre = genres.find(
                         (g: any) => g.name === genreName
                       );
@@ -188,27 +177,27 @@ export default function StoryNew() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Trạng thái</Label>
                 <Select
                   onValueChange={handleStatusChange}
                   value={formData.status}
                 >
                   <SelectTrigger id="status">
-                    <SelectValue placeholder="Select status" />
+                    <SelectValue placeholder="Chọn trạng thái" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="DRAFT">Draft</SelectItem>
-                    <SelectItem value="PUBLISHED">Published</SelectItem>
+                    <SelectItem value="DRAFT">Bản nháp</SelectItem>
+                    <SelectItem value="PUBLISHED">Đã xuất bản</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="synopsis">Synopsis</Label>
+              <Label htmlFor="synopsis">Mô tả</Label>
               <Textarea
                 id="synopsis"
-                placeholder="Brief summary of your story"
+                placeholder="Tóm tắt ngắn gọn về truyện của bạn"
                 rows={5}
                 required
                 value={formData.synopsis}
@@ -217,7 +206,7 @@ export default function StoryNew() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="coverImage">Cover Image URL</Label>
+              <Label htmlFor="coverImage">URL ảnh bìa</Label>
               <Input
                 id="coverImage"
                 placeholder="https://example.com/image.jpg"
@@ -229,11 +218,11 @@ export default function StoryNew() {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" asChild>
-              <Link to="/admin/stories">Cancel</Link>
+              <Link to="/admin/stories">Hủy</Link>
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isPending}>
               <Save className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Saving..." : "Save Story"}
+              {isPending ? "Đang lưu..." : "Lưu truyện"}
             </Button>
           </CardFooter>
         </Card>

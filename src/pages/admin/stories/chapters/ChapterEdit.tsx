@@ -15,10 +15,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Save } from "lucide-react";
-// import { useToast } from "@/components/ui/use-toast";
 import { getChapterById, updateChapter } from "@/api/stories.api";
-import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 interface ChapterData {
   chapter_id: string;
@@ -57,18 +58,26 @@ interface ChapterData {
 // }
 
 export default function ChapterEdit() {
-  // const { toast } = useToast();
-  // const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [loading, setLoading] = useState(true);
-  // const [storyData, setStoryData] = useState<StoryResponse["data"] | null>(
-  //   null
-  // );
-  const { chapterId } = useParams();
+  const navigate = useNavigate();
+  const { chapterId, storyId } = useParams();
 
   const { data, isLoading: isLoadingChapter } = useQuery({
     queryFn: () => getChapterById(chapterId!),
     queryKey: ["chapter"],
+  });
+
+  const { mutate: updateChapterMutation, isPending } = useMutation({
+    mutationFn: (updateData: any) => updateChapter(chapterId!, updateData),
+    onSuccess: () => {
+      toast.success("Cập nhật chương thành công", {
+        onClose() {
+          navigate(`/admin/stories/${storyId}/chapters/${chapterId}`);
+        },
+      });
+    },
+    onError: () => {
+      toast.error("Có lỗi xảy ra khi cập nhật chương");
+    },
   });
 
   const chapterData = data?.data?.data as ChapterData;
@@ -93,58 +102,32 @@ export default function ChapterEdit() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSelectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, status: value }));
+    setFormData(prev => ({ ...prev, status: value }));
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: parseInt(value) || 1 }));
+    setFormData(prev => ({ ...prev, [id]: parseInt(value) || 1 }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
-    try {
-      const updateData = {
-        title: formData.title,
-        content: formData.content,
-        status: formData.status,
-      };
+    const updateData = {
+      title: formData.title,
+      content: formData.content,
+      status: formData.status,
+    };
 
-      console.log(updateData);
-      await updateChapter(chapterId!, updateData);
-
-      // toast({
-      //   title: "Chapter updated",
-      //   description: "Your chapter has been updated successfully.",
-      //   variant: "success",
-      // });
-
-      // Navigate back to chapter page
-      // router.push(`/stories/${params.id}/chapters/${params.chapterId}`);
-    } catch (error) {
-      console.error("Error updating chapter:", error);
-      // toast({
-      //   title: "Error",
-      //   description: "Failed to update chapter",
-      //   variant: "destructive",
-      // });
-    } finally {
-      setIsSubmitting(false);
-    }
+    updateChapterMutation(updateData);
   };
 
   if (isLoadingChapter || !chapterData) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        Loading chapter data...
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
@@ -153,7 +136,7 @@ export default function ChapterEdit() {
         <Card>
           <CardContent className="space-y-4 pt-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Chapter Title</Label>
+              <Label htmlFor="title">Tiêu đề chương</Label>
               <Input
                 id="title"
                 value={formData.title}
@@ -164,7 +147,7 @@ export default function ChapterEdit() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="chapter_number">Chapter Number</Label>
+                <Label htmlFor="chapter_number">Số chương</Label>
                 <Input
                   id="chapter_number"
                   type="number"
@@ -175,24 +158,24 @@ export default function ChapterEdit() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Trạng thái</Label>
                 <Select
                   value={formData.status}
                   onValueChange={handleSelectChange}
                 >
                   <SelectTrigger id="status">
-                    <SelectValue placeholder="Select status" />
+                    <SelectValue placeholder="Chọn trạng thái" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="DRAFT">Draft</SelectItem>
-                    <SelectItem value="PUBLISHED">Published</SelectItem>
+                    <SelectItem value="DRAFT">Bản nháp</SelectItem>
+                    <SelectItem value="PUBLISHED">Đã xuất bản</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content">Chapter Content</Label>
+              <Label htmlFor="content">Nội dung chương</Label>
               <Textarea
                 id="content"
                 value={formData.content}
@@ -207,12 +190,12 @@ export default function ChapterEdit() {
               <Link
                 to={`/admin/stories/${chapterData.story_id}/chapters/${chapterData.chapter_id}`}
               >
-                Cancel
+                Hủy
               </Link>
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isPending}>
               <Save className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Saving..." : "Save Changes"}
+              {isPending ? "Đang lưu..." : "Lưu thay đổi"}
             </Button>
           </CardFooter>
         </Card>
