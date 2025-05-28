@@ -16,6 +16,7 @@ export default function Sidebar({
     { name: "Stories", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
     { name: "Search", path: "/search" },
+    { name: "Yêu thích", path: "/liked-stories" },
   ];
 
   const handleOnClick = () => {

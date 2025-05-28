@@ -3,6 +3,8 @@ import Chapter from "../components/Chapter";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
+import ItemCardV2 from "../components/ItemCard/ItemCardV2";
+
 interface ChapterData {
   chapter_id: string;
   title: string;
@@ -13,12 +15,27 @@ interface ChapterData {
   content: string;
 }
 
+interface StoryData {
+  story_id: string;
+  title: string;
+  author_name: string;
+  description: string;
+  price: number;
+  status: string;
+  progress: string;
+  story_genres: any[];
+  cover_image: string;
+  story_chapters: ChapterData[];
+  rating_avg: number;
+}
+
 const Story = () => {
   const navigate = useNavigate();
 
   const id = useParams().id || "1";
   const chapter = useParams().chapter || "1";
   const [chapters, setChapters] = useState<ChapterData[]>([]);
+  const [similarStories, setSimilarStories] = useState<StoryData[]>([]);
   const [currentChapter, setCurrentChapter] = useState<ChapterData>({
     chapter_id: "",
     title: "",
@@ -55,6 +72,11 @@ const Story = () => {
 
         setChapters(res.data.data.story_chapters);
         setCurrentChapter(res.data.data.story_chapters[chapterNumber - 1]);
+
+        const similarRes = await axios.get(
+          `http://localhost:5001/api/stories/${id}/similar`
+        );
+        setSimilarStories(similarRes.data.data.slice(0, 6));
       } catch (error) {
         console.error("Error getting story data", error);
       }
@@ -185,17 +207,16 @@ const Story = () => {
       </div>
 
       {/* Suggested story */}
-      <div className="bg-dark mt-15 p-8 rounded-xl">
-        <h3 className="text-xl font-semibold text-white">
+      <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
+        <h3
+          className="text-3xl font-bold text-white mb-8"
+          style={{ fontFamily: "inherit" }}
+        >
           Có thể bạn cũng thích
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="bg-transparent p-4 rounded-lg shadow">
-              <div className="bg-gray-300 h-32 rounded-lg mb-2"></div>
-              <p className="text-white font-medium">story Title {item}</p>
-              <p className="text-xs text-gray-500">Author Name</p>
-            </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
+          {similarStories.map((story) => (
+            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>
       </div>

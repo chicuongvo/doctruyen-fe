@@ -7,6 +7,7 @@ import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
 import StorySkeleton from "../components/StorySkeleton";
 import { motion } from "framer-motion";
+import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 interface Genre {
   genre: {
     genre_id: string;
@@ -35,6 +36,7 @@ interface StoryData {
   cover_image: string;
   story_chapters: ChapterData[];
   rating_avg: number;
+  like_counts?: number;
 }
 
 interface UserData {
@@ -56,6 +58,7 @@ const StoryOverview = () => {
   const [comments, setComments] = useState<CommentData[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [similarStories, setSimilarStories] = useState<StoryData[]>([]);
+  const [isLiked, setIsLiked] = useState(false);
   const { userProfile } = useUser();
   const navigate = useNavigate();
   const [showLoginWarning, setShowLoginWarning] = useState(false);
@@ -74,13 +77,24 @@ const StoryOverview = () => {
           `http://localhost:5001/api/stories/${id}/similar`
         );
         setSimilarStories(similarRes.data.data.slice(0, 6));
+
+        // Check if story is liked
+        if (userProfile) {
+          const likedRes = await axios.get(
+            `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/like`,
+            {
+              withCredentials: true,
+            }
+          );
+          setIsLiked(likedRes.data.data);
+        }
       } catch (error) {
         console.error("Error getting story data", error);
       }
     };
 
     fetchStory();
-  }, [id]);
+  }, [id, userProfile]);
 
   useEffect(() => {
     if (showLoginWarning) {
@@ -135,6 +149,7 @@ const StoryOverview = () => {
       }
     }
   };
+
   const handleReadChapter1 = () => {
     navigate(`/story/${id}/${1}`);
   };
@@ -145,6 +160,43 @@ const StoryOverview = () => {
     );
 
     navigate(`/story/${id}/${savedProgress[id] || "1"}`);
+  };
+
+  const handleLike = async () => {
+    if (!userProfile) {
+      setShowLoginWarning(true);
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/like`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        setIsLiked(!isLiked);
+        // Update the story data to reflect the new like status
+        setStory((prev) => {
+          if (prev) {
+            return {
+              ...prev,
+              like_counts: isLiked
+                ? (prev.like_counts || 0) - 1
+                : (prev.like_counts || 0) + 1,
+            };
+          }
+          return prev;
+        });
+      }
+    } catch (error) {
+      console.error("Error liking story:", error);
+      // Show error message to user
+      setShowLoginWarning(true);
+    }
   };
 
   if (!story) {
@@ -239,8 +291,11 @@ const StoryOverview = () => {
               Đọc Tiếp
             </button>
 
-            <button className="flex-1 bg-gradient-to-r from-[#7F6A93] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
-              Thêm Vào Yêu Thích
+            <button
+              className={`flex-1 bg-gradient-to-r ${isLiked ? "from-[#EDE4F4] to-[#7F6A93]" : "from-[#7F6A93] to-[#EDE4F4]"} text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition`}
+              onClick={handleLike}
+            >
+              {isLiked ? "Đã Yêu Thích" : "Thêm Vào Yêu Thích"}
             </button>
           </div>
         </div>
@@ -302,29 +357,7 @@ const StoryOverview = () => {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <motion.div
-              key={story.story_id}
-              className="group bg-zinc-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col w-[186px] h-[270px] cursor-pointer"
-              whileHover={{ y: -5 }}
-              onClick={() => navigate(`/story/${story.story_id}`)}
-            >
-              <div className="relative w-full h-[70%] bg-zinc-900 flex items-center justify-center">
-                <img
-                  src={story.cover_image}
-                  alt={story.title}
-                  className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  style={{ background: "#222" }}
-                />
-              </div>
-              <div className="p-3 flex-1 flex flex-col">
-                <h4 className="text-white font-bold text-base mb-1 truncate">
-                  {story.title}
-                </h4>
-                <p className="text-gray-300 text-sm mb-2 truncate">
-                  {story.author_name}
-                </p>
-              </div>
-            </motion.div>
+            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>
       </div>

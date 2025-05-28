@@ -25,17 +25,16 @@ const StoryReadingSkeleton = () => {
         </div>
       </div>
 
-      <div className="bg-zinc-900 mt-12 p-8 rounded-xl">
-        <div className="skeleton h-6 w-48 mb-4 rounded" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-transparent p-4 rounded-lg shadow space-y-2"
-            >
-              <div className="skeleton h-32 w-full rounded-lg" />
-              <div className="skeleton h-4 w-3/4 rounded" />
-              <div className="skeleton h-3 w-1/2 rounded" />
+      <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
+        <div className="skeleton h-8 w-64 rounded mb-8" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="w-[116px] md:w-[186px]">
+              <div className="skeleton w-[116px] md:w-[186px] h-[160px] md:h-[260px] rounded-lg" />
+              <div className="mt-2">
+                <div className="skeleton h-4 w-full rounded" />
+                <div className="skeleton h-4 w-3/4 rounded mt-1" />
+              </div>
             </div>
           ))}
         </div>
