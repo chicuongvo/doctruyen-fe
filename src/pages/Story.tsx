@@ -70,7 +70,7 @@ const Story = () => {
     navigate(`/story/${id}/${chapterNumber + 1}`);
   };
   return (
-    <div className="bg-black p-8 text-white">
+    <div className="bg-black p-8 text-white font-spartan">
       {/* Chapter Content */}
       <div className="p-8 max-w-[800px] w-full m-auto max-md:p-4 overflow-hidden">
         <h2 className="text-3xl font-bold mb-8 max-md:text-2xl text-white">
@@ -87,10 +87,10 @@ const Story = () => {
         {/* Previous Chapter Button */}
         {currentChapter.chapter_number >= 1 && (
           <button
-            className="flex items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-purple-400 font-medium border-2 border-purple-400 transition-all duration-300 hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-400 hover:border-purple-600"
+            className="flex cursor-pointer items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-purple-400 font-medium border-2 border-purple-400 transition-all duration-300 hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-400 hover:border-purple-600"
             onClick={handlePreviousChapter}
           >
-            <span className="flex justify-center gap-1 leading-none">
+            <span className="flex justify-center gap-1 leading-none items-center">
               <svg
                 className="w-5 h-5 stroke-purple-400 transition-all duration-300 hover:stroke-purple-600"
                 fill="none"
@@ -115,10 +115,10 @@ const Story = () => {
         {/* Next Chapter Button */}
 
         <button
-          className="flex items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
+          className="flex cursor-pointer items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
           onClick={handleNextChapter}
         >
-          <span className="flex justify-center gap-1 leading-none">
+          <span className="flex justify-center gap-1 leading-none items-center">
             Next Chapter
             <svg
               className="w-5 h-5"

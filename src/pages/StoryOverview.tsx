@@ -121,7 +121,7 @@ const StoryOverview = () => {
   }
 
   return (
-    <div className="bg-black p-4 md:p-8 text-white">
+    <div className="bg-black p-4 md:p-8 text-white font-spartan">
       {/* Phần giới thiệu */}
       <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl dark:border-zinc-700 dark:bg-zinc-800 gap-6 md:gap-8 mt-4">
         {/* Ảnh bìa */}
@@ -164,24 +164,24 @@ const StoryOverview = () => {
 
           <div className="flex flex-col md:flex-row gap-4 mt-6">
             <button
-              className="flex-1 bg-gradient-to-r from-[#7F6A93] to-[#C3B1E1] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 cursor-pointer bg-linear-to-r/oklch from-[#6700A3] via-[#e02f75] via-[#ff5a57] to-[#fccbf0] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
             </button>
 
-            <button className="flex-1 bg-gradient-to-r from-[#C3B1E1] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
+            <button className="flex-1 cursor-pointer bg-linear-to-r/oklch from-[#050c38] via-[#6700a3] to-[#e02f75] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
               Đọc Tiếp
             </button>
 
-            <button className="flex-1 bg-gradient-to-r from-[#7F6A93] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
+            <button className="flex-1 cursor-pointer bg-gradient-to-r from-[#050c38] via-[#1b2062] to-[#6700a3] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
               Thêm Vào Yêu Thích
             </button>
           </div>
         </div>
       </div>
       {/* Danh sách chương */}
-      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10">
+      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
           {story.story_chapters.map((chapter) => (

@@ -67,7 +67,7 @@ export default function Sidebar({
       {renderOptions(options)}
       {userProfile ? (
         <button
-          className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
+          className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer "
           onClick={handleSignOut}
         >
           Đăng xuất
@@ -78,7 +78,7 @@ export default function Sidebar({
           className="w-full py-3 border-b border-t border-zinc-700"
         >
           <button
-            className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer"
+            className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer"
             onClick={handleOnClick}
           >
             Đăng ký

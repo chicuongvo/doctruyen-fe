@@ -170,7 +170,7 @@ function SignUp() {
             </div>
             <div className="w-full items-center flex justify-center pt-5">
               <button
-                className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
+                className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleSignUp}
                 type="button"
                 disabled={isLoading}
