@@ -54,6 +54,19 @@ export const createUser = async (userData: {
   return axiosClient.post("/auth/sign-up", userData);
 };
 
+// Sign in
+export const signIn = async (userData: {
+  identifier: string;
+  password: string;
+}) => {
+  return axiosClient.post("/auth/sign-in", userData);
+};
+
+// Sign out
+export const signOut = async () => {
+  return axiosClient.post("/auth/sign-out");
+};
+
 // Update user
 export const updateUser = async (userData: {
   username?: string;

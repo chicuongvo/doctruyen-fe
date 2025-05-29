@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/api/users.api";
 import { createContext, useState, useContext, useEffect } from "react";
 import { ReactNode } from "react";
 
@@ -31,29 +32,26 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userChanged, setUserChanged] = useState(false);
 
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`${API_URL}/auth/me`, {
-          method: "GET",
-          credentials: "include",
-        });
+        const response = await getCurrentUser();
 
-        const data = await response.json();
+        const data = response.data;
 
         if (data.success) {
           setUserProfile(data.data);
-          setUserChanged(false);
         } else {
           setUserProfile(null);
-          setUserChanged(false);
         }
       } catch (error) {
         console.error("Error fetching user profile:", error);
+        setUserProfile(null);
+      } finally {
+        setUserChanged(false);
       }
     };
+
     fetchUserProfile();
   }, [userChanged]);
 

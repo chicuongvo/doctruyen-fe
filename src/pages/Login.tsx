@@ -6,6 +6,7 @@ import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
+import { signIn } from "@/api/users.api";
 
 function Login() {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -25,27 +26,14 @@ function Login() {
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/auth/sign-in`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            identifier,
-            password,
-          }),
-        }
-      );
+      const response = await signIn({ identifier, password });
 
-      const data = await response.json();
+      const data = response.data;
 
       if (data.success === true) {
         api.success({
-          message: "SIGN IN",
-          description: "Signing in successfully!",
+          message: "ĐĂNG NHẬP",
+          description: "Đăng nhập thành công!",
         });
         setUserChanged(true);
 
@@ -53,7 +41,7 @@ function Login() {
         else navigate("/get-verify-token");
       } else {
         api.error({
-          message: "SIGN IN",
+          message: "ĐĂNG NHẬP",
           description: data.message,
         });
       }
@@ -69,9 +57,9 @@ function Login() {
 
       <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
         <div className="text-white flex flex-col justify-center items-center gap-3">
-          <div className="font-bold text-3xl ">Sign In</div>
+          <div className="font-bold text-3xl ">Đăng nhập</div>
           <div className="text-lg text-center font-light text-[#e5e7eb]">
-            Sign In to your account
+            Đăng nhập vào tài khoản của bạn
           </div>
           <img
             src={signup}
@@ -84,29 +72,29 @@ function Login() {
           <form className="flex flex-col w-9/10 gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="identifier" className="font-semibold">
-                Username/Phone number/Email
+                Tên đăng nhập/SĐT/Email
               </label>
               <input
                 type="text"
                 name="identifier"
-                placeholder="Username/Phone number/Email"
+                placeholder="Tên đăng nhập/SĐT/Emaill"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-                onChange={e => setIdentifer(e.target.value)}
+                onChange={(e) => setIdentifer(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2 relative ">
               <label htmlFor="password" className="font-semibold">
-                Password
+                Mật khẩu
               </label>
               <input
                 type={isVisiblePassword ? "text" : "password"}
                 name="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 className="absolute right-2 bottom-3 text-zinc-400"
@@ -124,26 +112,26 @@ function Login() {
                 type="button"
                 disabled={isLoading}
               >
-                {isLoading ? "Please wait..." : "Sign In"}
+                {isLoading ? "Đang xử lý..." : "Đăng nhập"}
               </button>
             </div>
           </form>
 
           <div className="flex flex-col gap-2 w-full items-center justify-center">
             <div className="flex flex-row w-ful gap-2">
-              <div className="text-white ">Don't have an account yet? </div>
+              <div className="text-white ">Chưa có tài khoản? </div>
               <Link to="/signup" className="text-primary underline">
-                Sign Up
+                Đăng ký
               </Link>
             </div>
 
             <div className="flex flex-row gap-2">
-              <div className="text-white ">Forgot your password? </div>
+              <div className="text-white ">Quên mật khẩu? </div>
               <Link
                 to="/get-reset-password-token"
                 className="text-primary underline"
               >
-                Reset
+                Lấy lại mật khẩu
               </Link>
             </div>
           </div>

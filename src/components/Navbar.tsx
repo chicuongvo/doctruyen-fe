@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
+import { signOut } from "@/api/users.api";
 
 interface Option {
   name: string;
@@ -20,10 +21,10 @@ export default function Navbar() {
   };
 
   const options = [
-    { name: "Home", path: "/" },
-    { name: "Stories", path: "/stories" },
+    { name: "Trang chủ", path: "/" },
+    { name: "Truyện", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
-    { name: "Search", path: "/search" },
+    { name: "Tìm kiếm", path: "/search" },
   ];
 
   const renderOptions = (options: Option[]) => {
@@ -38,20 +39,17 @@ export default function Navbar() {
     ));
   };
 
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
-      const response = await fetch(`${API_URL}/auth/sign-out`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await signOut();
 
-      const data = await response.json();
+      const data = response.data;
 
       if (data.success) {
         setUserChanged(true);
         navigate("/");
+        console.log("Success!");
       }
     } catch (error) {
       console.log("Error sign out:", error);
@@ -83,7 +81,7 @@ export default function Navbar() {
         ) : (
           <Link to="/signup">
             <button className="w-[124px] h-[50px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer hidden md:block">
-              Sign Up
+              Đăng ký
             </button>
           </Link>
         )}

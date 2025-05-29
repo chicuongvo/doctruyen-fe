@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
 import user from "../assets/images/user.jpg";
+import { createUser } from "@/api/users.api";
 
 function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,6 @@ function SignUp() {
   const [confirm_password, setConfirmPassword] = useState("");
 
   const [api, contextHolder] = notification.useNotification();
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const navigate = useNavigate();
 
   const { setUserChanged } = useUser();
@@ -39,36 +39,30 @@ function SignUp() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/sign-up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          confirm_password,
-          phone_number,
-          profile_pic: user,
-        }),
+      const response = await createUser({
+        username,
+        email,
+        phone_number,
+        password,
+        confirm_password,
+        profile_pic: user,
       });
 
-      const data = await response.json();
+      const data = response.data;
 
       if (data.success === true) {
         setUserChanged(true);
         navigate("/get-verify-token");
       } else {
         api.error({
-          message: "SIGN UP",
+          message: "ĐĂNG KÝ",
           description: data.message,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("Error during sign-up:", error);
     }
+
     setIsLoading(false);
   };
 
@@ -78,9 +72,9 @@ function SignUp() {
 
       <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
         <div className="text-white flex flex-col justify-center items-center gap-3">
-          <div className="font-bold text-3xl ">Sign Up</div>
+          <div className="font-bold text-3xl ">Đăng ký</div>
           <div className="text-lg text-center font-light text-[#e5e7eb]">
-            Create FictionMe account
+            Tạo tài khoản mới
           </div>
           <img
             src={signup}
@@ -93,12 +87,12 @@ function SignUp() {
           <form className="flex flex-col w-9/10  gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="username" className="font-semibold">
-                Username
+                Tên đăng nhập
               </label>
               <input
                 type="text"
                 name="username"
-                placeholder="Enter your username"
+                placeholder="Nhập tên đăng nhập"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setUsername(e.target.value)}
@@ -112,7 +106,7 @@ function SignUp() {
               <input
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder="Nhập email"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setEmail(e.target.value)}
@@ -121,12 +115,12 @@ function SignUp() {
 
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="phone" className="font-semibold">
-                Phone number
+                Số điện thoại
               </label>
               <input
                 type="tel"
                 name="phone"
-                placeholder="Enter your phone number"
+                placeholder="Nhập số điện thoại"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -135,12 +129,12 @@ function SignUp() {
 
             <div className="flex flex-col text-white text-[18px] gap-2 relative ">
               <label htmlFor="password" className="font-semibold">
-                Password
+                Mật khẩu
               </label>
               <input
                 type={isVisiblePassword ? "text" : "password"}
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setPassword(e.target.value)}
@@ -156,12 +150,12 @@ function SignUp() {
 
             <div className="flex flex-col text-white text-[18px] gap-2 relative">
               <label htmlFor="confirm_password" className="font-semibold">
-                Confirm password
+                Xác nhận mật khẩu
               </label>
               <input
                 type={isVisibleConfirmPassword ? "text" : "password"}
                 name="confirm_password"
-                placeholder="Confirm your password"
+                placeholder="Xác nhận mật khẩu"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -181,15 +175,15 @@ function SignUp() {
                 type="button"
                 disabled={isLoading}
               >
-                {isLoading ? "Please wait..." : "Sign Up"}
+                {isLoading ? "Đang xử lý..." : "Đăng ký"}
               </button>
             </div>
           </form>
 
           <div className="flex flex-row gap-2 ">
-            <div className="text-white">Already have an account? </div>
+            <div className="text-white">Đã có tài khoản? </div>
             <Link to="/login" className="text-primary underline">
-              Sign In
+              Đăng nhập
             </Link>
           </div>
         </div>

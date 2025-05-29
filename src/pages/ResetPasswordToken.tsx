@@ -1,29 +1,20 @@
 import mail from "../assets/images/mail.png";
 import { useState } from "react";
 import { notification } from "antd";
+import { requestPasswordReset } from "@/api/users.api";
 
 function ResetPasswordToken() {
   const [email, setEmail] = useState("");
 
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const [api, contextHolder] = notification.useNotification();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSend = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_URL}/auth/get-reset-password-token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-        }),
-      });
+      const response = await requestPasswordReset(email);
 
-      const data = await response.json();
+      const data = response.data;
 
       if (data.success === true) {
         api.success({
@@ -47,9 +38,9 @@ function ResetPasswordToken() {
       {contextHolder}
       <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 ">
         <div className="text-white flex flex-col justify-center items-center gap-3">
-          <div className="font-bold text-3xl ">Restore Password</div>
+          <div className="font-bold text-3xl ">Lấy lại mật khẩu</div>
           <div className="text-lg text-center font-light text-[#e5e7eb]">
-            We will send an email to your inbox to reset your password
+            Chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu qua email cho bạn.
           </div>
           <img src={mail} alt="mail" className="scale-125" />
         </div>
@@ -63,7 +54,7 @@ function ResetPasswordToken() {
               <input
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder="Nhập email"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setEmail(e.target.value)}
@@ -77,7 +68,7 @@ function ResetPasswordToken() {
                 type="button"
                 disabled={isLoading}
               >
-                {isLoading ? "Please wait..." : "Send"}
+                {isLoading ? "Đang xử lý..." : "Gửi"}
               </button>
             </div>
           </form>
@@ -85,14 +76,16 @@ function ResetPasswordToken() {
           <div className="flex flex-col gap-2 w-full items-center justify-center">
             <div className="flex flex-row w-ful gap-2">
               <div className="text-white ">
-                If you continue, you agree to our
+                Nếu bạn tiếp tục, bạn đồng ý với các
               </div>
             </div>
 
             <div className="flex flex-row gap-2">
-              <div className="text-primary underline">Terms of Use</div>
-              <div className="text-white"> and </div>
-              <div className="text-primary underline">Privacy Policy</div>
+              <div className="text-primary underline">Điều khoản sử dụng</div>
+              <div className="text-white"> và </div>
+              <div className="text-primary underline">
+                Chính sách quyền riêng tư
+              </div>
             </div>
           </div>
         </div>

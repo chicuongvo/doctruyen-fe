@@ -7,10 +7,10 @@ interface Option {
 }
 
 const options = [
-  { name: "Home", path: "/" },
-  { name: "Stories", path: "/story" },
+  { name: "Trang chủ", path: "/" },
+  { name: "Truyện", path: "/stories" },
   { name: "Blogs", path: "/blogs" },
-  { name: "Search", path: "/search" },
+  { name: "Tìm kiếm", path: "/search" },
 ];
 
 const renderOptions = (options: Option[]) => {
@@ -38,7 +38,7 @@ function Footer() {
 
       <div className="border-zinc-700 border-b py-5 md:py-10 space-y-10 md:space-y-0 md:flex md:justify-between md:items-center h-max">
         <div className="space-y-2 md:space-y-0">
-          <div className="text-[15px]">Download the app</div>
+          <div className="text-[15px]">Tải app ở</div>
 
           <div className="flex flex-row justify-between pr-20 items-center ">
             <div className="flex md:flex-none">
@@ -69,7 +69,7 @@ function Footer() {
         </div>
 
         <div className="space-y-2 ">
-          <div className="text-[15px]">Follow us</div>
+          <div className="text-[15px]">Theo dõi chúng tôi</div>
           <div className="invert flex gap-3">
             <img
               alt="Facebook icon"

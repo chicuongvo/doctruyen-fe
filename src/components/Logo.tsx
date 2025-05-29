@@ -18,7 +18,7 @@ export default function Logo() {
             fill="#8019F8"
           ></path>
         </svg>
-        <div className="text-[#EFF2F5] text-[20px]">FictionMe</div>
+        <div className="text-[#EFF2F5] text-[20px]">DocTruyen</div>
       </div>
     </Link>
   );

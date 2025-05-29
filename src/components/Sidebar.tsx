@@ -12,10 +12,10 @@ export default function Sidebar({
   isSidebarOpen: boolean;
 }) {
   const options = [
-    { name: "Home", path: "/" },
-    { name: "Stories", path: "/stories" },
+    { name: "Trang chủ", path: "/" },
+    { name: "Truyện", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
-    { name: "Search", path: "/search" },
+    { name: "Tìm kiếm", path: "/search" },
   ];
 
   const handleOnClick = () => {
@@ -70,7 +70,7 @@ export default function Sidebar({
           className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
           onClick={handleSignOut}
         >
-          Sign Out
+          Đăng xuất
         </button>
       ) : (
         <Link
@@ -81,7 +81,7 @@ export default function Sidebar({
             className="w-full h-[52px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer"
             onClick={handleOnClick}
           >
-            Sign Up
+            Đăng ký
           </button>
         </Link>
       )}

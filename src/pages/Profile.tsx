@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../contexts/userContext";
 import { notification } from "antd";
+import { updateUser } from "@/api/users.api";
 
 export default function Profile() {
   const [username, setUsername] = useState("");
@@ -49,44 +50,35 @@ export default function Profile() {
   };
 
   const [api, contextHolder] = notification.useNotification();
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const [isLoading, setIsLoading] = useState(false);
   const handleUpdate = async () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          email,
-          phone_number,
-          fullname,
-          profile_pic,
-        }),
+      const response = await updateUser({
+        username,
+        email,
+        phone_number,
+        fullname,
+        profile_pic,
       });
 
-      const data = await response.json();
+      const data = response.data;
 
       if (data.success) {
         api.success({
-          message: "UPDATE USER",
-          description: "Update user successfully!",
+          message: "CẬP NHẬT TÀI KHOẢN",
+          description: "Cập nhật thành công!",
         });
         setUserChanged(true);
       } else {
         api.error({
-          message: "UPDATE USER",
+          message: "CẬP NHẬT TÀI KHOẢN",
           description: data.message,
         });
       }
     } catch (error) {
       console.log("Error updating user:", error);
-      console.log(profile_pic);
     }
 
     setIsLoading(false);
@@ -98,9 +90,9 @@ export default function Profile() {
 
       <div className="bg-zinc-800 px-3 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
         <div className="text-white flex flex-col justify-center items-center gap-3 border-b border-zinc-700 py-3">
-          <div className="font-bold text-3xl ">Account Details</div>
+          <div className="font-bold text-3xl ">Thông tin cá nhân</div>
           <div className="text-lg text-center font-light text-[#e5e7eb]">
-            Here you can make changes to your account
+            Bạn có thể thay đổi thông tin tài khoản tại đây.
           </div>
           <div className="w-full flex  flex-col items-center justify-center">
             <img
@@ -120,7 +112,7 @@ export default function Profile() {
                 htmlFor="fileInput"
                 className="mt-3 w-[140px] h-[54px] flex items-center justify-center font-spartan text-[18px] text-primary border border-primary rounded-[15px] cursor-pointer bg-zinc-800 hover:bg-zinc-700 transition-all duration-500"
               >
-                Upload Avatar
+                Cập nhật ảnh đại diện
               </label>
             </form>
           </div>
@@ -130,12 +122,12 @@ export default function Profile() {
           <form className="flex flex-col w-4/5 gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="fullname" className="font-semibold">
-                Fullname
+                Họ và tên
               </label>
               <input
                 type="text"
                 name="fullname"
-                placeholder="Enter your fullname"
+                placeholder="Nhập họ và tên"
                 value={fullname}
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
@@ -145,12 +137,12 @@ export default function Profile() {
 
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="username" className="font-semibold">
-                Username
+                Tên đăng nhập
               </label>
               <input
                 type="text"
                 name="username"
-                placeholder="Enter your username"
+                placeholder="Nhập tên đăng nhập"
                 value={username}
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
@@ -165,7 +157,7 @@ export default function Profile() {
               <input
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder="Nhập email"
                 value={email}
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
@@ -175,12 +167,12 @@ export default function Profile() {
 
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="phone" className="font-semibold">
-                Phone number
+                Số điện thoại
               </label>
               <input
                 type="tel"
                 name="phone"
-                placeholder="Enter your phone number"
+                placeholder="Nhập số điện thoại"
                 value={phone_number}
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
@@ -195,7 +187,7 @@ export default function Profile() {
                 type="button"
                 disabled={isLoading}
               >
-                {isLoading ? "Please wait..." : "Save changes"}
+                {isLoading ? "Đang xử lý..." : "Lưu thay đổi"}
               </button>
 
               <button
@@ -203,7 +195,7 @@ export default function Profile() {
                 onClick={handleCancel}
                 type="button"
               >
-                Cancel
+                Hủy
               </button>
             </div>
           </form>
