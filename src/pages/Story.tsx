@@ -126,7 +126,7 @@ const Story = () => {
 
       <div className="flex justify-center gap-4">
         {/* Previous Chapter Button */}
-        {currentChapter.chapter_number >= 1 && (
+        {currentChapter.chapter_number > 1 && (
           <button
             className="flex items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-purple-400 font-medium border-2 border-purple-400 transition-all duration-300 hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-400 hover:border-purple-600"
             onClick={handlePreviousChapter}
@@ -152,29 +152,30 @@ const Story = () => {
         )}
 
         {/* Next Chapter Button */}
-
-        <button
-          className="flex items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
-          onClick={handleNextChapter}
-        >
-          <span className="flex justify-center gap-1 leading-none">
-            Chương Sau
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
-              ></path>
-            </svg>
-          </span>
-        </button>
+        {currentChapter.chapter_number < chapters.length && (
+          <button
+            className="flex items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
+            onClick={handleNextChapter}
+          >
+            <span className="flex justify-center gap-1 leading-none">
+              Chương Sau
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5l7 7-7 7"
+                ></path>
+              </svg>
+            </span>
+          </button>
+        )}
       </div>
 
       {/* All chapters */}

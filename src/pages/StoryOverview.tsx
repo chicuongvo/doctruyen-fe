@@ -174,10 +174,7 @@ const StoryOverview = () => {
         { withCredentials: true }
       );
 
-      const likedRes = await axios.get(`${API_BASE_URL}/stories/${id}/like`, {
-        withCredentials: true,
-      });
-      setIsLiked(likedRes.data.data);
+      if (res.status == 200 || res.status == 201) setIsLiked(true);
     } catch (error) {
       console.error("Error liking story:", error);
     }

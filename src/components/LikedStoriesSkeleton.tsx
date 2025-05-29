@@ -1,5 +1,3 @@
-import React from "react";
-
 const LikedStoriesSkeleton = () => {
   return (
     <div className="bg-black p-8 text-white">
