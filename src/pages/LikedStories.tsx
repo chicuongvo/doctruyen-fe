@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
-import StorySkeleton from "../components/StorySkeleton";
+import LikedStoriesSkeleton from "../components/LikedStoriesSkeleton";
 import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 
 interface StoryData {
@@ -24,6 +24,7 @@ const LikedStories = () => {
   const [loading, setLoading] = useState(true);
   const { userProfile } = useUser();
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchLikedStories = async () => {
@@ -35,9 +36,7 @@ const LikedStories = () => {
         }
 
         const storyPromises = userProfile.story_likes.map((like) =>
-          axios.get(
-            `https://doctruyen-be-e0t7.onrender.com/api/stories/${like.story_id}`
-          )
+          axios.get(`${API_BASE_URL}/stories/${like.story_id}`)
         );
 
         const responses = await Promise.all(storyPromises);
@@ -58,7 +57,7 @@ const LikedStories = () => {
   }, [userProfile]);
 
   if (loading) {
-    return <StorySkeleton />;
+    return <LikedStoriesSkeleton />;
   }
 
   if (!userProfile) {

@@ -3,7 +3,6 @@ import Chapter from "../components/Chapter";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
-import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 
 interface ChapterData {
   chapter_id: string;
@@ -28,6 +27,8 @@ interface StoryData {
   story_chapters: ChapterData[];
   rating_avg: number;
 }
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Story = () => {
   const navigate = useNavigate();
@@ -66,15 +67,13 @@ const Story = () => {
     const fetchStory = async () => {
       const chapterNumber = parseInt(chapter || "1", 10);
       try {
-        const res = await axios.get(
-          `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}`
-        );
+        const res = await axios.get(`${API_BASE_URL}/stories/${id}`);
 
         setChapters(res.data.data.story_chapters);
         setCurrentChapter(res.data.data.story_chapters[chapterNumber - 1]);
 
         const similarRes = await axios.get(
-          `http://localhost:5001/api/stories/${id}/similar`
+          `${API_BASE_URL}/stories/${id}/similar`
         );
         setSimilarStories(similarRes.data.data.slice(0, 6));
       } catch (error) {
@@ -179,8 +178,7 @@ const Story = () => {
       </div>
 
       {/* All chapters */}
-
-      <div className="bg-dark text-white p-6 rounded-xl mt-15">
+      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
 
         <div
@@ -194,7 +192,7 @@ const Story = () => {
                   ? currentChapterRef
                   : null
               }
-              className={` ${chapter.chapter_number === currentChapter.chapter_number ? "text-primary" : ""}`}
+              className={`${chapter.chapter_number === currentChapter.chapter_number ? "text-purple-600" : ""}`}
             >
               <Chapter
                 key={chapter.chapter_id}
@@ -208,15 +206,27 @@ const Story = () => {
 
       {/* Suggested story */}
       <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
-        <h3
-          className="text-3xl font-bold text-white mb-8"
-          style={{ fontFamily: "inherit" }}
-        >
+        <h3 className="text-3xl font-bold text-white mb-8">
           Có thể bạn cũng thích
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
+            <div
+              key={story.story_id}
+              onClick={() => navigate(`/story/${story.story_id}`)}
+              className="item-card-v2 rounded-lg font-spartan flex-none w-[116px] md:w-[186px] cursor-pointer"
+            >
+              <div className="relative h-[160px] md:h-[260px] bg-gray-900 rounded-lg overflow-hidden">
+                <img
+                  className="object-cover object-center rounded-lg w-[116px] md:w-[186px] h-[160px] md:h-[260px]"
+                  src={story.cover_image}
+                  alt={story.title}
+                />
+              </div>
+              <div className="">
+                <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
+              </div>
+            </div>
           ))}
         </div>
       </div>

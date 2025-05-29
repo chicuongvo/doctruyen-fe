@@ -7,7 +7,10 @@ import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
 import StorySkeleton from "../components/StorySkeleton";
 import { motion } from "framer-motion";
-import ItemCardV2 from "../components/ItemCard/ItemCardV2";
+import.meta.env.VITE_API_BASE_URL;
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface Genre {
   genre: {
     genre_id: string;
@@ -36,7 +39,6 @@ interface StoryData {
   cover_image: string;
   story_chapters: ChapterData[];
   rating_avg: number;
-  like_counts?: number;
 }
 
 interface UserData {
@@ -53,6 +55,7 @@ interface CommentData {
 
 const StoryOverview = () => {
   const id = useParams().id || "1";
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   const [story, setStory] = useState<StoryData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
@@ -66,22 +69,18 @@ const StoryOverview = () => {
   useEffect(() => {
     const fetchStory = async () => {
       try {
-        const res = await axios.get(
-          `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}`
-        );
+        const res = await axios.get(`${API_BASE_URL}/stories/${id}`);
         setStory(res.data.data);
         setComments(res.data.data.story_comments);
 
-        // Fetch similar stories
         const similarRes = await axios.get(
-          `http://localhost:5001/api/stories/${id}/similar`
+          `${API_BASE_URL}/stories/${id}/similar`
         );
         setSimilarStories(similarRes.data.data.slice(0, 6));
 
-        // Check if story is liked
         if (userProfile) {
           const likedRes = await axios.get(
-            `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/like`,
+            `${API_BASE_URL}/stories/${id}/like`,
             {
               withCredentials: true,
             }
@@ -114,7 +113,7 @@ const StoryOverview = () => {
     if (newComment.trim() !== "") {
       try {
         const res = await axios.post(
-          `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/comment`,
+          `${API_BASE_URL}/stories/${id}/comment`,
           {
             content: newComment,
           },
@@ -170,36 +169,25 @@ const StoryOverview = () => {
 
     try {
       const res = await axios.post(
-        `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/like`,
+        `${API_BASE_URL}/stories/${id}/like`,
         {},
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
-      if (res.data.success) {
-        setIsLiked(!isLiked);
-        // Update the story data to reflect the new like status
-        setStory((prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              like_counts: isLiked
-                ? (prev.like_counts || 0) - 1
-                : (prev.like_counts || 0) + 1,
-            };
-          }
-          return prev;
-        });
-      }
+      const likedRes = await axios.get(`${API_BASE_URL}/stories/${id}/like`, {
+        withCredentials: true,
+      });
+      setIsLiked(likedRes.data.data);
     } catch (error) {
       console.error("Error liking story:", error);
-      // Show error message to user
-      setShowLoginWarning(true);
     }
   };
 
-  if (!story) {
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  if (!story || !similarStories) {
     return <StorySkeleton />;
   }
 
@@ -234,18 +222,15 @@ const StoryOverview = () => {
         </motion.div>
       )}
       {/* Phần giới thiệu */}
-      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl dark:border-zinc-700 dark:bg-zinc-800 gap-6 md:gap-8 mt-4">
+      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl bg-zinc-800 gap-6 md:gap-8 mt-4">
         {/* Ảnh bìa */}
         <div className="md:max-w-md mx-auto md:mx-0 flex-shrink-0">
-          <div className="w-full h-[360px] bg-black flex items-center justify-center rounded-lg">
-            <div className="relative w-full h-[70%] bg-zinc-900 flex items-center justify-center">
-              <img
-                src={story.cover_image}
-                alt={story.title}
-                className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                style={{ background: "#222" }}
-              />
-            </div>
+          <div className="w-full h-[360px] flex items-center justify-center rounded-lg overflow-hidden">
+            <img
+              src={story.cover_image}
+              alt={story.title}
+              className="w-full h-full object-cover rounded-lg"
+            />
           </div>
         </div>
 
@@ -256,11 +241,11 @@ const StoryOverview = () => {
 
             <div className="text-white space-y-1">
               <p>
-                <span className="font-semibold text-[#5C5C5C]">Tác giả:</span>{" "}
+                <span className="font-semibold text-zinc-400">Tác giả:</span>{" "}
                 {story.author_name}
               </p>
               <p>
-                <span className="font-semibold text-[#5C5C5C]">Tiến độ:</span>{" "}
+                <span className="font-semibold text-zinc-400">Tiến độ:</span>{" "}
                 {story.progress === "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
               </p>
             </div>
@@ -271,28 +256,40 @@ const StoryOverview = () => {
               ))}
             </div>
 
-            <p className="text-gray-600 dark:text-gray-400 break-words leading-relaxed">
-              {story.description}
-            </p>
+            <div className="space-y-2">
+              <p
+                className={`text-zinc-400 break-words leading-relaxed ${!isDescriptionExpanded && "line-clamp-3"}`}
+              >
+                {story.description}
+              </p>
+              {story.description.length > 200 && (
+                <button
+                  onClick={toggleDescription}
+                  className="text-purple-600 hover:opacity-80 transition-opacity"
+                >
+                  {isDescriptionExpanded ? "Thu gọn" : "Xem thêm"}
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 mt-6">
             <button
-              className="flex-1 bg-gradient-to-r from-[#7F6A93] to-[#C3B1E1] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
             </button>
 
             <button
-              className="flex-1 bg-gradient-to-r from-[#C3B1E1] to-[#EDE4F4] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 bg-gradient-to-r from-purple-400 to-purple-200 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
               onClick={handleReadLastChapter}
             >
               Đọc Tiếp
             </button>
 
             <button
-              className={`flex-1 bg-gradient-to-r ${isLiked ? "from-[#EDE4F4] to-[#7F6A93]" : "from-[#7F6A93] to-[#EDE4F4]"} text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition`}
+              className={`flex-1 bg-gradient-to-r ${isLiked ? "from-purple-200 to-purple-600" : "from-purple-600 to-purple-400"} text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition`}
               onClick={handleLike}
             >
               {isLiked ? "Đã Yêu Thích" : "Thêm Vào Yêu Thích"}
@@ -357,7 +354,24 @@ const StoryOverview = () => {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
+            <div
+              key={story.story_id}
+              onClick={() =>
+                (window.location.href = `/story/${story.story_id}`)
+              }
+              className="item-card-v2 rounded-lg font-spartan flex-none w-[116px] md:w-[186px] cursor-pointer"
+            >
+              <div className="relative h-[160px] md:h-[260px] bg-gray-900 rounded-lg overflow-hidden">
+                <img
+                  className="object-cover object-center rounded-lg w-[116px] md:w-[186px] h-[160px] md:h-[260px]"
+                  src={story.cover_image}
+                  alt="Ảnh bìa truyện tranh"
+                />
+              </div>
+              <div className="">
+                <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
