@@ -69,23 +69,20 @@ const StoryOverview = () => {
   useEffect(() => {
     const fetchStory = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/stories/${id}`);
-        setStory(res.data.data);
-        setComments(res.data.data.story_comments);
+        const [storyRes, similarRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/stories/${id}`),
+          axios.get(`${API_BASE_URL}/stories/${id}/similar`),
+        ]);
 
-        const similarRes = await axios.get(
-          `${API_BASE_URL}/stories/${id}/similar`
-        );
+        setStory(storyRes.data.data);
+        setComments(storyRes.data.data.story_comments);
         setSimilarStories(similarRes.data.data.slice(0, 6));
 
         if (userProfile) {
-          const likedRes = await axios.get(
-            `${API_BASE_URL}/stories/${id}/like`,
-            {
-              withCredentials: true,
-            }
+          const isStoryLiked = userProfile.story_likes?.some(
+            (like) => like.story_id === id
           );
-          setIsLiked(likedRes.data.data);
+          setIsLiked(isStoryLiked || false);
         }
       } catch (error) {
         console.error("Error getting story data", error);
@@ -174,7 +171,9 @@ const StoryOverview = () => {
         { withCredentials: true }
       );
 
-      if (res.status == 200 || res.status == 201) setIsLiked(true);
+      if (res.status == 200 || res.status == 201) {
+        setIsLiked(!isLiked);
+      }
     } catch (error) {
       console.error("Error liking story:", error);
     }
@@ -184,7 +183,7 @@ const StoryOverview = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
-  if (!story || !similarStories) {
+  if (!story || !similarStories || isLiked === undefined) {
     return <StorySkeleton />;
   }
 

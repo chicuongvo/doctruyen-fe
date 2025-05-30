@@ -113,6 +113,19 @@ const Story = () => {
   return (
     <div className="bg-black p-8 text-white">
       {/* Chapter Content */}
+      <div className="max-w-[800px] w-full m-auto mb-8">
+        <div className="bg-zinc-800 rounded-xl p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <h3 className="text-lg font-semibold text-white">Nghe truyện</h3>
+          </div>
+          <audio
+            controls
+            className="w-full"
+            src={`${API_BASE_URL}/chapters/${currentChapter.chapter_id}/audio`}
+          />
+        </div>
+      </div>
+
       <div className="p-8 max-w-[800px] w-full m-auto max-md:p-4 overflow-hidden">
         <h2 className="text-3xl font-bold mb-8 max-md:text-2xl text-white">
           <strong>Chương {currentChapter.chapter_number}</strong>
