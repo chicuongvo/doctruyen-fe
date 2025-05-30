@@ -52,9 +52,14 @@ export default function Chatbot() {
           )}
 
           <div>
-            <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[400px] break-words">
-              {message.content}
-            </div>
+            <div
+              className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[400px] break-words"
+              dangerouslySetInnerHTML={{
+                __html: message.content
+                  .replace(/^```html\s*/i, "")
+                  .replace(/```$/, ""),
+              }} // Xóa dòng kết thúc ``` }}
+            ></div>
             <div
               className={`text-zinc-400 text-xs mt-1 ${isBot ? "text-start" : "text-end"} `}
             >
@@ -87,7 +92,7 @@ export default function Chatbot() {
     });
   };
 
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSendMessage = async (e: React.FormEvent) => {
     setSendingMessage(true);
@@ -125,6 +130,7 @@ export default function Chatbot() {
             timestamps: new Date(),
           },
         ]);
+        console.log(data.message);
       }
     }
 

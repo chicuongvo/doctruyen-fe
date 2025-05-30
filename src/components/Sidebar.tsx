@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
+import { signOut } from "@/api/users.api";
 interface Option {
   name: string;
   path: string;
@@ -16,6 +17,8 @@ export default function Sidebar({
     { name: "Truyện", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
     { name: "Tìm kiếm", path: "/search" },
+
+    { name: "Yêu thích", path: "/liked-stories" },
   ];
 
   const handleOnClick = () => {
@@ -38,16 +41,12 @@ export default function Sidebar({
 
   const { userProfile } = useUser();
 
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
   const { setUserChanged } = useUser();
   const handleSignOut = async () => {
     try {
-      const response = await fetch(`${API_URL}/auth/sign-out`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await signOut();
 
-      const data = await response.json();
+      const data = response.data();
 
       if (data.success) {
         setUserChanged(true);

@@ -9,6 +9,12 @@ interface UserProfile {
   is_verified: boolean;
   fullname: string;
   profile_pic: string;
+  story_likes: {
+    like_id: string;
+    liked_at: string;
+    user_id: string;
+    story_id: string;
+  }[];
 }
 
 interface UserContextType {

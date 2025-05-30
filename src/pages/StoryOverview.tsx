@@ -5,6 +5,12 @@ import Tag from "../components/Tag";
 import Comment from "../components/Comment";
 import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
+import StorySkeleton from "../components/StorySkeleton";
+import { motion } from "framer-motion";
+import.meta.env.VITE_API_BASE_URL;
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface Genre {
   genre: {
     genre_id: string;
@@ -48,36 +54,63 @@ interface CommentData {
 }
 
 const StoryOverview = () => {
-  const { id } = useParams();
+  const id = useParams().id || "1";
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
   const [story, setStory] = useState<StoryData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [newComment, setNewComment] = useState<string>("");
+  const [similarStories, setSimilarStories] = useState<StoryData[]>([]);
+  const [isLiked, setIsLiked] = useState(false);
   const { userProfile } = useUser();
   const navigate = useNavigate();
+  const [showLoginWarning, setShowLoginWarning] = useState(false);
 
   useEffect(() => {
     const fetchStory = async () => {
       try {
-        const res = await axios.get(
-          `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}`
-        );
-        setStory(res.data.data);
-        setComments(res.data.data.story_comments);
+        const [storyRes, similarRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/stories/${id}`),
+          axios.get(`${API_BASE_URL}/stories/${id}/similar`),
+        ]);
 
-        console.log(res.data.data.story_comments);
+        setStory(storyRes.data.data);
+        setComments(storyRes.data.data.story_comments);
+        setSimilarStories(similarRes.data.data.slice(0, 6));
+
+        if (userProfile) {
+          const isStoryLiked = userProfile.story_likes?.some(
+            (like) => like.story_id === id
+          );
+          setIsLiked(isStoryLiked || false);
+        }
       } catch (error) {
-        console.error("Không thể lấy dữ liệu truyện", error);
+        console.error("Error getting story data", error);
       }
     };
 
     fetchStory();
-  }, [id]);
+  }, [id, userProfile]);
+
+  useEffect(() => {
+    if (showLoginWarning) {
+      const timer = setTimeout(() => {
+        setShowLoginWarning(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLoginWarning]);
 
   const handleAddComment = async () => {
+    if (userProfile === null) {
+      setShowLoginWarning(true);
+      return;
+    }
+
     if (newComment.trim() !== "") {
       try {
         const res = await axios.post(
-          `https://doctruyen-be-e0t7.onrender.com/api/stories/${id}/comment`,
+          `${API_BASE_URL}/stories/${id}/comment`,
           {
             content: newComment,
           },
@@ -112,25 +145,87 @@ const StoryOverview = () => {
       }
     }
   };
+
   const handleReadChapter1 = () => {
     navigate(`/story/${id}/${1}`);
   };
 
-  if (!story) {
-    return <div className="text-white p-8">Đang tải...</div>;
+  const handleReadLastChapter = () => {
+    const savedProgress = JSON.parse(
+      localStorage.getItem("readingProgress") || "{}"
+    );
+
+    navigate(`/story/${id}/${savedProgress[id] || "1"}`);
+  };
+
+  const handleLike = async () => {
+    if (!userProfile) {
+      setShowLoginWarning(true);
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${API_BASE_URL}/stories/${id}/like`,
+        {},
+        { withCredentials: true }
+      );
+
+      if (res.status == 200 || res.status == 201) {
+        setIsLiked(!isLiked);
+      }
+    } catch (error) {
+      console.error("Error liking story:", error);
+    }
+  };
+
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  if (!story || !similarStories || isLiked === undefined) {
+    return <StorySkeleton />;
   }
 
   return (
-    <div className="bg-black p-4 md:p-8 text-white font-spartan">
+    <div className="bg-black p-4 md:p-8 text-white">
+      {showLoginWarning && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-2xl"
+        >
+          <div
+            role="alert"
+            className="alert alert-warning shadow-lg p-4 md:p-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <span className="text-base md:text-lg">Vui lòng đăng nhập!</span>
+          </div>
+        </motion.div>
+      )}
       {/* Phần giới thiệu */}
-      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl dark:border-zinc-700 dark:bg-zinc-800 gap-6 md:gap-8 mt-4">
+      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl bg-zinc-800 gap-6 md:gap-8 mt-4">
         {/* Ảnh bìa */}
         <div className="md:max-w-md mx-auto md:mx-0 flex-shrink-0">
-          <div className="w-full h-[360px] bg-black flex items-center justify-center rounded-lg">
+          <div className="w-full h-[360px] flex items-center justify-center rounded-lg overflow-hidden">
             <img
               src={story.cover_image}
-              alt="Bìa truyện"
-              className="w-full h-full object-contain rounded-lg"
+              alt={story.title}
+              className="w-full h-full object-cover rounded-lg"
             />
           </div>
         </div>
@@ -142,12 +237,12 @@ const StoryOverview = () => {
 
             <div className="text-white space-y-1">
               <p>
-                <span className="font-semibold text-[#5C5C5C]">Tác giả:</span>{" "}
+                <span className="font-semibold text-zinc-400">Tác giả:</span>{" "}
                 {story.author_name}
               </p>
               <p>
-                <span className="font-semibold text-[#5C5C5C]">Tiến độ:</span>{" "}
-                {story.progress}
+                <span className="font-semibold text-zinc-400">Tiến độ:</span>{" "}
+                {story.progress === "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
               </p>
             </div>
 
@@ -157,25 +252,43 @@ const StoryOverview = () => {
               ))}
             </div>
 
-            <p className="text-gray-600 dark:text-gray-400 break-words leading-relaxed">
-              {story.description}
-            </p>
+            <div className="space-y-2">
+              <p
+                className={`text-zinc-400 break-words leading-relaxed ${!isDescriptionExpanded && "line-clamp-3"}`}
+              >
+                {story.description}
+              </p>
+              {story.description.length > 200 && (
+                <button
+                  onClick={toggleDescription}
+                  className="text-purple-600 hover:opacity-80 transition-opacity"
+                >
+                  {isDescriptionExpanded ? "Thu gọn" : "Xem thêm"}
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 mt-6">
             <button
-              className="flex-1 cursor-pointer bg-linear-to-r/oklch from-[#6700A3] via-[#e02f75] via-[#ff5a57] to-[#fccbf0] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
             </button>
 
-            <button className="flex-1 cursor-pointer bg-linear-to-r/oklch from-[#050c38] via-[#6700a3] to-[#e02f75] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
+            <button
+              className="flex-1 bg-gradient-to-r from-purple-400 to-purple-200 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              onClick={handleReadLastChapter}
+            >
               Đọc Tiếp
             </button>
 
-            <button className="flex-1 cursor-pointer bg-gradient-to-r from-[#050c38] via-[#1b2062] to-[#6700a3] text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition">
-              Thêm Vào Yêu Thích
+            <button
+              className={`flex-1 bg-gradient-to-r ${isLiked ? "from-purple-200 to-purple-600" : "from-purple-600 to-purple-400"} text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition`}
+              onClick={handleLike}
+            >
+              {isLiked ? "Đã Yêu Thích" : "Thêm Vào Yêu Thích"}
             </button>
           </div>
         </div>
@@ -224,6 +337,38 @@ const StoryOverview = () => {
           >
             Gửi
           </button>
+        </div>
+      </div>
+
+      {/* Suggested story */}
+      <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
+        <h3
+          className="text-3xl font-bold text-white mb-8"
+          style={{ fontFamily: "inherit" }}
+        >
+          Có thể bạn cũng thích
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
+          {similarStories.map((story) => (
+            <div
+              key={story.story_id}
+              onClick={() =>
+                (window.location.href = `/story/${story.story_id}`)
+              }
+              className="item-card-v2 rounded-lg font-spartan flex-none w-[116px] md:w-[186px] cursor-pointer"
+            >
+              <div className="relative h-[160px] md:h-[260px] bg-gray-900 rounded-lg overflow-hidden">
+                <img
+                  className="object-cover object-center rounded-lg w-[116px] md:w-[186px] h-[160px] md:h-[260px]"
+                  src={story.cover_image}
+                  alt="Ảnh bìa truyện tranh"
+                />
+              </div>
+              <div className="">
+                <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

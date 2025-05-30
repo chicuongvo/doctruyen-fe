@@ -20,6 +20,7 @@ import AppLayout from "./components/AppLayout";
 import { UserProvider } from "./contexts/userContext";
 import Profile from "./pages/Profile";
 import Chatbot from "./pages/Chatbot";
+import LikedStories from "./pages/LikedStories";
 
 import UserList from "./pages/admin/users/UserList";
 import UserDetail from "./pages/admin/users/UserDetail";
@@ -62,6 +63,7 @@ const router = createBrowserRouter([
       { path: "/profile", element: <Profile /> },
       { path: "/chatbot", element: <Chatbot /> },
       { path: "stories", element: <Genres /> },
+      { path: "/liked-stories", element: <LikedStories /> },
       { path: "/search", element: <Search /> },
       {
         path: "/admin",

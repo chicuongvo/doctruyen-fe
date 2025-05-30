@@ -19,8 +19,11 @@
     "@radix-ui/react-select": "^2.2.4",
     "@radix-ui/react-slot": "^1.2.2",
     "@radix-ui/react-tabs": "^1.1.11",
+<<<<<<< HEAD
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/vite": "^4.0.9",
+=======
+>>>>>>> fea4d4c43c623c0fb156ba504d8f5f856fb0abb5
     "@tanstack/react-query": "^5.75.7",
     "@tanstack/react-table": "^8.21.3",
     "antd": "^5.24.3",
@@ -30,7 +33,8 @@
     "date-fns": "^4.1.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-prettier": "^5.2.3",
-    "lucide-react": "^0.510.0",
+    "framer-motion": "^12.12.1",
+    "lucide-react": "^0.479.0",
     "prettier": "^3.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

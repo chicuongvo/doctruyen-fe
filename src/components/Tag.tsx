@@ -4,7 +4,7 @@ type TagProps = {
 
 const Tag = ({ label }: TagProps) => {
   return (
-    <span className="h-8 inline-block text-gray-900 py-1 px-3 rounded-full bg-purple-50 hover:bg-purple-100 font-light dark:bg-zinc-700 dark:text-gray-300 dark:hover:dark:bg-zinc-600 leading-tight">
+    <span className="h-8 inline-block py-1 px-3 rounded-full font-light bg-[#3F3F46] text-zinc-100 hover:bg-zinc-600 leading-tight transition-colors">
       {label}
     </span>
   );
