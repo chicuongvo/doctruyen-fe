@@ -188,7 +188,7 @@ const StoryOverview = () => {
   }
 
   return (
-    <div className="bg-black p-4 md:p-8 text-white">
+    <div className="bg-black p-4 md:p-8 text-white font-spartan">
       {showLoginWarning && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -231,9 +231,11 @@ const StoryOverview = () => {
         </div>
 
         {/* Thông tin truyện */}
-        <div className="flex-1 flex flex-col justify-between">
+        <div className="flex-1 flex flex-col justify-between font-spartan">
           <div className="space-y-4">
-            <h1 className="text-3xl font-bold text-white">{story.title}</h1>
+            <h1 className="text-3xl font-bold text-white font-spartan">
+              {story.title}
+            </h1>
 
             <div className="text-white space-y-1">
               <p>
@@ -269,9 +271,9 @@ const StoryOverview = () => {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 mt-6">
+          <div className="flex flex-col md:flex-row gap-4 mt-6 font-spartan">
             <button
-              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 font-spartan bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
@@ -308,7 +310,7 @@ const StoryOverview = () => {
       </div>
       {/* Bình luận */}
 
-      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10">
+      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan">
         <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
         <div className="flex flex-col space-y-3 max-h-[300px] overflow-y-auto">
           {comments.map((comment, index) => (

@@ -138,8 +138,8 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="bg-black w-full h-max flex justify-center items-center font-spartan">
-      <div className=" w-9/10 lg:w-2/3 h-[450px] md:h-[600px] bg-zinc-800 my-10 rounded-[20px] text-white flex flex-col justify-between">
+    <div className="bg-black w-full h-full flex justify-center items-center font-spartan overflow-hidden rounded-[20px]">
+      <div className=" h-full w-full bg-zinc-800 text-white flex flex-col justify-between">
         <div className="flex flex-row px-5 py-4 gap-4 w-full bg-gradient-to-r from-violet-600 via-primary to-secondary rounded-t-[15px] items-center">
           <div>
             <BotMessageSquare className="w-8 h-8" />
