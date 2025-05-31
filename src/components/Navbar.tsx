@@ -25,6 +25,7 @@ export default function Navbar() {
     { name: "Truyện", path: "/stories" },
     { name: "Blogs", path: "/blogs" },
     { name: "Tìm kiếm", path: "/search" },
+    { name: "Yêu thích", path: "/liked-stories" },
   ];
 
   const renderOptions = (options: Option[]) => {

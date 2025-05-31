@@ -52,9 +52,14 @@ export default function Chatbot() {
           )}
 
           <div>
-            <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[400px] break-words">
-              {message.content}
-            </div>
+            <div
+              className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[400px] break-words"
+              dangerouslySetInnerHTML={{
+                __html: message.content
+                  .replace(/^```html\s*/i, "")
+                  .replace(/```$/, ""),
+              }} // Xóa dòng kết thúc ``` }}
+            ></div>
             <div
               className={`text-zinc-400 text-xs mt-1 ${isBot ? "text-start" : "text-end"} `}
             >
@@ -87,7 +92,7 @@ export default function Chatbot() {
     });
   };
 
-  const API_URL = "https://doctruyen-be-e0t7.onrender.com/api";
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSendMessage = async (e: React.FormEvent) => {
     setSendingMessage(true);
@@ -125,6 +130,7 @@ export default function Chatbot() {
             timestamps: new Date(),
           },
         ]);
+        console.log(data.message);
       }
     }
 
@@ -132,8 +138,8 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="bg-black w-full h-max flex justify-center items-center font-spartan">
-      <div className=" w-9/10 lg:w-2/3 h-[450px] md:h-[600px] bg-zinc-800 my-10 rounded-[20px] text-white flex flex-col justify-between">
+    <div className="bg-black w-full h-full flex justify-center items-center font-spartan overflow-hidden rounded-[20px]">
+      <div className=" h-full w-full bg-zinc-800 text-white flex flex-col justify-between">
         <div className="flex flex-row px-5 py-4 gap-4 w-full bg-gradient-to-r from-violet-600 via-primary to-secondary rounded-t-[15px] items-center">
           <div>
             <BotMessageSquare className="w-8 h-8" />
