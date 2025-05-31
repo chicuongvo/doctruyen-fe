@@ -45,8 +45,22 @@ function Login() {
           description: data.message,
         });
       }
-    } catch (error) {
-      console.log("Error during sign-in:", error);
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        api.error({
+          message: "ĐĂNG NHẬP",
+          description: error.response.data.message,
+        });
+      } else {
+        api.error({
+          message: "ĐĂNG NHẬP",
+          description: "Lỗi không xác định!",
+        });
+      }
     }
     setIsLoading(false);
   };

@@ -35,7 +35,8 @@ function SignUp() {
 
   const { setUserChanged } = useUser();
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsLoading(true);
 
     try {
@@ -50,6 +51,8 @@ function SignUp() {
 
       const data = response.data;
 
+      console.log(data);
+
       if (data.success === true) {
         setUserChanged(true);
         navigate("/get-verify-token");
@@ -60,7 +63,21 @@ function SignUp() {
         });
       }
     } catch (error: any) {
-      console.log("Error during sign-up:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        api.error({
+          message: "ĐĂNG KÝ",
+          description: error.response.data.message,
+        });
+      } else {
+        api.error({
+          message: "ĐĂNG KÝ",
+          description: "Lỗi không xác định!",
+        });
+      }
     }
 
     setIsLoading(false);
@@ -93,6 +110,9 @@ function SignUp() {
                 type="text"
                 name="username"
                 placeholder="Nhập tên đăng nhập"
+                min={6}
+                max={20}
+                pattern="^[a-zA-Z0-9]+$"
                 required
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setUsername(e.target.value)}
@@ -122,6 +142,9 @@ function SignUp() {
                 name="phone"
                 placeholder="Nhập số điện thoại"
                 required
+                pattern="^[0-9\s]+$"
+                min={8}
+                max={12}
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
@@ -136,6 +159,8 @@ function SignUp() {
                 name="password"
                 placeholder="Nhập mật khẩu"
                 required
+                min={6}
+                max={20}
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -157,6 +182,8 @@ function SignUp() {
                 name="confirm_password"
                 placeholder="Xác nhận mật khẩu"
                 required
+                min={6}
+                max={20}
                 className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
