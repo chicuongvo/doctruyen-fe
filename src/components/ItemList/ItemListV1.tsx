@@ -6,15 +6,18 @@ export default function ItemListV1(props: {
   showButton: boolean;
   title: string;
 }) {
-  const [stories, setStories] = useState<any[]>([1, 2, 3, 4, 5, 6]);
+  const [stories, setStories] = useState<any[]>(
+    Array.from({ length: 6 }).fill(0)
+  );
 
+  console.log(stories.length);
   useEffect(() => {
     const fetchStories = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/stories?limit=6`).then(
           (res) => res.json()
         );
-        setStories(response.data);
+        if (response.success) setStories(response.data);
       } catch (error) {
         console.error("Error fetching stories:", error);
       }

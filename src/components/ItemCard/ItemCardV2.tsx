@@ -15,13 +15,15 @@ export default function ItemCardV2(props: { showTags: boolean; story: any }) {
           {showTags && (
             <div className="text-xs absolute top-4 left-0 gap-2 flex flex-col">
               <span className="p-1 bg-[#325E3E] rounded-r w-fit">
-                {story.progress}
+                {story.progress == "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
               </span>
             </div>
           )}
         </div>
-        <div className="">
-          <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
+        <div className="mt-3">
+          <span className="font-semibold line-clamp-2 min-h-[3rem]">
+            {story.title}
+          </span>
           <span className="text-sm">{story.like_counts} loves</span>
         </div>
       </div>

@@ -30,7 +30,9 @@ export default function ItemCardV1({ story }: { story: any }) {
           </div>
           <div className="flex justify-between text-sm items-center text-gray-400">
             <span className="whitespace-nowrap">{story.like_counts} loves</span>
-            <span>{story.progress}</span>
+            <span>
+              {story.progress == "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
+            </span>
           </div>
         </div>
       </div>
