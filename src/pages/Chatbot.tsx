@@ -21,7 +21,7 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<message[]>([
     {
       sender: "bot",
-      content: "Hello, how can I help you?",
+      content: "Chào bạn, tôi có thể giúp được gì cho bạn?",
       timestamps: new Date(),
     },
   ]);
@@ -31,6 +31,7 @@ export default function Chatbot() {
 
   const [question, setQuestion] = useState("");
   const [formData, setFormData] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const { userProfile } = useUser();
   const [sendingMessage, setSendingMessage] = useState(false);
@@ -138,63 +139,73 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="bg-black w-full h-full flex justify-center items-center font-spartan overflow-hidden rounded-[20px]">
-      <div className=" h-full w-full bg-zinc-800 text-white flex flex-col justify-between">
-        <div className="flex flex-row px-5 py-4 gap-4 w-full bg-gradient-to-r from-violet-600 via-primary to-secondary rounded-t-[15px] items-center">
-          <div>
-            <BotMessageSquare className="w-8 h-8" />
-          </div>
-          <div className="font-semibold text-[22px]">AI Assistant</div>
-        </div>
-
-        <div
-          className="flex-1 h-[450px] py-7 px-5 overflow-y-auto no-scrollbar"
-          ref={messagesEndRef}
-        >
-          {renderMessages(messages)}
-          {sendingMessage && (
-            <div className="flex flex-row justify-start gap-3">
-              <div className="bg-violet-200 rounded-full p-1">
-                <Bot className="text-secondary w-8 h-8" />
+    <div className="fixed z-999 bottom-4 right-5 bg-white hover:bg-white/80 p-3 rounded-full shadow-lg transition-colors duration-300">
+      <Bot
+        className="w-6 h-6 text-secondary cursor-pointer"
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+      />
+      {isOpen && (
+        <div className="absolute bottom-20 right-0 w-[90vw] lg:w-[50vw] h-[500px] bg-black flex justify-center items-center font-spartan overflow-hidden rounded-[20px]">
+          <div className=" h-full w-full bg-zinc-800 text-white flex flex-col justify-between">
+            <div className="flex flex-row px-5 py-4 gap-4 w-full bg-gradient-to-r from-violet-600 via-primary to-secondary rounded-t-[15px] items-center">
+              <div>
+                <BotMessageSquare className="w-8 h-8" />
               </div>
-              <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[300px] break-words flex justify-center items-center">
-                <div className="w-full gap-x-2 flex justify-center items-center">
-                  <div className="w-2 bg-primary animate-pulse h-2 rounded-full animate-bounce flex justify-center items-center"></div>
-                  <div className="w-2 animate-pulse h-2 bg-secondary rounded-full animate-bounce flex justify-center items-center"></div>
-                  <div className="w-2 h-2 animate-pulse bg-violet-300 rounded-full animate-bounce flex justify-center items-center"></div>
-                </div>
-              </div>
+              <div className="font-semibold text-[22px]">Trợ lí AI</div>
             </div>
-          )}
-        </div>
 
-        <div className="border-t border-zinc-500">
-          <form className="px-4 py-3 flex flex-row gap-3">
-            <input
-              className="border border-zinc-500 rounded-[15px] w-full px-2 py-3 focus:outline-primary"
-              type="text"
-              value={formData}
-              placeholder="Type your message..."
-              onChange={(e) => {
-                setQuestion(e.target.value);
-                setFormData(e.target.value);
-                console.log(question);
-              }}
-            />
-
-            <button
-              type="submit"
-              className="bg-secondary rounded-[15px] hover:bg-primary transtion-all duration-300 cursor-pointer"
-              onClick={handleSendMessage}
-              disabled={question.length === 0}
+            <div
+              className="flex-1 h-[450px] py-7 px-5 overflow-y-auto no-scrollbar"
+              ref={messagesEndRef}
             >
-              <div className="px-5 py-2 ">
-                <Send className="w-6 h-6 " />
-              </div>
-            </button>
-          </form>
+              {renderMessages(messages)}
+              {sendingMessage && (
+                <div className="flex flex-row justify-start gap-3">
+                  <div className="bg-violet-200 rounded-full p-1">
+                    <Bot className="text-secondary w-8 h-8" />
+                  </div>
+                  <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[300px] break-words flex justify-center items-center">
+                    <div className="w-full gap-x-2 flex justify-center items-center">
+                      <div className="w-2 bg-primary animate-pulse h-2 rounded-full animate-bounce flex justify-center items-center"></div>
+                      <div className="w-2 animate-pulse h-2 bg-secondary rounded-full animate-bounce flex justify-center items-center"></div>
+                      <div className="w-2 h-2 animate-pulse bg-violet-300 rounded-full animate-bounce flex justify-center items-center"></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="border-t border-zinc-500">
+              <form className="px-4 py-3 flex flex-row gap-3">
+                <input
+                  className="border border-zinc-500 rounded-[15px] w-full px-2 py-3 focus:outline-primary"
+                  type="text"
+                  value={formData}
+                  placeholder="Type your message..."
+                  onChange={(e) => {
+                    setQuestion(e.target.value);
+                    setFormData(e.target.value);
+                    console.log(question);
+                  }}
+                />
+
+                <button
+                  type="submit"
+                  className="bg-secondary rounded-[15px] hover:bg-primary transtion-all duration-300 cursor-pointer"
+                  onClick={handleSendMessage}
+                  disabled={question.length === 0}
+                >
+                  <div className="px-5 py-2 ">
+                    <Send className="w-6 h-6 " />
+                  </div>
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
