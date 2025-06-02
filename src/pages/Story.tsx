@@ -3,6 +3,7 @@ import Chapter from "../components/Chapter";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
+import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 
 interface ChapterData {
   chapter_id: string;
@@ -225,22 +226,7 @@ const Story = () => {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <div
-              key={story.story_id}
-              onClick={() => navigate(`/story/${story.story_id}`)}
-              className="item-card-v2 rounded-lg font-spartan flex-none w-[116px] md:w-[186px] cursor-pointer"
-            >
-              <div className="relative h-[160px] md:h-[260px] bg-gray-900 rounded-lg overflow-hidden">
-                <img
-                  className="object-cover object-center rounded-lg w-[116px] md:w-[186px] h-[160px] md:h-[260px]"
-                  src={story.cover_image}
-                  alt={story.title}
-                />
-              </div>
-              <div className="">
-                <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
-              </div>
-            </div>
+            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>
       </div>

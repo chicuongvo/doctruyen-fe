@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useUser } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
 import LikedStoriesSkeleton from "../components/LikedStoriesSkeleton";
 import ItemCardV2 from "../components/ItemCard/ItemCardV2";
@@ -10,57 +9,73 @@ interface StoryData {
   title: string;
   author_name: string;
   description: string;
-  price: number;
-  status: string;
-  progress: string;
-  story_genres: any[];
   cover_image: string;
-  story_chapters: any[];
-  rating_avg: number;
+  story_genres: {
+    genre: {
+      genre_id: string;
+      name: string;
+    };
+  }[];
+}
+
+interface StoryLike {
+  story_id: string;
+  liked_at: string;
+}
+
+interface UserData {
+  story_likes: StoryLike[];
 }
 
 const LikedStories = () => {
   const [likedStories, setLikedStories] = useState<StoryData[]>([]);
   const [loading, setLoading] = useState(true);
-  const { userProfile } = useUser();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchLikedStories = async () => {
       try {
-        if (!userProfile?.story_likes) {
-          setLikedStories([]);
-          setLoading(false);
-          return;
+        const userResponse = await axios.get(`${API_BASE_URL}/auth/me`, {
+          withCredentials: true,
+        });
+
+        if (userResponse.data.success) {
+          setIsAuthenticated(true);
+          const userData = userResponse.data.data as UserData;
+          const storyLikes = userData.story_likes;
+
+          if (!storyLikes || storyLikes.length === 0) {
+            setLikedStories([]);
+            setLoading(false);
+            return;
+          }
+
+          const storyPromises = storyLikes.map((like: StoryLike) =>
+            axios.get(`${API_BASE_URL}/stories/${like.story_id}`)
+          );
+
+          const responses = await Promise.all(storyPromises);
+          const stories = responses.map((res) => res.data.data);
+          setLikedStories(stories);
         }
-
-        const storyPromises = userProfile.story_likes.map((like) =>
-          axios.get(`${API_BASE_URL}/stories/${like.story_id}`)
-        );
-
-        const responses = await Promise.all(storyPromises);
-        const stories = responses.map((res) => res.data.data);
-        setLikedStories(stories);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching liked stories:", error);
+        setIsAuthenticated(false);
         setLoading(false);
       }
     };
 
-    if (userProfile) {
-      fetchLikedStories();
-    } else {
-      setLoading(false);
-    }
-  }, [userProfile]);
+    fetchLikedStories();
+  }, []);
 
   if (loading) {
     return <LikedStoriesSkeleton />;
   }
 
-  if (!userProfile) {
+  if (!isAuthenticated) {
     return (
       <div className="bg-black min-h-screen p-8 text-white">
         <div className="max-w-4xl mx-auto text-center">

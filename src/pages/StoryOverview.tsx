@@ -7,6 +7,7 @@ import Chapter from "../components/Chapter";
 import { useUser } from "../contexts/userContext";
 import StorySkeleton from "../components/StorySkeleton";
 import { motion } from "framer-motion";
+import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 import.meta.env.VITE_API_BASE_URL;
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -344,32 +345,12 @@ const StoryOverview = () => {
 
       {/* Suggested story */}
       <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
-        <h3
-          className="text-3xl font-bold text-white mb-8"
-          style={{ fontFamily: "inherit" }}
-        >
+        <h3 className="text-3xl font-bold text-white mb-8">
           Có thể bạn cũng thích
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <div
-              key={story.story_id}
-              onClick={() =>
-                (window.location.href = `/story/${story.story_id}`)
-              }
-              className="item-card-v2 rounded-lg font-spartan flex-none w-[116px] md:w-[186px] cursor-pointer"
-            >
-              <div className="relative h-[160px] md:h-[260px] bg-gray-900 rounded-lg overflow-hidden">
-                <img
-                  className="object-cover object-center rounded-lg w-[116px] md:w-[186px] h-[160px] md:h-[260px]"
-                  src={story.cover_image}
-                  alt="Ảnh bìa truyện tranh"
-                />
-              </div>
-              <div className="">
-                <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
-              </div>
-            </div>
+            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>
       </div>
