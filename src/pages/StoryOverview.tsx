@@ -63,13 +63,24 @@ const StoryOverview = () => {
   const [newComment, setNewComment] = useState<string>("");
   const [similarStories, setSimilarStories] = useState<StoryData[]>([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [isCheckingLike, setIsCheckingLike] = useState(true);
   const { userProfile } = useUser();
   const navigate = useNavigate();
   const [showLoginWarning, setShowLoginWarning] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    setStory(null);
+    setComments([]);
+    setSimilarStories([]);
+    setIsLiked(false);
+    setIsCheckingLike(true);
+  }, [id]);
+
+  useEffect(() => {
     const fetchStory = async () => {
       try {
+        setIsCheckingLike(true);
         const [storyRes, similarRes] = await Promise.all([
           axios.get(`${API_BASE_URL}/stories/${id}`),
           axios.get(`${API_BASE_URL}/stories/${id}/similar`),
@@ -87,6 +98,8 @@ const StoryOverview = () => {
         }
       } catch (error) {
         console.error("Error getting story data", error);
+      } finally {
+        setIsCheckingLike(false);
       }
     };
 
@@ -166,6 +179,7 @@ const StoryOverview = () => {
     }
 
     try {
+      setIsCheckingLike(true);
       const res = await axios.post(
         `${API_BASE_URL}/stories/${id}/like`,
         {},
@@ -177,6 +191,8 @@ const StoryOverview = () => {
       }
     } catch (error) {
       console.error("Error liking story:", error);
+    } finally {
+      setIsCheckingLike(false);
     }
   };
 
@@ -219,7 +235,7 @@ const StoryOverview = () => {
         </motion.div>
       )}
       {/* Phần giới thiệu */}
-      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl bg-zinc-800 gap-6 md:gap-8 mt-4">
+      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl bg-zinc-900 gap-6 md:gap-8 mt-4">
         {/* Ảnh bìa */}
         <div className="md:max-w-md mx-auto md:mx-0 flex-shrink-0">
           <div className="w-full h-[360px] flex items-center justify-center rounded-lg overflow-hidden">
@@ -261,7 +277,7 @@ const StoryOverview = () => {
               >
                 {story.description}
               </p>
-              {story.description.length > 200 && (
+              {story.description.length > 435 && (
                 <button
                   onClick={toggleDescription}
                   className="text-purple-600 hover:opacity-80 transition-opacity"
@@ -274,24 +290,35 @@ const StoryOverview = () => {
 
           <div className="flex flex-col md:flex-row gap-4 mt-6 font-spartan">
             <button
-              className="flex-1 font-spartan bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 font-spartan bg-zinc-800 px-4 py-3 rounded-lg text-lg font-semibold shadow-md cursor-pointer hover:text-purple-600 transition-all duration-300"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
             </button>
 
             <button
-              className="flex-1 bg-gradient-to-r from-purple-400 to-purple-200 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition"
+              className="flex-1 font-spartan bg-zinc-800 px-4 py-3 rounded-lg text-lg font-semibold shadow-md cursor-pointer hover:text-purple-600 transition-all duration-300"
               onClick={handleReadLastChapter}
             >
               Đọc Tiếp
             </button>
 
             <button
-              className={`flex-1 bg-gradient-to-r ${isLiked ? "from-purple-200 to-purple-600" : "from-purple-600 to-purple-400"} text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:opacity-90 transition`}
+              className={`flex-1 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md transition-all duration-300 disabled:opacity-70 ${
+                isLiked
+                  ? "bg-gradient-to-r from-[#8B5CF6] to-[#632BD4] hover:from-[#7C3AED] hover:to-[#5A26C0]"
+                  : "bg-gradient-to-r from-[#632BD4] to-[#8B5CF6] hover:from-[#5A26C0] hover:to-[#7C3AED]"
+              }`}
               onClick={handleLike}
+              disabled={isCheckingLike}
             >
-              {isLiked ? "Đã Yêu Thích" : "Thêm Vào Yêu Thích"}
+              {isCheckingLike ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : isLiked ? (
+                "Đã Yêu Thích"
+              ) : (
+                "Thêm Vào Yêu Thích"
+              )}
             </button>
           </div>
         </div>

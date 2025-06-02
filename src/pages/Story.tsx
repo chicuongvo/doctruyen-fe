@@ -51,6 +51,12 @@ const Story = () => {
   const currentChapterRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    setChapters([]);
+    setSimilarStories([]);
+  }, [chapter]);
+
+  useEffect(() => {
     if (listRef.current && currentChapterRef.current) {
       const parent = listRef.current;
       const child = currentChapterRef.current;
@@ -138,56 +144,52 @@ const Story = () => {
 
       {/*Next And Previous Chapter*/}
 
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-4 mb-8">
         {/* Previous Chapter Button */}
         {currentChapter.chapter_number > 1 && (
           <button
-            className="flex cursor-pointer items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-purple-400 font-medium border-2 border-purple-400 transition-all duration-300 hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-400 hover:border-purple-600"
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
             onClick={handlePreviousChapter}
           >
-            <span className="flex justify-center gap-1 leading-none items-center">
-              <svg
-                className="w-5 h-5 stroke-purple-400 transition-all duration-300 hover:stroke-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 19l-7-7 7-7"
-                ></path>
-              </svg>
-              <span className="transition-all duration-300">Chương Trước</span>
-            </span>
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+            <span>Chương Trước</span>
           </button>
         )}
 
         {/* Next Chapter Button */}
         {currentChapter.chapter_number < chapters.length && (
           <button
-            className="flex items-center justify-center w-55 h-13 gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300 hover:from-purple-400 hover:to-purple-600"
             onClick={handleNextChapter}
           >
-            <span className="flex justify-center gap-1 leading-none">
-              Chương Sau
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5l7 7-7 7"
-                ></path>
-              </svg>
-            </span>
+            <span>Chương Sau</span>
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
           </button>
         )}
       </div>
