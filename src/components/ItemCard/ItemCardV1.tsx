@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import ImagePlaceholder from "../../assets/image-placeholder.svg";
 export default function ItemCardV1({ story }: { story: any }) {
   return (
-    <Link to={`/story/${story.story_id}`}>
+    <Link to={story.story_id ? `/story/${story.story_id}` : ""}>
       <div className="item-card-v1 flex gap-3 lg:border-1 lg:border-zinc-700 font-spartan rounded-xl p-3">
         <div className="w-[160px] max-md:w-[116px] flex-none h-[160px] md:h-[260px] bg-gray-900 rounded-lg">
           <img

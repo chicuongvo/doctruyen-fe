@@ -9,9 +9,9 @@ export interface Story {
 }
 
 interface PaginationParams {
-  page: number;
-  limit: number;
-  title: string;
+  page?: number;
+  limit?: number;
+  title?: string;
   genres?: string;
 }
 
@@ -28,7 +28,7 @@ export interface UpdateStoryDto {
 
 export const getAllStories = async (params: PaginationParams) => {
   return axiosClient.get(
-    `/stories?page=${params.page}&limit=${params.limit}&title=${params.title}${params.genres ? "&genres=" + params.genres : ""}`
+    `/stories?page=${params.page}&limit=${params.limit}&title=${params.title ?? ""}${params.genres ? "&genres=" + params.genres : ""}`
   );
 };
 

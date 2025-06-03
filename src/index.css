@@ -8,6 +8,14 @@
   display: none;
 }
 
+body {
+  font-family: "League Spartan", serif;
+}
+
+a.active {
+  color: var(--color-primary);
+}
+
 @custom-variant dark (&:is(.dark *));
 @theme {
   --color-primary: rgb(90, 41, 211);

@@ -19,7 +19,15 @@ function getPaginationRange(current: number, total: number) {
 
   return range;
 }
-function PageLink({ page, label }: { page: number | "..."; label: string }) {
+function PageLink({
+  page,
+  label,
+  active = false,
+}: {
+  page: number | "...";
+  label: string;
+  active: boolean;
+}) {
   const [params] = useSearchParams();
 
   const copyParams = new URLSearchParams(params);
@@ -35,7 +43,9 @@ function PageLink({ page, label }: { page: number | "..."; label: string }) {
   }
   return (
     <Link to={`${pathname}?${copyParams.toString()}`}>
-      <p className="p-2 bg-zinc-700 rounded-full w-[50px] h-[50px] flex items-center justify-center">
+      <p
+        className={`${active ? "text-primary" : ""} p-2 bg-zinc-700 rounded-full w-[50px] h-[50px] flex items-center justify-center`}
+      >
         {label}
       </p>
     </Link>
@@ -58,6 +68,7 @@ export default function Pagination({
             key={index}
             page={page}
             label={typeof page === "number" ? String(page) : page}
+            active={currentPage === page}
           />
         ))}
     </div>

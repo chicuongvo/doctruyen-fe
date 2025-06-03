@@ -6,7 +6,6 @@ import Spinner from "./Spinner";
 import Pagination from "./Pagination";
 
 export default function StoryCollection(props: {
-  description: string;
   serverURL: string;
   clientURL: string;
   title: string;
@@ -21,6 +20,7 @@ export default function StoryCollection(props: {
   const titleSearch = title || params.get("title") || "";
   const [loading, setIsLoading] = useState<boolean>(false);
   const genre = params.get("genre") || "";
+  const [total, setTotal] = useState(1);
 
   const [stories, setStories] = useState<any[]>(
     Array.from({ length: 10 }).fill(0)
@@ -37,6 +37,7 @@ export default function StoryCollection(props: {
     };
     fetchGenres();
   }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchStories = async () => {
@@ -49,6 +50,7 @@ export default function StoryCollection(props: {
           genres: genre,
         });
         setStories(response.data.data);
+        setTotal(Math.ceil(response.data.total / 10));
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching stories:", error);
@@ -117,7 +119,7 @@ export default function StoryCollection(props: {
             })}
         </div>
         <div className="mt-auto">
-          <Pagination currentPage={page} totalPages={100} />
+          <Pagination currentPage={page} totalPages={total} />
         </div>
       </div>
     </div>

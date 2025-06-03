@@ -1,7 +1,7 @@
 import { Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
@@ -33,13 +33,13 @@ export default function Navbar() {
 
   const renderOptions = (options: Option[]) => {
     return options.map(option => (
-      <Link
+      <NavLink
         to={option.path}
         className="hover:text-primary transition-all duration-300 "
         key={option.path}
       >
         {option.name}
-      </Link>
+      </NavLink>
     ));
   };
 
@@ -64,30 +64,30 @@ export default function Navbar() {
     <div className="font-spartan sticky top-0 z-50">
       <div className="w-full bg-zinc-800 border-b border-zinc-700 h-[60px] md:h-[64px] flex items-center p-5 justify-between text-[20px] shadow-xl z-20">
         <Logo />
-        <div className="md:flex md:flex-row md:gap-10 text-[#e5e7e3] hidden text-[18px] font-semibold md:block">
+        <div className="md:flex md:flex-row md:gap-10 text-[#e5e7e3] hidden text-[18px] font-semibold">
           {renderOptions(options)}
         </div>
 
         {userProfile ? (
           <div className="md:flex-row text-white md:flex md:gap-3 items-center justify-center">
-            <Link to="/profile">
+            <NavLink to="/profile">
               <img
                 src={userProfile.profile_pic}
                 alt="avatar"
                 className="w-[40px] h-[40px] rounded-full hidden md:block object-cover"
               />
-            </Link>
+            </NavLink>
             <LogOut
               className="hover:text-primary transition-all duration-500 cursor-pointer hidden md:block"
               onClick={handleSignOut}
             />
           </div>
         ) : (
-          <Link to="/signup">
+          <NavLink to="/signup">
             <button className="w-[124px] h-[50px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer hidden md:block">
               Đăng ký
             </button>
-          </Link>
+          </NavLink>
         )}
 
         {/* Mobile-sidebar */}
@@ -99,13 +99,13 @@ export default function Navbar() {
           />
         ) : (
           <div className="md:hidden flex flex-row gap-2">
-            <Link to="/profile">
+            <NavLink to="/profile">
               <img
                 src={userProfile?.profile_pic}
                 alt="avatar"
                 className={`w-[40px] h-[40px] rounded-full object-cover ${userProfile ? "block" : "hidden"}`}
               />
-            </Link>
+            </NavLink>
             <Menu
               className="text-white w-9 h-10 stroke-1 "
               onClick={handleOnClick}
