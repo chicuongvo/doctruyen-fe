@@ -83,7 +83,7 @@ function Login() {
         </div>
 
         <div className="flex flex-col justify-center items-center gap-5">
-          <form className="flex flex-col w-9/10 gap-5">
+          <form className="flex flex-col w-9/10 gap-5" onSubmit={handleSignIn}>
             <div className="flex flex-col text-white text-[18px] gap-2">
               <label htmlFor="identifier" className="font-semibold">
                 Tên đăng nhập/SĐT/Email
@@ -123,7 +123,7 @@ function Login() {
               <button
                 className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleSignIn}
-                type="button"
+                // type="button"
                 disabled={isLoading}
               >
                 {isLoading ? "Đang xử lý..." : "Đăng nhập"}

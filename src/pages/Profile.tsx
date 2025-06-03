@@ -112,7 +112,7 @@ export default function Profile() {
                 htmlFor="fileInput"
                 className="mt-3 w-[140px] h-[54px] flex items-center justify-center font-spartan text-[18px] text-primary border border-primary rounded-[15px] cursor-pointer bg-zinc-800 hover:bg-zinc-700 transition-all duration-500"
               >
-                Cập nhật ảnh đại diện
+                Cập nhật
               </label>
             </form>
           </div>
@@ -182,7 +182,7 @@ export default function Profile() {
 
             <div className="w-full items-center flex justify-center pt-5 gap-5">
               <button
-                className="w-[140px] h-[54px] font-spartan text-[18px] text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-violet-600 via-primary to-secondary rounded-[15px] cursor-pointer "
+                className="w-[140px] h-[54px] font-spartan text-[18px] text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleUpdate}
                 type="button"
                 disabled={isLoading}

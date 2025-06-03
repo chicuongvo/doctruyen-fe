@@ -1,6 +1,7 @@
 import { Bot, BotMessageSquare, Send } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "../contexts/userContext";
+import { toast } from "react-toastify";
 
 interface UserProfile {
   username: string;
@@ -133,6 +134,15 @@ export default function Chatbot() {
         ]);
         console.log(data.message);
       }
+    } else {
+      toast.error("Vui lòng đăng nhập", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        draggable: true,
+        theme: "dark",
+      });
     }
 
     setSendingMessage(false);

@@ -11,7 +11,7 @@ export default function BlogList(props: { title: string }) {
         const response = await fetch(`${API_BASE_URL}/blogs?limit=4`).then(
           (res) => res.json()
         );
-        setBlogs(response.data);
+        if (response.success) setBlogs(response.data);
       } catch (error) {
         console.error("Error fetching stories:", error);
       }
