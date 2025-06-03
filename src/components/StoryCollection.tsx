@@ -30,14 +30,13 @@ export default function StoryCollection(props: {
       try {
         setIsLoading(true);
         const response = await getGenres();
-        setGenres(response.data.data);
+        if (response.data.success) setGenres(response.data.data);
       } catch (error) {
         console.error("Error fetching genres:", error);
       }
     };
     fetchGenres();
   }, []);
-  console.log("RERENDER");
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchStories = async () => {
@@ -89,7 +88,10 @@ export default function StoryCollection(props: {
             {genres.length > 0 &&
               genres.map((value: any) => {
                 return (
-                  <Link to={`${location.pathname}?page=1&genre=${value.name}`}>
+                  <Link
+                    key={value.name}
+                    to={`${location.pathname}?page=1&genre=${value.name}`}
+                  >
                     <p
                       className={`p-4 w-full cursor-pointer border-1 border-l-0 bg-zinc-800 border-r-0 border-zinc-700 hover:bg-zinc-700`}
                     >
@@ -110,8 +112,8 @@ export default function StoryCollection(props: {
         </div>
         <div className="collection mt-5 grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
           {stories.length > 0 &&
-            stories.map((story: any) => {
-              return <ItemCardV1 key={story.id} story={story} />;
+            stories.map((story: any, index: Number) => {
+              return <ItemCardV1 key={story.id || index} story={story} />;
             })}
         </div>
         <div className="mt-auto">

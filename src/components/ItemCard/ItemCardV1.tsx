@@ -29,7 +29,9 @@ export default function ItemCardV1({ story }: { story: any }) {
             <span className=" line-clamp-3 text-sm">{story.description}</span>
           </div>
           <div className="flex justify-between text-sm items-center text-gray-400">
-            <span className="whitespace-nowrap">{story.like_counts} loves</span>
+            <span className="whitespace-nowrap">
+              {story.like_counts} Yêu thích
+            </span>
             <span>
               {story.progress == "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
             </span>

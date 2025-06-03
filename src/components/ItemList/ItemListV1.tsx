@@ -10,7 +10,6 @@ export default function ItemListV1(props: {
     Array.from({ length: 6 }).fill(0)
   );
 
-  console.log(stories.length);
   useEffect(() => {
     const fetchStories = async () => {
       try {
@@ -29,8 +28,8 @@ export default function ItemListV1(props: {
       <ListHeader title={props.title} link="/stories" />
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 items-stretch">
         {stories.length > 0 &&
-          stories.map((story: any) => {
-            return <ItemCardV1 key={story.id} story={story} />;
+          stories.map((story: any, index: Number) => {
+            return <ItemCardV1 key={story.story_id || index} story={story} />;
           })}
       </div>
     </div>
