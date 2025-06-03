@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,14 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, UserCog, Ban } from "lucide-react";
-import { Link } from "react-router-dom";
-// import { CreateUserDialog } from "@/components/create-user-dialog";
-// import { userApi, type UserResponse } from "@/lib/api-service";
-// import { useToast } from "@/components/ui/use-toast";
+import { Search, Ban } from "lucide-react";
+
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -31,12 +25,6 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { banUser, getAllUsers } from "@/api/users.api";
 import { toast } from "react-toastify";
-
-const banUserMock = (userId: string) => {
-  return new Promise<void>(resolve => {
-    setTimeout(resolve, 5000);
-  });
-};
 
 export default function UsersPage() {
   // const { toast } = useToast();
