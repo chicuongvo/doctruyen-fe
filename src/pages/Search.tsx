@@ -23,7 +23,6 @@ function Search() {
     }
 
     timeoutRef.current = setTimeout(() => {
-      console.log("TRI");
       setCurrentSearchValue(searchValue);
     }, 1000);
   };

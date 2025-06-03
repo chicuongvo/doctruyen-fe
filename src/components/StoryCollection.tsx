@@ -48,8 +48,10 @@ export default function StoryCollection(props: {
           title: titleSearch,
           genres: genre,
         });
-        setStories(response.data.data);
-        setIsLoading(false);
+        if (response.data.success) {
+          setStories(response.data.data);
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching stories:", error);
       }
