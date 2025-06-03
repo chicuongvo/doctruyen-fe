@@ -70,7 +70,7 @@ export default function UsersPage() {
   // Update the fetchUsers function to handle errors better
 
   const filteredUsers = users?.filter(
-    user =>
+    (user: any) =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.phone_number.toLowerCase().includes(searchTerm.toLowerCase())
@@ -131,7 +131,7 @@ export default function UsersPage() {
                 </TableHeader>
                 <TableBody>
                   {filteredUsers.length > 0 ? (
-                    filteredUsers.map(user => (
+                    filteredUsers.map((user: any) => (
                       <TableRow key={user.user_id}>
                         <TableCell className="font-medium">
                           {user.username}
@@ -193,7 +193,9 @@ export default function UsersPage() {
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
-                                    <AlertDialogCancel>Hủy</AlertDialogCancel>
+                                    <AlertDialogCancel disabled={isPending}>
+                                      Hủy
+                                    </AlertDialogCancel>
                                     <Button
                                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90 "
                                       onClick={() =>
