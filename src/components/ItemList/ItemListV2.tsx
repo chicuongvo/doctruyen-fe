@@ -25,8 +25,14 @@ export default function ItemListV2(props: { title: string }) {
       <div className="">
         <ListHeader title={title} link="/stories" />
         <div className="flex gap-2 overflow-auto gap-3 scrollbar-hidden justify-center">
-          {stories.map((story: any) => {
-            return <ItemCardV2 showTags={false} story={story} />;
+          {stories.map((story: any, index: Number) => {
+            return (
+              <ItemCardV2
+                key={story.story_id || index}
+                showTags={false}
+                story={story}
+              />
+            );
           })}
         </div>
       </div>

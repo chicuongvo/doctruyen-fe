@@ -22,7 +22,9 @@ export default function ItemCardV2(props: { showTags: boolean; story: any }) {
         </div>
         <div className="">
           <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
-          <span className="text-sm">{story.like_counts} Yêu Thích</span>
+          <span className="text-sm text-gray-400">
+            {story.like_counts} Yêu Thích
+          </span>
         </div>
       </div>
     </Link>
