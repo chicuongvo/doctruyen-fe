@@ -1,125 +1,229 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllUsers } from "../../../api/users.api";
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Search, UserCog, Ban } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
-import Spinner from "../../../components/Spinner";
+// import { CreateUserDialog } from "@/components/create-user-dialog";
+// import { userApi, type UserResponse } from "@/lib/api-service";
+// import { useToast } from "@/components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { banUser, getAllUsers } from "@/api/users.api";
+import { toast } from "react-toastify";
 
-interface User {
-  user_id: string;
-  google_id: string | null;
-  username: string;
-  email: string;
-  phone_number: string;
-  role: string;
-  fullname: string;
-  profile_pic: string;
-  created_at: string;
-  is_verified: boolean;
-  is_banned: boolean;
-}
+const banUserMock = (userId: string) => {
+  return new Promise<void>(resolve => {
+    setTimeout(resolve, 5000);
+  });
+};
 
-function UserList() {
-  const { isLoading, data } = useQuery({
-    queryFn: getAllUsers,
+export default function UsersPage() {
+  // const { toast } = useToast();
+  // const [users, setUsers] = useState<UserResponse[]>([]);
+  // const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openDialogId, setOpenDialogId] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
     queryKey: ["users"],
+    queryFn: getAllUsers,
   });
 
-  const users: User[] = data?.data?.data;
-  console.log(data?.data);
+  const { mutate, isPending } = useMutation({
+    mutationFn: banUser,
+    onSuccess: () => {
+      toast.success("Ban user thành công");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      // Đóng dialog sau khi ban thành công
+      setOpenDialogId(null);
+    },
+    onError: () => {
+      toast.error("Có lỗi xảy ra khi ban user");
+    },
+  });
 
-  if (isLoading || !users) {
-    return <Spinner />;
-  }
+  const users = data?.data.data;
+  // console.log(users);
+
+  // Update the fetchUsers function to handle errors better
+
+  const filteredUsers = users?.filter(
+    user =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.phone_number.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleBanUser = (userId: string) => {
+    mutate(userId);
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">User Management</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300 shadow-sm rounded-lg">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                User Info
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Contact
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Created At
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {users.map(user => (
-              <tr key={user.user_id} className="hover:bg-gray-50">
-                <td className="px-6 py-4">
-                  <div className="flex items-center">
-                    <div className="h-10 w-10 flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full object-cover"
-                        src={user.profile_pic}
-                        alt={user.username}
-                      />
-                    </div>
-                    <div className="ml-4">
-                      <div className="font-medium text-gray-900">
-                        {user.fullname}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        @{user.username}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-900">{user.email}</div>
-                  <div className="text-sm text-gray-500">
-                    {user.phone_number}
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                    {user.role}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex flex-col items-start gap-1">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.is_verified ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800 "}`}
-                    >
-                      {user.is_verified ? "Verified" : "Unverified"}
-                    </span>
-                    {user.is_banned && (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                        Banned
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {new Date(user.created_at).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 text-sm flex gap-1  text-gray-800 cursor-pointer">
-                  <Link to={`/admin/users/${user.user_id}`}>
-                    <Button>Edit</Button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            Users
+          </h1>
+          <p className="text-muted-foreground">Manage user accounts</p>
+        </div>
+        {/* <CreateUserDialog /> */}
       </div>
+
+      <Card className="px-4">
+        <CardHeader className="p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="flex items-center gap-2 w-full max-w-sm">
+              <Search className="h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search users..."
+                className="h-9"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-2 ml-auto">
+              <Button variant="outline" size="sm" onClick={() => {}}>
+                Refresh
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0 overflow-auto">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-32">
+              <p>Loading users...</p>
+            </div>
+          ) : (
+            <div className="w-full min-w-[640px]">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Username</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map(user => (
+                      <TableRow key={user.user_id}>
+                        <TableCell className="font-medium">
+                          {user.username}
+                        </TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.phone_number}</TableCell>
+                        <TableCell className="capitalize">
+                          {user.role}
+                        </TableCell>
+                        <TableCell>
+                          <div
+                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                              user.is_banned
+                                ? "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-300"
+                                : user.is_verified
+                                  ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300"
+                                  : "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-300"
+                            }`}
+                          >
+                            {user.is_banned
+                              ? "Banned"
+                              : user.is_verified
+                                ? "Verified"
+                                : "Pending"}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            {!user.is_banned && (
+                              <AlertDialog
+                                open={openDialogId === user.user_id}
+                                onOpenChange={isOpen => {
+                                  if (isOpen) {
+                                    setOpenDialogId(user.user_id);
+                                  } else {
+                                    setOpenDialogId(null);
+                                  }
+                                }}
+                              >
+                                <AlertDialogTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-destructive"
+                                  >
+                                    <Ban className="h-4 w-4" />
+                                    <span className="sr-only">Ban user</span>
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Ban User
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Bạn chắc chắn muốn BAN người dùng này?
+                                      Người dùng bị BAN sẽ không thể truy cập
+                                      trang web
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Hủy</AlertDialogCancel>
+                                    <Button
+                                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90 "
+                                      onClick={() =>
+                                        handleBanUser(user.user_id)
+                                      }
+                                      disabled={isPending}
+                                    >
+                                      {isPending ? "Đang xử lý..." : "Ban User"}
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="h-24 text-center">
+                        No users found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
-
-export default UserList;

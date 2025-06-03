@@ -1,14 +1,9 @@
 import { useUser } from "@/contexts/userContext";
-import { useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 function Admin() {
   const { userProfile } = useUser();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (userProfile?.role !== "ADMIN") navigate("/");
-  });
   if (userProfile?.role !== "ADMIN") return null;
   return (
     <div className="p-8">
