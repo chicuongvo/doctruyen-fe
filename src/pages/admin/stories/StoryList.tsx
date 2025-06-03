@@ -45,7 +45,7 @@ function StoryList() {
     <>
       <div className="flex">
         <Button asChild className="ml-auto">
-          <Link to="new">
+          <Link to="stories/new">
             <Plus className="mr-2 h-4 w-4" />
             Tạo truyện mới
           </Link>

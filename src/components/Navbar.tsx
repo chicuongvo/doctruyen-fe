@@ -28,8 +28,11 @@ export default function Navbar() {
     { name: "Yêu thích", path: "/liked-stories" },
   ];
 
+  if (userProfile?.role === "ADMIN")
+    options.push({ name: "Admin", path: "/admin" });
+
   const renderOptions = (options: Option[]) => {
-    return options.map((option) => (
+    return options.map(option => (
       <Link
         to={option.path}
         className="hover:text-primary transition-all duration-300 "
