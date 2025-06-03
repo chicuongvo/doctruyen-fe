@@ -9,6 +9,7 @@ interface UserProfile {
   is_verified: boolean;
   fullname: string;
   profile_pic: string;
+  role: string;
   story_likes: {
     like_id: string;
     liked_at: string;

@@ -69,6 +69,7 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <Admin />,
         children: [
+          { index: true, element: <StoryList /> }, // Đặt StoryList là component mặc định khi truy cập /admin
           { path: "/admin/users", element: <UserList /> },
           {
             path: "/admin/users/:userId",

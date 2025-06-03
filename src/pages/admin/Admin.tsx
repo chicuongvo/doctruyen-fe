@@ -1,6 +1,15 @@
-import { Link, Outlet } from "react-router-dom";
+import { useUser } from "@/contexts/userContext";
+import { useEffect } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 function Admin() {
+  const { userProfile } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userProfile?.role !== "ADMIN") navigate("/");
+  });
+  if (userProfile?.role !== "ADMIN") return null;
   return (
     <div className="p-8">
       <h1 className="text-center font-extrabold text-2xl">Admin Dashboard</h1>
