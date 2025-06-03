@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
 import ImagePlaceholder from "../../assets/image-placeholder.svg";
-export default function ItemCardV2(props: {
-  showTags: boolean;
-  story: any;
-  isLoading: boolean;
-}) {
+export default function ItemCardV2(props: { showTags: boolean; story: any }) {
   const { showTags, story } = props;
 
   return (

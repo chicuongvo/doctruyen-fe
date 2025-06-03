@@ -59,7 +59,6 @@ function Search() {
         </div>
         <div className="top-movies mt-10 text-white">
           <StoryCollection
-            description=""
             title={`${currentSearchValue}`}
             serverURL=""
             clientURL=""

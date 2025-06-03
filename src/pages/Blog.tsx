@@ -21,12 +21,10 @@ const Blog = () => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [suggestedBlogs, setSuggestedBlogs] = useState<Blog[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        setLoading(true);
         const blogResponse = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/blogs/${id}`
         );
@@ -44,8 +42,6 @@ const Blog = () => {
       } catch (err) {
         setError("Không thể lấy blog. Vui lòng thử lại sau.");
         console.error("Error:", err);
-      } finally {
-        setLoading(false);
       }
     };
 

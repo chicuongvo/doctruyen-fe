@@ -92,7 +92,7 @@ const StoryOverview = () => {
 
         if (userProfile) {
           const isStoryLiked = userProfile.story_likes?.some(
-            (like) => like.story_id === id
+            like => like.story_id === id
           );
           setIsLiked(isStoryLiked || false);
         }
@@ -266,7 +266,7 @@ const StoryOverview = () => {
             </div>
 
             <div className="flex flex-wrap gap-2 items-center">
-              {story.story_genres.map((g) => (
+              {story.story_genres.map(g => (
                 <Tag key={g.genre.genre_id} label={g.genre.name} />
               ))}
             </div>
@@ -327,7 +327,7 @@ const StoryOverview = () => {
       <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
-          {story.story_chapters.map((chapter) => (
+          {story.story_chapters.map(chapter => (
             <Chapter
               key={chapter.chapter_id}
               id={story.story_id}
@@ -359,7 +359,7 @@ const StoryOverview = () => {
             className="w-full p-4 h-32 rounded-lg bg-gray-800 text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
             placeholder="Bình luận lịch sự nhé!"
             value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
+            onChange={e => setNewComment(e.target.value)}
           />
           <button
             className="mt-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all duration-300"
@@ -376,7 +376,7 @@ const StoryOverview = () => {
           Có thể bạn cũng thích
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
-          {similarStories.map((story) => (
+          {similarStories.map(story => (
             <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>

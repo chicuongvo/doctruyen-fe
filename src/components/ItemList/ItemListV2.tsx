@@ -6,7 +6,7 @@ import { getAllStories } from "@/api/stories.api";
 export default function ItemListV2(props: { title: string }) {
   const { title } = props;
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryFn: () => getAllStories({ limit: 6, page: 1 }),
     queryKey: ["stories", 1],
   });
@@ -24,7 +24,6 @@ export default function ItemListV2(props: { title: string }) {
                 key={story.story_id || index}
                 showTags={false}
                 story={story}
-                isLoading={isLoading}
               />
             );
           })}

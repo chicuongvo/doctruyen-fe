@@ -8,7 +8,7 @@ export default function ItemListV1(props: {
   showButton: boolean;
   title: string;
 }) {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryFn: () => getAllStories({ limit: 6, page: 1 }),
     queryKey: ["stories", 1],
   });
