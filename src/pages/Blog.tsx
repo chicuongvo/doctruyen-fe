@@ -65,17 +65,17 @@ const Blog = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gray-900 text-white">
+    <div className="min-h-screen w-full bg-zinc-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-1">
-        <div className="w-full lg:w-3/4 lg:pr-6 lg:border-r lg:border-gray-700">
-          <p className="text-m font-bold text-gray-400 mb-8">
+        <div className="w-full lg:w-3/4 lg:pr-6 lg:border-r lg:border-zinc-700">
+          <p className="text-m font-bold text-zinc-400 mb-8">
             Blog / {blog.title}
           </p>
-          <div className="prose prose-invert max-w-none text-lg leading-loose bg-gray-800 p-8 rounded-xl shadow-xl">
+          <div className="prose prose-invert max-w-none text-lg leading-loose bg-zinc-800 p-8 rounded-xl shadow-xl">
             <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-            <p className="text-sm text-purple-400 mb-6">
+            <p className="text-sm text-secondary mb-6">
               By{" "}
-              <span className="text-indigo-400 font-semibold">
+              <span className="text-primary font-semibold">
                 {blog.author.username}
               </span>{" "}
               — {new Date(blog.created_at).toLocaleDateString("vi-VN")}
@@ -95,9 +95,9 @@ const Blog = () => {
             Gợi ý thêm
           </h2>
           <div className="space-y-6">
-            {suggestedBlogs.map(b => (
+            {suggestedBlogs.map((b) => (
               <Link to={`/blog/${b.blog_id}`} key={b.blog_id} className="block">
-                <div className="bg-gray-800 rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div className="bg-zinc-800 rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg">
                   <img
                     src={b.cover_image}
                     alt={b.title}
@@ -107,7 +107,7 @@ const Blog = () => {
                     <p className="font-semibold text-base text-white line-clamp-2">
                       {b.title}
                     </p>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-zinc-400">
                       {new Date(b.created_at).toLocaleDateString("vi-VN")}
                     </p>
                   </div>

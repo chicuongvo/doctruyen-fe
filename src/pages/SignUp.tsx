@@ -84,13 +84,13 @@ function SignUp() {
   };
 
   return (
-    <div className="bg-black font-spartan px-5 py-5 lg:px-60 ">
+    <div className="bg-black font-spartan px-5 py-5 lg:px-60 dark:bg-white">
       {contextHolder}
 
-      <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
-        <div className="text-white flex flex-col justify-center items-center gap-3">
+      <div className="bg-zinc-800 dark:bg-zinc-100 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
+        <div className="text-white flex flex-col justify-center items-center gap-3 dark:text-black">
           <div className="font-bold text-3xl ">Đăng ký</div>
-          <div className="text-lg text-center font-light text-[#e5e7eb]">
+          <div className="text-lg text-center font-light text-[#e5e7eb] dark:text-zinc-800">
             Tạo tài khoản mới
           </div>
           <img
@@ -103,7 +103,10 @@ function SignUp() {
         <div className="flex flex-col justify-center items-center gap-5">
           <form className="flex flex-col w-9/10  gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="username" className="font-semibold">
+              <label
+                htmlFor="username"
+                className="font-semibold dark:text-black"
+              >
                 Tên đăng nhập
               </label>
               <input
@@ -114,13 +117,13 @@ function SignUp() {
                 max={20}
                 pattern="^[a-zA-Z0-9]+$"
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="email" className="font-semibold">
+              <label htmlFor="email" className="font-semibold dark:text-black">
                 Email
               </label>
               <input
@@ -128,13 +131,13 @@ function SignUp() {
                 name="email"
                 placeholder="Nhập email"
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="phone" className="font-semibold">
+              <label htmlFor="phone" className="font-semibold dark:text-black">
                 Số điện thoại
               </label>
               <input
@@ -145,13 +148,16 @@ function SignUp() {
                 pattern="^[0-9\s]+$"
                 min={8}
                 max={12}
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2 relative ">
-              <label htmlFor="password" className="font-semibold">
+              <label
+                htmlFor="password"
+                className="font-semibold dark:text-black"
+              >
                 Mật khẩu
               </label>
               <input
@@ -161,7 +167,7 @@ function SignUp() {
                 required
                 min={6}
                 max={20}
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
@@ -174,7 +180,10 @@ function SignUp() {
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2 relative">
-              <label htmlFor="confirm_password" className="font-semibold">
+              <label
+                htmlFor="confirm_password"
+                className="font-semibold dark:text-black"
+              >
                 Xác nhận mật khẩu
               </label>
               <input
@@ -184,7 +193,7 @@ function SignUp() {
                 required
                 min={6}
                 max={20}
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <button
@@ -208,7 +217,7 @@ function SignUp() {
           </form>
 
           <div className="flex flex-row gap-2 ">
-            <div className="text-white">Đã có tài khoản? </div>
+            <div className="text-white dark:text-black">Đã có tài khoản? </div>
             <Link to="/login" className="text-primary underline">
               Đăng nhập
             </Link>

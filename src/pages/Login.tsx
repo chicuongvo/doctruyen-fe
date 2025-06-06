@@ -69,7 +69,7 @@ function Login() {
     <div className="bg-black font-spartan px-5 py-5 lg:px-60 dark:bg-white ">
       {contextHolder}
 
-      <div className="dark:bg-zinc-100 bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
+      <div className="dark:bg-zinc-100 bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600  border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
         <div className="text-white dark:text-black flex flex-col justify-center items-center gap-3">
           <div className="font-bold text-3xl ">Đăng nhập</div>
           <div className="text-lg text-center font-light text-[#e5e7eb] dark:text-zinc-800">

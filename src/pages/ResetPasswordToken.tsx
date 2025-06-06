@@ -34,12 +34,12 @@ function ResetPasswordToken() {
   };
 
   return (
-    <div className="bg-black font-spartan px-5 py-5 lg:px-60 ">
+    <div className="bg-black dark:bg-white font-spartan px-5 py-5 lg:px-60 ">
       {contextHolder}
-      <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 ">
-        <div className="text-white flex flex-col justify-center items-center gap-3">
+      <div className="bg-zinc-800 dark:bg-zinc-100 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 dark:text-black ">
+        <div className="text-white flex flex-col justify-center items-center gap-3 dark:text-black ">
           <div className="font-bold text-3xl ">Lấy lại mật khẩu</div>
-          <div className="text-lg text-center font-light text-[#e5e7eb]">
+          <div className="text-lg text-center font-light text-[#e5e7eb] dark:text-zinc-800">
             Chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu qua email cho bạn.
           </div>
           <img src={mail} alt="mail" className="scale-125" />
@@ -47,7 +47,7 @@ function ResetPasswordToken() {
 
         <div className="flex flex-col justify-center items-center gap-5">
           <form className="flex flex-col w-full gap-5">
-            <div className="flex flex-col text-white text-[18px] gap-2">
+            <div className="flex flex-col text-white text-[18px] gap-2 dark:text-black ">
               <label htmlFor="email" className="font-semibold">
                 Email
               </label>
@@ -56,7 +56,7 @@ function ResetPasswordToken() {
                 name="email"
                 placeholder="Nhập email"
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white dark:text-black border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -75,14 +75,14 @@ function ResetPasswordToken() {
 
           <div className="flex flex-col gap-2 w-full items-center justify-center">
             <div className="flex flex-row w-ful gap-2">
-              <div className="text-white ">
+              <div className="text-white dark:text-black">
                 Nếu bạn tiếp tục, bạn đồng ý với các
               </div>
             </div>
 
             <div className="flex flex-row gap-2">
               <div className="text-primary underline">Điều khoản sử dụng</div>
-              <div className="text-white"> và </div>
+              <div className="text-white dark:text-black"> và </div>
               <div className="text-primary underline">
                 Chính sách quyền riêng tư
               </div>
