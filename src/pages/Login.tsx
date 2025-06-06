@@ -66,13 +66,13 @@ function Login() {
   };
 
   return (
-    <div className="bg-black font-spartan px-5 py-5 lg:px-60 ">
+    <div className="bg-black font-spartan px-5 py-5 lg:px-60 dark:bg-white ">
       {contextHolder}
 
-      <div className="bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
-        <div className="text-white flex flex-col justify-center items-center gap-3">
+      <div className="dark:bg-zinc-100 bg-zinc-800 px-8 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
+        <div className="text-white dark:text-black flex flex-col justify-center items-center gap-3">
           <div className="font-bold text-3xl ">Đăng nhập</div>
-          <div className="text-lg text-center font-light text-[#e5e7eb]">
+          <div className="text-lg text-center font-light text-[#e5e7eb] dark:text-zinc-800">
             Đăng nhập vào tài khoản của bạn
           </div>
           <img
@@ -84,7 +84,7 @@ function Login() {
 
         <div className="flex flex-col justify-center items-center gap-5">
           <form className="flex flex-col w-9/10 gap-5">
-            <div className="flex flex-col text-white text-[18px] gap-2">
+            <div className="flex flex-col text-white dark:text-black text-[18px] gap-2">
               <label htmlFor="identifier" className="font-semibold">
                 Tên đăng nhập/SĐT/Email
               </label>
@@ -93,12 +93,12 @@ function Login() {
                 name="identifier"
                 placeholder="Tên đăng nhập/SĐT/Emaill"
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white dark:text-black dark:bg-zinc-200 border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
                 onChange={(e) => setIdentifer(e.target.value)}
               />
             </div>
 
-            <div className="flex flex-col text-white text-[18px] gap-2 relative ">
+            <div className="flex flex-col text-white text-[18px] gap-2 relative dark:text-black ">
               <label htmlFor="password" className="font-semibold">
                 Mật khẩu
               </label>
@@ -107,7 +107,7 @@ function Login() {
                 name="password"
                 placeholder="Mật khẩu"
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
@@ -133,14 +133,16 @@ function Login() {
 
           <div className="flex flex-col gap-2 w-full items-center justify-center">
             <div className="flex flex-row w-ful gap-2">
-              <div className="text-white ">Chưa có tài khoản? </div>
-              <Link to="/signup" className="text-primary underline">
+              <div className="text-white dark:text-black">
+                Chưa có tài khoản?{" "}
+              </div>
+              <Link to="/signup" className="text-primary underline ">
                 Đăng ký
               </Link>
             </div>
 
             <div className="flex flex-row gap-2">
-              <div className="text-white ">Quên mật khẩu? </div>
+              <div className="text-white dark:text-black">Quên mật khẩu? </div>
               <Link
                 to="/get-reset-password-token"
                 className="text-primary underline"
