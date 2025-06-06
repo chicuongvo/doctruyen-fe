@@ -24,7 +24,7 @@ function AppDownloadIcon(src: string) {
 }
 export default function Home() {
   return (
-    <div className="bg-black text-white">
+    <div className="bg-black text-white dark:bg-zinc-100 dark:text-black">
       <div className="banner py-20 relative w-full border-box font-spartan">
         <img
           className="w-full h-full absolute top-0 left-0 object-cover object-[54%_100%]"
@@ -65,16 +65,16 @@ export default function Home() {
         </div>
       </div>
       <div className="main-content py-8 px-[1rem] max-w-screen-xl mx-auto rounded-xl mx-auto box-border">
-        <div className="mb-6 p-8 rounded-xl shadow-md mx-auto bg-zinc-800">
+        <div className="mb-6 p-8 rounded-xl shadow-md mx-auto bg-zinc-800 dark:bg-zinc-200">
           <ItemListV2 title="Truyện hàng đầu" />
         </div>
-        <div className="p-8 mb-6 rounded-xl shadow-md mx-auto bg-zinc-800">
+        <div className="p-8 mb-6 rounded-xl shadow-md mx-auto bg-zinc-800 dark:bg-zinc-200">
           <ItemListV1 showButton={true} title="Truyện nên đọc" />
         </div>
-        <div className="rounded-xl mb-6">
+        <div className="rounded-xl mb-6 ">
           <BlogList title="Các blogs gần đây" />
         </div>
-        <div className="p-8 mb-6 rounded-xl shadow-md mx-auto bg-zinc-800">
+        <div className="p-8 mb-6 rounded-xl shadow-md mx-auto bg-zinc-800 dark:bg-zinc-200">
           <ItemListV2 title="Truyện cho trẻ" />
         </div>
       </div>

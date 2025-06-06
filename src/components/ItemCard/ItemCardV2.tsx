@@ -25,7 +25,9 @@ export default function ItemCardV2(props: {
           )}
         </div>
         <div className="">
-          <span className="line-clamp-2 min-h-[3rem]">{story.title}</span>
+          <span className="line-clamp-2 min-h-[3rem] font-semibold mt-2">
+            {story.title}
+          </span>
           <span className="text-sm text-gray-400">
             {story.like_counts} Yêu Thích
           </span>

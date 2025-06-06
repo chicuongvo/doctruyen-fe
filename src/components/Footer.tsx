@@ -27,7 +27,7 @@ const renderOptions = (options: Option[]) => {
 
 function Footer() {
   return (
-    <footer className="border-t border-zinc-700 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 ">
+    <footer className="border-t border-zinc-700 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 dark:bg-zinc-200 dark:text-black">
       <div className="border-b border-zinc-700 py-5 flex justify-between items-center">
         <Logo />
         <div className="lg:block hidden flex space-x-5">
@@ -70,7 +70,7 @@ function Footer() {
 
         <div className="space-y-2 ">
           <div className="text-[15px]">Theo dõi chúng tôi</div>
-          <div className="invert flex gap-3">
+          <div className="invert flex gap-3 dark:invert-0">
             <img
               alt="Facebook icon"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMicgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJz48ZyBmaWxsPSdub25lJz48cGF0aCBkPSdNMjkuMzMzMiAxNi4wMDAzQzI5LjMzMzIgOC42NDAzMyAyMy4zNTk4IDIuNjY2OTkgMTUuOTk5OCAyLjY2Njk5QzguNjM5ODQgMi42NjY5OSAyLjY2NjUgOC42NDAzMyAyLjY2NjUgMTYuMDAwM0MyLjY2NjUgMjIuNDUzNyA3LjI1MzE3IDI3LjgyNyAxMy4zMzMyIDI5LjA2N1YyMC4wMDAzSDEwLjY2NjVWMTYuMDAwM0gxMy4zMzMyVjEyLjY2N0MxMy4zMzMyIDEwLjA5MzcgMTUuNDI2NSA4LjAwMDMzIDE3Ljk5OTggOC4wMDAzM0gyMS4zMzMyVjEyLjAwMDNIMTguNjY2NUMxNy45MzMyIDEyLjAwMDMgMTcuMzMzMiAxMi42MDAzIDE3LjMzMzIgMTMuMzMzN1YxNi4wMDAzSDIxLjMzMzJWMjAuMDAwM0gxNy4zMzMyVjI5LjI2N0MyNC4wNjY1IDI4LjYwMDMgMjkuMzMzMiAyMi45MjAzIDI5LjMzMzIgMTYuMDAwM1onIGZpbGw9J2JsYWNrJy8+PC9nPjwvc3ZnPg=="
