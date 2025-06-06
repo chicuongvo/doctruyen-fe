@@ -36,7 +36,7 @@ export default function Navbar() {
     return options.map((option) => (
       <NavLink
         to={option.path}
-        className="hover:text-primary transition-all duration-300 "
+        className="hover:text-primary transition-all duration-300 whitespace-nowrap"
         key={option.path}
       >
         {option.name}
@@ -71,7 +71,9 @@ export default function Navbar() {
 
         {userProfile ? (
           <div className="md:flex-row text-white md:flex md:gap-3 items-center justify-center">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />{" "}
+            </div>
             <NavLink to="/profile">
               <img
                 src={userProfile.profile_pic}
@@ -86,7 +88,9 @@ export default function Navbar() {
           </div>
         ) : (
           <div className="flex flex-row gap-3 items-center justify-center">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <NavLink to="/signup">
               <button className="w-[124px] h-[50px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer hidden md:block">
                 Đăng ký
@@ -99,11 +103,12 @@ export default function Navbar() {
 
         {isSidebarOpen ? (
           <X
-            className="text-white w-9 h-10 stroke-1 md:hidden "
+            className="text-white w-9 h-10 stroke-1 md:hidden dark:text-black"
             onClick={handleOnClick}
           />
         ) : (
-          <div className="md:hidden flex flex-row gap-2">
+          <div className="md:hidden flex flex-row gap-2 ">
+            <ThemeToggle />
             <NavLink to="/profile">
               <img
                 src={userProfile?.profile_pic}
@@ -112,7 +117,7 @@ export default function Navbar() {
               />
             </NavLink>
             <Menu
-              className="text-white w-9 h-10 stroke-1 "
+              className="text-white w-9 h-10 stroke-1 dark:text-black"
               onClick={handleOnClick}
             />
           </div>
