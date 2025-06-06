@@ -24,6 +24,7 @@ a.active {
   --color-light: rgb(255, 255, 255);
   --font-spartan: "League Spartan", sans-serif;
   --font-poppins: "Poppins", sans-serif;
+  --animate-jump: jump 2s infinite;
 }
 
 @layer utilities {
@@ -147,5 +148,17 @@ a.active {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
