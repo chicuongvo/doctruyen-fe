@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Chapter from "../components/Chapter";
 import axios from "axios";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
 import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 import ChangeFontSize from "@/components/ChangeFontSize";
