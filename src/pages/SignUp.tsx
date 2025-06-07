@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
 import user from "../assets/images/user.jpg";
 import { createUser } from "@/api/users.api";
+import GoogleSignInButton from "@/components/GoogleSignIn";
 
 function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -204,7 +205,7 @@ function SignUp() {
                 {isVisibleConfirmPassword ? <Eye /> : <EyeClosed />}
               </button>
             </div>
-            <div className="w-full items-center flex justify-center pt-5">
+            <div className="w-full items-center flex flex-col gap-3 justify-center pt-5">
               <button
                 className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleSignUp}
@@ -215,12 +216,15 @@ function SignUp() {
               </button>
             </div>
           </form>
-
-          <div className="flex flex-row gap-2 ">
-            <div className="text-white dark:text-black">Đã có tài khoản? </div>
-            <Link to="/login" className="text-primary underline">
-              Đăng nhập
-            </Link>
+          <div className="flex flex-col gap-3 w-full justify-center items-center">
+            <div className="flex flex-row gap-2 ">
+              <div className="text-white dark:text-black">Đã có tài khoản?</div>
+              <Link to="/login" className="text-primary underline">
+                Đăng nhập
+              </Link>
+            </div>
+            <span className="text-white dark:text-black">hoặc</span>
+            <GoogleSignInButton />
           </div>
         </div>
       </div>

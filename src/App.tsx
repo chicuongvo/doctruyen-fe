@@ -35,6 +35,7 @@ import BlogList from "./pages/admin/blogs/BlogList";
 import BlogDetail from "./pages/admin/blogs/BlogDetail";
 import BlogEdit from "./pages/admin/blogs/BlogEdit";
 import BlogNew from "./pages/admin/blogs/BlogNew";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const queryClient = new QueryClient();
 
@@ -121,13 +122,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const clientId = import.meta.env.VITE_CLIENT_ID;
   return (
-    <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </UserProvider>
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={clientId}>
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <RouterProvider router={router} />
+          <ToastContainer />
+        </UserProvider>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
 

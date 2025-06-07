@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
 import { signIn } from "@/api/users.api";
+import GoogleSignInButton from "@/components/GoogleSignIn";
 
 function Login() {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -119,7 +120,7 @@ function Login() {
               </button>
             </div>
 
-            <div className="w-full items-center flex justify-center pt-5">
+            <div className="w-full flex-col gap-3 items-center flex justify-center pt-5">
               <button
                 className="w-[288px] h-[54px] font-spartan text-[18px] font-semibold text-white bg-gradient-to-r hover:bg-gradient-to-l transition-all duration-1000 ease-in-out from-primary to-secondary rounded-[15px] cursor-pointer "
                 onClick={handleSignIn}
@@ -128,6 +129,8 @@ function Login() {
               >
                 {isLoading ? "Đang xử lý..." : "Đăng nhập"}
               </button>
+              <span className="text-white dark:text-black">hoặc</span>
+              <GoogleSignInButton />
             </div>
           </form>
 
