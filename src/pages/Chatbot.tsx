@@ -55,7 +55,7 @@ export default function Chatbot() {
 
           <div>
             <div
-              className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[400px] break-words"
+              className="bg-zinc-700 text-zinc-200 dark:bg-zinc-300 text-zinc-700 text-sm p-3 rounded-xl max-w-[400px] break-words"
               dangerouslySetInnerHTML={{
                 __html: message.content
                   .replace(/^```html\s*/i, "")
@@ -157,8 +157,8 @@ export default function Chatbot() {
         }}
       />
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[90vw] lg:w-[50vw] h-[500px] bg-black flex justify-center items-center font-spartan overflow-hidden rounded-[20px]">
-          <div className=" h-full w-full bg-zinc-800 text-white flex flex-col justify-between">
+        <div className="absolute bottom-20 right-0 w-[90vw] lg:w-[50vw] h-[500px] bg-black dark:bg-white flex justify-center items-center font-spartan overflow-hidden rounded-[20px]">
+          <div className=" h-full w-full bg-zinc-800 dark:bg-zinc-200 text-white flex flex-col justify-between">
             <div className="flex flex-row px-5 py-4 gap-4 w-full bg-gradient-to-r from-violet-600 via-primary to-secondary rounded-t-[15px] items-center">
               <div>
                 <BotMessageSquare className="w-8 h-8" />
@@ -176,7 +176,7 @@ export default function Chatbot() {
                   <div className="bg-violet-200 rounded-full p-1">
                     <Bot className="text-secondary w-8 h-8" />
                   </div>
-                  <div className="bg-zinc-700 text-zinc-200 text-sm p-3 rounded-xl max-w-[300px] break-words flex justify-center items-center">
+                  <div className="bg-zinc-700 text-zinc-200 dark:bg-zinc-300 dark:text-zin text-sm p-3 rounded-xl max-w-[300px] break-words flex justify-center items-center">
                     <div className="w-full gap-x-2 flex justify-center items-center">
                       <div className="w-2 bg-primary animate-pulse h-2 rounded-full animate-bounce flex justify-center items-center"></div>
                       <div className="w-2 animate-pulse h-2 bg-secondary rounded-full animate-bounce flex justify-center items-center"></div>
@@ -190,7 +190,7 @@ export default function Chatbot() {
             <div className="border-t border-zinc-500">
               <form className="px-4 py-3 flex flex-row gap-3">
                 <input
-                  className="border border-zinc-500 rounded-[15px] w-full px-2 py-3 focus:outline-primary"
+                  className="border border-zinc-500 rounded-[15px] w-full px-2 py-3 focus:outline-primary dark:text-black"
                   type="text"
                   value={formData}
                   placeholder="Type your message..."
