@@ -149,7 +149,7 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="fixed z-999 bottom-4 right-5 bg-white dark:bg-black hover:bg-white/80 p-3 rounded-full shadow-lg transition-colors duration-300">
+    <div className="fixed z-999 bottom-4 right-8 bg-white dark:bg-black hover:bg-white/80 p-3 rounded-full shadow-lg transition-colors duration-300">
       <Bot
         className="w-6 h-6 text-secondary cursor-pointer"
         onClick={() => {

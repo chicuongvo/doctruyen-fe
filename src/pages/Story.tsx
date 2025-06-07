@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Chapter from "../components/Chapter";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
 import ItemCardV2 from "../components/ItemCard/ItemCardV2";
+import ChangeFontSize from "@/components/ChangeFontSize";
+// import ChangeFontSize from "@/components/ChangeFontSize";
 
 interface ChapterData {
   chapter_id: string;
@@ -49,6 +51,7 @@ const Story = () => {
   });
   const listRef = useRef<HTMLDivElement | null>(null);
   const currentChapterRef = useRef<HTMLDivElement | null>(null);
+  const [fontSize, setFontSize] = useState(18);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -118,9 +121,13 @@ const Story = () => {
   }
 
   return (
-    <div className="bg-black p-8 text-white font-spartan dark:bg-white dark:text-black ">
+    <div className="bg-black p-8 text-white font-spartan dark:bg-white dark:text-black relative">
+      <div className="sticky top-20  z-50 flex justify-end">
+        <ChangeFontSize fontSize={fontSize} setFontSize={setFontSize} />
+      </div>
+
       {/* Chapter Content */}
-      <div className="max-w-[800px] w-full m-auto mb-8">
+      <div className="max-w-[800px] w-full m-auto mb-8 ">
         <div className="bg-zinc-800 rounded-xl p-4 dark:bg-zinc-200">
           <div className="flex items-center gap-3 mb-2">
             <h3 className="text-lg font-semibold text-white dark:text-black">
@@ -134,19 +141,19 @@ const Story = () => {
           />
         </div>
       </div>
-
       <div className="p-8 max-w-[800px] w-full m-auto max-md:p-4 overflow-hidden">
         <h2 className="text-3xl font-bold mb-8 max-md:text-2xl text-white dark:text-black">
           <strong>Chương {currentChapter.chapter_number}: </strong>
           <strong>{currentChapter.title}</strong>
         </h2>
-        <div className=" text-white leading-relaxed whitespace-pre-wrap text-xl mb-8 dark:text-black">
+        <div
+          className={`text-white leading-relaxed whitespace-pre-wrap mb-8 dark:text-black`}
+          style={{ fontSize: `${fontSize}px`, lineHeight: "1.8" }}
+        >
           {currentChapter.content}
         </div>
       </div>
-
       {/*Next And Previous Chapter*/}
-
       <div className="flex justify-center gap-4 mb-8">
         {/* Previous Chapter Button */}
         {currentChapter.chapter_number > 1 && (
@@ -196,7 +203,6 @@ const Story = () => {
           </button>
         )}
       </div>
-
       {/* All chapters */}
       <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 dark:bg-zinc-100 dark:text-black">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
@@ -223,7 +229,6 @@ const Story = () => {
           ))}
         </div>
       </div>
-
       {/* Suggested story */}
       <div className="bg-zinc-900 mt-8 p-6 rounded-xl dark:bg-zinc-100 dark:text-black">
         <h3 className="text-3xl font-bold text-white mb-8 dark:text-black">

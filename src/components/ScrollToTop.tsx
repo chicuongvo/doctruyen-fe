@@ -17,7 +17,7 @@ export default function ScrollToTop() {
   }, []);
   return (
     <button
-      className={`bg-white dark:bg-black p-2 rounded-full fixed bottom-30 right-[25px] z-30 cursor-pointer animate-jump ${
+      className={`bg-white dark:bg-black p-2 rounded-full fixed bottom-30  right-8 z-30 cursor-pointer animate-jump ${
         isVisible ? "block" : "hidden"
       }`}
       onClick={handleScrollUp}
