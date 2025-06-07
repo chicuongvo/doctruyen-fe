@@ -25,7 +25,7 @@ export default function ItemCardV1({ story }: { story: any }) {
                 : "Chưa xác định thể loại"}
             </span>
           </div>
-          <div className="description-field grow text-gray-400">
+          <div className="description-field grow text-gray-400 dark:text-gray-600">
             <span className=" line-clamp-3 text-sm">{story.description}</span>
           </div>
           <div className="flex justify-between text-sm items-center text-gray-400">

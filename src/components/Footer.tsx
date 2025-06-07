@@ -27,8 +27,8 @@ const renderOptions = (options: Option[]) => {
 
 function Footer() {
   return (
-    <footer className="border-t border-zinc-700 dark:border-zinc-400 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 dark:bg-zinc-200 dark:text-black">
-      <div className="border-b border-zinc-700 dark:border-zinc-400 py-5 flex justify-between items-center">
+    <footer className="border-t border-zinc-700 dark:border-zinc-300 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 dark:bg-zinc-100 dark:text-black">
+      <div className="border-b border-zinc-700 dark:border-zinc-300 py-5 flex justify-between items-center">
         <Logo />
         <div className="lg:block hidden flex space-x-5">
           {" "}
@@ -36,7 +36,7 @@ function Footer() {
         </div>
       </div>
 
-      <div className="border-zinc-700 dark:border-zinc-400 border-b py-5 md:py-10 space-y-10 md:space-y-0 md:flex md:justify-between md:items-center h-max">
+      <div className="border-zinc-700 dark:border-zinc-300 border-b py-5 md:py-10 space-y-10 md:space-y-0 md:flex md:justify-between md:items-center h-max">
         <div className="space-y-2 md:space-y-0">
           <div className="text-[15px]">Tải app ở</div>
 

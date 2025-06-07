@@ -36,7 +36,7 @@ function PageLink({
 
   if (page === "...") {
     return (
-      <p className="p-2 bg-zinc-700 rounded-full w-[50px] h-[50px] flex items-center justify-center">
+      <p className="p-2 bg-zinc-700 rounded-full w-[50px] h-[50px] flex items-center justify-center dark:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-500 cursor-pointer">
         {label}
       </p>
     );
@@ -44,7 +44,7 @@ function PageLink({
   return (
     <Link to={`${pathname}?${copyParams.toString()}`}>
       <p
-        className={`${active ? "text-primary" : ""} p-2 bg-zinc-700 rounded-full w-[50px] h-[50px] flex items-center justify-center`}
+        className={`${active ? "text-primary" : ""} p-2 bg-zinc-700 rounded-full w-[50px] h-[50px] flex items-center justify-center dark:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-500 cursor-pointer`}
       >
         {label}
       </p>

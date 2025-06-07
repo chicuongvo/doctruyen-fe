@@ -63,7 +63,7 @@ export default function Navbar() {
 
   return (
     <div className="font-spartan sticky top-0 z-50 ">
-      <div className="w-full bg-zinc-800 border-b border-zinc-700 dark:border-zinc-400 h-[60px] md:h-[64px] flex items-center p-5 justify-between text-[20px] shadow-xl z-20 dark:bg-zinc-200 dark:text-black">
+      <div className="w-full bg-zinc-800 border-b border-zinc-700 dark:border-zinc-300 h-[60px] md:h-[64px] flex items-center p-5 justify-between text-[20px] shadow-xl z-20 dark:bg-zinc-100 dark:text-black">
         <Logo />
         <div className="md:flex md:flex-row md:gap-10 text-[#e5e7e3] hidden text-[18px] font-semibold dark:text-black">
           {renderOptions(options)}
@@ -82,7 +82,7 @@ export default function Navbar() {
               />
             </NavLink>
             <LogOut
-              className="hover:text-primary transition-all duration-500 cursor-pointer hidden md:block"
+              className="hover:text-primary transition-all duration-500 cursor-pointer hidden md:block dark:text-black dark:hover:text-primary"
               onClick={handleSignOut}
             />
           </div>

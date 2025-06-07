@@ -118,12 +118,14 @@ const Story = () => {
   }
 
   return (
-    <div className="bg-black p-8 text-white font-spartan">
+    <div className="bg-black p-8 text-white font-spartan dark:bg-white dark:text-black ">
       {/* Chapter Content */}
       <div className="max-w-[800px] w-full m-auto mb-8">
-        <div className="bg-zinc-800 rounded-xl p-4">
+        <div className="bg-zinc-800 rounded-xl p-4 dark:bg-zinc-200">
           <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-semibold text-white">Nghe truyện</h3>
+            <h3 className="text-lg font-semibold text-white dark:text-black">
+              Nghe truyện
+            </h3>
           </div>
           <audio
             controls
@@ -134,10 +136,11 @@ const Story = () => {
       </div>
 
       <div className="p-8 max-w-[800px] w-full m-auto max-md:p-4 overflow-hidden">
-        <h2 className="text-3xl font-bold mb-8 max-md:text-2xl text-white">
-          <strong>Chương {currentChapter.chapter_number}</strong>
+        <h2 className="text-3xl font-bold mb-8 max-md:text-2xl text-white dark:text-black">
+          <strong>Chương {currentChapter.chapter_number}: </strong>
+          <strong>{currentChapter.title}</strong>
         </h2>
-        <div className=" text-white leading-relaxed whitespace-pre-wrap text-xl mb-8">
+        <div className=" text-white leading-relaxed whitespace-pre-wrap text-xl mb-8 dark:text-black">
           {currentChapter.content}
         </div>
       </div>
@@ -195,7 +198,7 @@ const Story = () => {
       </div>
 
       {/* All chapters */}
-      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10">
+      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 dark:bg-zinc-100 dark:text-black">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
 
         <div
@@ -222,8 +225,8 @@ const Story = () => {
       </div>
 
       {/* Suggested story */}
-      <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
-        <h3 className="text-3xl font-bold text-white mb-8">
+      <div className="bg-zinc-900 mt-8 p-6 rounded-xl dark:bg-zinc-100 dark:text-black">
+        <h3 className="text-3xl font-bold text-white mb-8 dark:text-black">
           Có thể bạn cũng thích
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">

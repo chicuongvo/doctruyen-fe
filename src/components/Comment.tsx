@@ -5,9 +5,9 @@ interface CommentProps {
 
 export default function Comment({ username, content }: CommentProps) {
   return (
-    <div className="bg-black p-3 rounded-lg inline-block max-w-fit ">
-      <span className="text-purple-600 font-bold">{username}: </span>
-      <p className="text-white inline">{content}</p>
+    <div className="bg-black p-3 rounded-lg inline-block max-w-fit dark:bg-white">
+      <span className="text-secondary font-bold">{username}: </span>
+      <p className="text-white inline dark:text-black">{content}</p>
     </div>
   );
 }

@@ -92,7 +92,7 @@ const StoryOverview = () => {
 
         if (userProfile) {
           const isStoryLiked = userProfile.story_likes?.some(
-            like => like.story_id === id
+            (like) => like.story_id === id
           );
           setIsLiked(isStoryLiked || false);
         }
@@ -205,7 +205,7 @@ const StoryOverview = () => {
   }
 
   return (
-    <div className="bg-black p-4 md:p-8 text-white font-spartan">
+    <div className="bg-black p-4 md:p-8 text-white font-spartan dark:bg-white dark:text-black">
       {showLoginWarning && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -235,7 +235,7 @@ const StoryOverview = () => {
         </motion.div>
       )}
       {/* Phần giới thiệu */}
-      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl bg-zinc-900 gap-6 md:gap-8 mt-4">
+      <div className="flex flex-col md:flex-row p-4 md:p-8 rounded-xl bg-zinc-900 gap-6 md:gap-8 mt-4 dark:bg-zinc-100 dark:text-black">
         {/* Ảnh bìa */}
         <div className="md:max-w-md mx-auto md:mx-0 flex-shrink-0">
           <div className="w-full h-[360px] flex items-center justify-center rounded-lg overflow-hidden">
@@ -250,30 +250,34 @@ const StoryOverview = () => {
         {/* Thông tin truyện */}
         <div className="flex-1 flex flex-col justify-between font-spartan">
           <div className="space-y-4">
-            <h1 className="text-3xl font-bold text-white font-spartan">
+            <h1 className="text-3xl font-bold text-white font-spartan dark:text-black">
               {story.title}
             </h1>
 
-            <div className="text-white space-y-1">
+            <div className="text-white dark:text-black space-y-1">
               <p>
-                <span className="font-semibold text-zinc-400">Tác giả:</span>{" "}
+                <span className="font-semibold text-zinc-400 dark:text-zinc-600">
+                  Tác giả:
+                </span>{" "}
                 {story.author_name}
               </p>
               <p>
-                <span className="font-semibold text-zinc-400">Tiến độ:</span>{" "}
+                <span className="font-semibold text-zinc-400 dark:text-zinc-600">
+                  Tiến độ:
+                </span>{" "}
                 {story.progress === "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2 items-center">
-              {story.story_genres.map(g => (
+              {story.story_genres.map((g) => (
                 <Tag key={g.genre.genre_id} label={g.genre.name} />
               ))}
             </div>
 
             <div className="space-y-2">
               <p
-                className={`text-zinc-400 break-words leading-relaxed ${!isDescriptionExpanded && "line-clamp-3"}`}
+                className={`text-zinc-400 break-words leading-relaxed dark:text-zinc-600 ${!isDescriptionExpanded && "line-clamp-3"}`}
               >
                 {story.description}
               </p>
@@ -290,14 +294,14 @@ const StoryOverview = () => {
 
           <div className="flex flex-col md:flex-row gap-4 mt-6 font-spartan">
             <button
-              className="flex-1 font-spartan bg-zinc-800 px-4 py-3 rounded-lg text-lg font-semibold shadow-md cursor-pointer hover:text-purple-600 transition-all duration-300"
+              className="flex-1 font-spartan bg-zinc-800 dark:bg-zinc-300 px-4 py-3 rounded-lg text-lg font-semibold shadow-md cursor-pointer hover:text-purple-600 transition-all duration-300"
               onClick={handleReadChapter1}
             >
               Đọc Chương 1
             </button>
 
             <button
-              className="flex-1 font-spartan bg-zinc-800 px-4 py-3 rounded-lg text-lg font-semibold shadow-md cursor-pointer hover:text-purple-600 transition-all duration-300"
+              className="flex-1 font-spartan bg-zinc-800 dark:bg-zinc-300 px-4 py-3 rounded-lg text-lg font-semibold shadow-md cursor-pointer hover:text-purple-600 transition-all duration-300"
               onClick={handleReadLastChapter}
             >
               Đọc Tiếp
@@ -324,10 +328,10 @@ const StoryOverview = () => {
         </div>
       </div>
       {/* Danh sách chương */}
-      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan">
+      <div className="bg-zinc-900 dark:bg-zinc-100 dark:text-black text-white p-6 rounded-xl mt-10 font-spartan">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
-          {story.story_chapters.map(chapter => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto ">
+          {story.story_chapters.map((chapter) => (
             <Chapter
               key={chapter.chapter_id}
               id={story.story_id}
@@ -338,7 +342,7 @@ const StoryOverview = () => {
       </div>
       {/* Bình luận */}
 
-      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan">
+      <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan dark:bg-zinc-100 dark:text-black">
         <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
         <div className="flex flex-col space-y-3 max-h-[300px] overflow-y-auto">
           {comments.map((comment, index) => (
@@ -352,14 +356,14 @@ const StoryOverview = () => {
 
         {/* Thêm bình luận */}
         <div className="mt-6">
-          <label className="text-xl font-bold text-gray-300 block mb-2">
+          <label className="text-xl font-bold text-zinc-300 block mb-2 dark:text-zinc-700">
             Viết bình luận của bạn
           </label>
           <textarea
-            className="w-full p-4 h-32 rounded-lg bg-gray-800 text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+            className="w-full p-4 h-32 rounded-lg bg-zinc-800 dark:bg-white dark:text-black text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
             placeholder="Bình luận lịch sự nhé!"
             value={newComment}
-            onChange={e => setNewComment(e.target.value)}
+            onChange={(e) => setNewComment(e.target.value)}
           />
           <button
             className="mt-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all duration-300"
@@ -371,12 +375,12 @@ const StoryOverview = () => {
       </div>
 
       {/* Suggested story */}
-      <div className="bg-zinc-900 mt-8 p-6 rounded-xl">
-        <h3 className="text-3xl font-bold text-white mb-8">
+      <div className="bg-zinc-900 mt-8 p-6 rounded-xl dark:bg-zinc-100 dark:text-black">
+        <h3 className="text-3xl font-bold text-white mb-8 dark:text-black">
           Có thể bạn cũng thích
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
-          {similarStories.map(story => (
+          {similarStories.map((story) => (
             <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>

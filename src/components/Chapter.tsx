@@ -16,7 +16,7 @@ const Chapter = ({
   return (
     <div
       onClick={handleClick}
-      className="bg-zinc-800 px-4 py-3 rounded-xl text-lg cursor-pointer transition duration-300 hover:text-purple-600"
+      className="bg-zinc-800 px-4 py-3 rounded-xl text-lg cursor-pointer transition duration-300 hover:text-secondary dark:bg-zinc-200 dark:text-black dark:hover:text-secondary"
     >
       Chương {chapter}
     </div>

@@ -63,9 +63,9 @@ export default function StoryCollection(props: {
     return <Spinner />;
   }
   return (
-    <div className="lg:flex font-spartan lg:min-h-screen">
+    <div className="lg:flex font-spartan lg:min-h-screen ">
       {showFilter && (
-        <div className="filter mr-3 h-fit flex-none lg:w-[290px] w-full flex flex-col shadow-xl rounded-xl overflow-hidden">
+        <div className="filter mr-3 h-fit flex-none lg:w-[290px] w-full flex flex-col shadow-xl rounded-xl overflow-hidden ">
           <input
             type="checkbox"
             id="filter-toggle"
@@ -76,17 +76,17 @@ export default function StoryCollection(props: {
             htmlFor="filter-toggle"
             className="peer-checked:[&>*>*:nth-child(2)]:rotate-180"
           >
-            <div className="filter-header px-3 py-6 flex items-center justify-between transition-transform text-lg font-semibold  ">
-              <p>Chọn thể loại</p>
+            <div className="filter-header px-4 py-4 flex items-center justify-between transition-transform text-lg font-semibold  bg-zinc-800  dark:bg-zinc-100 text-white dark:text-black">
+              <p className="text-xl">Chọn thể loại</p>
               <div
-                className="w-[15px] h-[15px] bg-white"
+                className="w-[15px] h-[15px] bg-white dark:bg-black"
                 style={{
                   clipPath: "polygon(0% 100%, 50% 0%, 100% 100%)",
                 }}
               ></div>
             </div>
           </label>
-          <div className="filter-content flex flex-col peer-checked:hidden transition-all duration-1000 border-zinc-700 border rounded-xl overflow-hidden">
+          <div className="filter-content flex flex-col peer-checked:hidden transition-all duration-1000 border-zinc-700 border rounded-b-xl overflow-hidden  dark:border-zinc-300 ">
             {genres.length > 0 &&
               genres.map((value: any) => {
                 return (
@@ -95,7 +95,7 @@ export default function StoryCollection(props: {
                     to={`${location.pathname}?page=1&genre=${value.name}`}
                   >
                     <p
-                      className={`p-4 w-full cursor-pointer border-1 border-l-0 bg-zinc-800 border-r-0 border-zinc-700 hover:bg-zinc-700`}
+                      className={`p-4 w-full cursor-pointer border-1 border-l-0 bg-zinc-800 border-r-0 border-zinc-700 hover:bg-zinc-700 dark:bg-zinc-100 dark:hover:bg-zinc-300 dark:border-zinc-200  `}
                     >
                       {value.name}
                     </p>
@@ -106,7 +106,7 @@ export default function StoryCollection(props: {
         </div>
       )}
 
-      <div className="shadow-xl p-6 flex flex-1 bg-zinc-800 rounded-xl flex-col">
+      <div className="shadow-xl p-6 flex flex-1 bg-zinc-800 rounded-xl flex-col dark:bg-zinc-100 dark:text-black">
         <div>
           <h1 className="font-bold text-2xl">
             {genre == "" ? "Tất cả thể loại" : genre}
