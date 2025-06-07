@@ -4,7 +4,7 @@ export default function BlogCard(props: { blog: any }) {
   const { blog } = props;
   return (
     <Link to={`/blog/${blog.blog_id}`}>
-      <div className="blog-card font-spartan rounded-xl overflow-hidden bg-zinc-800 shadow-xl">
+      <div className="blog-card font-spartan rounded-xl overflow-hidden bg-zinc-800 shadow-xl dark:bg-zinc-200">
         <div className="h-[191px] w-full overflow-hidden">
           <img
             src={blog.cover_image || ImagePlaceHolder}

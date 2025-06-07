@@ -30,7 +30,7 @@ export default function Sidebar({
       <Link to={option.path} key={option.path}>
         <div
           key={option.path}
-          className="text-white h-[54px] w-full text-[16px] font-semibold font-spartan flex "
+          className="text-white dark:text-black  h-[54px] w-full text-[16px] font-semibold font-spartan flex "
           onClick={handleOnClick}
         >
           {option.name}
@@ -59,7 +59,7 @@ export default function Sidebar({
 
   return (
     <header
-      className={`fixed top-[60px] right-0 h-screen w-screen bg-dark shadow-xl transition-transform duration-500 flex z-30 flex-col items-center p-5 ${
+      className={`fixed top-[60px] right-0 h-screen w-screen bg-dark dark:bg-zinc-100 dark:text-black shadow-xl transition-transform duration-500 flex z-30 flex-col items-center p-5 ${
         isSidebarOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >

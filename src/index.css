@@ -24,6 +24,7 @@ a.active {
   --color-light: rgb(255, 255, 255);
   --font-spartan: "League Spartan", sans-serif;
   --font-poppins: "Poppins", sans-serif;
+  --animate-jump: jump 2s infinite;
 }
 
 @layer utilities {
@@ -114,9 +115,9 @@ a.active {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  /* --primary: oklch(0.922 0 0); */
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  /* --secondary: oklch(0.269 0 0); */
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
@@ -147,5 +148,17 @@ a.active {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }

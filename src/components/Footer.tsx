@@ -27,8 +27,8 @@ const renderOptions = (options: Option[]) => {
 
 function Footer() {
   return (
-    <footer className="border-t border-zinc-700 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 ">
-      <div className="border-b border-zinc-700 py-5 flex justify-between items-center">
+    <footer className="border-t border-zinc-700 dark:border-zinc-400 bg-zinc-800 font-spartan text-[#e5e7e3] px-6 py-5 dark:bg-zinc-200 dark:text-black">
+      <div className="border-b border-zinc-700 dark:border-zinc-400 py-5 flex justify-between items-center">
         <Logo />
         <div className="lg:block hidden flex space-x-5">
           {" "}
@@ -36,7 +36,7 @@ function Footer() {
         </div>
       </div>
 
-      <div className="border-zinc-700 border-b py-5 md:py-10 space-y-10 md:space-y-0 md:flex md:justify-between md:items-center h-max">
+      <div className="border-zinc-700 dark:border-zinc-400 border-b py-5 md:py-10 space-y-10 md:space-y-0 md:flex md:justify-between md:items-center h-max">
         <div className="space-y-2 md:space-y-0">
           <div className="text-[15px]">Tải app ở</div>
 
@@ -48,7 +48,7 @@ function Footer() {
               />
               <img
                 alt="Google Store Icon"
-                className="invert"
+                className="invert dark:invert-0"
                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32'%3E%3Cg fill='none'%3E%3Cpath d='M19.9199 6.91935C20.4239 6.33839 20.8083 5.66358 21.0508 4.93366C21.2934 4.20375 21.3893 3.43312 21.3332 2.66602C19.7857 2.79093 18.3492 3.51876 17.3332 4.69268C16.8467 5.25532 16.478 5.90985 16.249 6.61754C16.0199 7.32523 15.9352 8.07167 15.9999 8.81268C16.7547 8.81897 17.5009 8.65148 18.1807 8.32316C18.8604 7.99484 19.4555 7.51451 19.9199 6.91935ZM23.2799 16.8393C23.2888 15.8177 23.5579 14.8151 24.0618 13.9263C24.5657 13.0375 25.2878 12.2917 26.1599 11.7593C25.6095 10.9663 24.8819 10.3125 24.0349 9.84958C23.1878 9.3867 22.2445 9.12755 21.2799 9.09268C19.1999 8.87935 17.2799 10.306 16.1732 10.306C15.0665 10.306 13.5065 9.11935 11.7732 9.14602C10.6401 9.18334 9.53591 9.51372 8.56848 10.1049C7.60105 10.6961 6.80336 11.528 6.25322 12.5194C3.90655 16.5993 5.65322 22.666 7.99988 25.9593C9.06655 27.5727 10.3999 29.3993 12.1599 29.3327C13.9199 29.266 14.4932 28.2393 16.5332 28.2393C18.5732 28.2393 19.1999 29.3327 20.9332 29.2927C22.6665 29.2527 23.8932 27.6394 25.0132 26.026C25.8066 24.8547 26.4264 23.5748 26.8532 22.226C25.7965 21.7754 24.895 21.0251 24.2599 20.0678C23.6249 19.1105 23.2842 17.9881 23.2799 16.8393Z' fill='black'/%3E%3C/g%3E%3C/svg%3E"
               />
             </div>
@@ -70,7 +70,7 @@ function Footer() {
 
         <div className="space-y-2 ">
           <div className="text-[15px]">Theo dõi chúng tôi</div>
-          <div className="invert flex gap-3">
+          <div className="invert flex gap-3 dark:invert-0">
             <img
               alt="Facebook icon"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMicgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJz48ZyBmaWxsPSdub25lJz48cGF0aCBkPSdNMjkuMzMzMiAxNi4wMDAzQzI5LjMzMzIgOC42NDAzMyAyMy4zNTk4IDIuNjY2OTkgMTUuOTk5OCAyLjY2Njk5QzguNjM5ODQgMi42NjY5OSAyLjY2NjUgOC42NDAzMyAyLjY2NjUgMTYuMDAwM0MyLjY2NjUgMjIuNDUzNyA3LjI1MzE3IDI3LjgyNyAxMy4zMzMyIDI5LjA2N1YyMC4wMDAzSDEwLjY2NjVWMTYuMDAwM0gxMy4zMzMyVjEyLjY2N0MxMy4zMzMyIDEwLjA5MzcgMTUuNDI2NSA4LjAwMDMzIDE3Ljk5OTggOC4wMDAzM0gyMS4zMzMyVjEyLjAwMDNIMTguNjY2NUMxNy45MzMyIDEyLjAwMDMgMTcuMzMzMiAxMi42MDAzIDE3LjMzMzIgMTMuMzMzN1YxNi4wMDAzSDIxLjMzMzJWMjAuMDAwM0gxNy4zMzMyVjI5LjI2N0MyNC4wNjY1IDI4LjYwMDMgMjkuMzMzMiAyMi45MjAzIDI5LjMzMzIgMTYuMDAwM1onIGZpbGw9J2JsYWNrJy8+PC9nPjwvc3ZnPg=="

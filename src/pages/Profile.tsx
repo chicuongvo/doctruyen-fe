@@ -85,13 +85,15 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-black font-spartan px-5 py-5 lg:px-60 ">
+    <div className="bg-black dark:bg-white font-spartan px-5 py-5 lg:px-60 ">
       {contextHolder}
 
-      <div className="bg-zinc-800 px-3 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
+      <div className="bg-zinc-800 dark:bg-zinc-100 dark:text-black px-3 py-15 rounded-[25px] border-zinc-600 border flex flex-col justify-center items-center gap-10 md:grid md:grid-cols-2">
         <div className="text-white flex flex-col justify-center items-center gap-3 border-b border-zinc-700 py-3">
-          <div className="font-bold text-3xl ">Thông tin cá nhân</div>
-          <div className="text-lg text-center font-light text-[#e5e7eb]">
+          <div className="font-bold text-3xl dark:text-black">
+            Thông tin cá nhân
+          </div>
+          <div className="text-lg text-center font-light text-[#e5e7eb] dark:text-zinc-800">
             Bạn có thể thay đổi thông tin tài khoản tại đây.
           </div>
           <div className="w-full flex  flex-col items-center justify-center">
@@ -110,7 +112,7 @@ export default function Profile() {
               />
               <label
                 htmlFor="fileInput"
-                className="mt-3 w-[140px] h-[54px] flex items-center justify-center font-spartan text-[18px] text-primary border border-primary rounded-[15px] cursor-pointer bg-zinc-800 hover:bg-zinc-700 transition-all duration-500"
+                className="mt-3 w-[140px] h-[54px] flex items-center justify-center font-spartan text-[18px] text-primary border border-primary rounded-[15px] cursor-pointer bg-zinc-800 hover:bg-zinc-700 transition-all duration-500 dark:bg-zinc-200 dark:hover:bg-zinc-300"
               >
                 Cập nhật
               </label>
@@ -121,7 +123,10 @@ export default function Profile() {
         <div className="flex flex-col justify-center items-center gap-5 w-full">
           <form className="flex flex-col w-4/5 gap-5">
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="fullname" className="font-semibold">
+              <label
+                htmlFor="fullname"
+                className="font-semibold dark:text-black"
+              >
                 Họ và tên
               </label>
               <input
@@ -130,28 +135,31 @@ export default function Profile() {
                 placeholder="Nhập họ và tên"
                 value={fullname}
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setFullname(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="username" className="font-semibold">
+              <label
+                htmlFor="username"
+                className="font-semibold dark:text-black"
+              >
                 Tên đăng nhập
               </label>
               <input
                 type="text"
-                name="username"
+                name="username "
                 placeholder="Nhập tên đăng nhập"
                 value={username}
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="email" className="font-semibold">
+              <label htmlFor="email" className="font-semibold dark:text-black">
                 Email
               </label>
               <input
@@ -160,13 +168,13 @@ export default function Profile() {
                 placeholder="Nhập email"
                 value={email}
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col text-white text-[18px] gap-2">
-              <label htmlFor="phone" className="font-semibold">
+              <label htmlFor="phone" className="font-semibold dark:text-black">
                 Số điện thoại
               </label>
               <input
@@ -175,7 +183,7 @@ export default function Profile() {
                 placeholder="Nhập số điện thoại"
                 value={phone_number}
                 required
-                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px]"
+                className="px-3 py-3 w-full border text-white border-primary bg-zinc-950 rounded-xl focus:outline-none text-[16px] dark:text-black dark:bg-zinc-200"
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
@@ -191,7 +199,7 @@ export default function Profile() {
               </button>
 
               <button
-                className="w-[140px] h-[54px] font-spartan text-[18px] text-primary border-[1px] border-primary  rounded-[15px] cursor-pointer  hover:bg-zinc-700 transition-all duration-500"
+                className="w-[140px] h-[54px] font-spartan text-[18px] text-primary border-[1px] border-primary  rounded-[15px] cursor-pointer  hover:bg-zinc-700 transition-all duration-500 dark:hover:bg-zinc-300"
                 onClick={handleCancel}
                 type="button"
               >
