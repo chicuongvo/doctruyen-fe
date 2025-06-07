@@ -6,8 +6,8 @@ function Admin() {
 
   if (userProfile?.role !== "ADMIN") return null;
   return (
-    <div className="p-8">
-      <h1 className="text-center font-extrabold text-2xl">Admin Dashboard</h1>
+    <div className="p-8 dark:bg-white bg-black text-white dark:text-black">
+      <h1 className="text-center font-extrabold text-3xl">Admin Dashboard</h1>
       <ul className="flex gap-4">
         <li>
           <Link to="stories">Stories</Link>

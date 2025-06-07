@@ -4,10 +4,10 @@ const StoryReadingSkeleton = () => {
       <div className="p-8 max-w-[800px] w-full m-auto max-md:p-4 overflow-hidden">
         <div className="skeleton h-8 w-1/3 mb-8 rounded" />
         <div className="space-y-4 text-xl mb-8">
-          <div className="skeleton h-5 w-full rounded" />
-          <div className="skeleton h-5 w-5/6 rounded" />
-          <div className="skeleton h-5 w-3/4 rounded" />
-          <div className="skeleton h-5 w-2/3 rounded" />
+          <div className="skeleton h-5 w-full rounded dark:bg-zinc-200" />
+          <div className="skeleton h-5 w-5/6 rounded dark:bg-zinc-200" />
+          <div className="skeleton h-5 w-3/4 rounded dark:bg-zinc-200" />
+          <div className="skeleton h-5 w-2/3 rounded dark:bg-zinc-200" />
         </div>
       </div>
 

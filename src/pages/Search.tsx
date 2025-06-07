@@ -47,7 +47,7 @@ function Search() {
                   <Link
                     to={`/stories?genre=${genre.name}&page=1`}
                     key={genre.genre_id}
-                    className="py-2 px-3 rounded-xl text-sm font-light bg-zinc-500 dark:bg-zinc-300 hover:bg-zinc-400 hover:bg-zinc-400 transition-all duration-500"
+                    className="py-2 px-3 rounded-xl text-sm font-light bg-zinc-500 hover:text-secondary dark:bg-zinc-300 hover:bg-zinc-400 dark:hover:bg-zinc-400 transition-all duration-500"
                   >
                     {genre.name}
                   </Link>

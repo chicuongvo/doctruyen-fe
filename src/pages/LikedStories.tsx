@@ -77,15 +77,15 @@ const LikedStories = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-black min-h-screen p-8 text-white">
+      <div className="bg-black min-h-screen p-8 text-white dark:bg-white dark:text-black">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl font-bold mb-4">Vui lòng đăng nhập</h1>
-          <p className="text-gray-400 mb-6">
+          <p className="text-zinc-400 mb-6 dark:text-zinc-600">
             Bạn cần đăng nhập để xem danh sách truyện yêu thích
           </p>
           <button
             onClick={() => navigate("/login")}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+            className="bg-secondary hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-500 cursor-pointer shadow-lg"
           >
             Đăng nhập
           </button>
@@ -95,7 +95,7 @@ const LikedStories = () => {
   }
 
   return (
-    <div className="bg-black p-8 text-white">
+    <div className="bg-black p-8 text-white dark:bg-white dark:text-black">
       <h1 className="text-3xl font-bold mb-8">Truyện yêu thích</h1>
       {likedStories.length === 0 ? (
         <div className="text-center text-gray-400">

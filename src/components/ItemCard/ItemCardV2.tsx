@@ -14,7 +14,7 @@ export default function ItemCardV2(props: { showTags: boolean; story: any }) {
           />
           {showTags && (
             <div className="text-xs absolute top-4 left-0 gap-2 flex flex-col">
-              <span className="p-1 bg-[#325E3E] rounded-r w-fit">
+              <span className="p-1 bg-[#325E3E] rounded-r w-fit text-white">
                 {story.progress === "ON_GOING" ? "Đang cập nhật" : "Hoàn thành"}
               </span>
             </div>
@@ -24,7 +24,7 @@ export default function ItemCardV2(props: { showTags: boolean; story: any }) {
           <span className="line-clamp-2 min-h-[3rem] font-semibold mt-2">
             {story.title}
           </span>
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-zinc-400 dark:text-zinc-600">
             {story.like_counts} Yêu Thích
           </span>
         </div>

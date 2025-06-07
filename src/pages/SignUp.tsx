@@ -171,7 +171,7 @@ function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
-                className="absolute right-2 bottom-3 text-zinc-400"
+                className="absolute right-2 bottom-3 text-zinc-400 dark:text-zinc-600"
                 onClick={handleVisiblePassword}
                 type="button"
               >
@@ -197,7 +197,7 @@ function SignUp() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <button
-                className="absolute right-2 bottom-3 text-zinc-400"
+                className="absolute right-2 bottom-3 text-zinc-400 dark:text-zinc-600"
                 onClick={handleVisibleConfirmPassword}
                 type="button"
               >
