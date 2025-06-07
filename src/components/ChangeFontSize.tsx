@@ -21,7 +21,7 @@ export default function ChangeFontSize({
 
   return (
     <div className="flex items-center space-x-4">
-      <div className="flex items-center bg-white rounded-lg shadow-sm border border-secondary p-1">
+      <div className="flex items-center bg-white rounded-lg shadow-sm border border-secondary p-1 dark:bg-zinc-300">
         <button
           onClick={() => adjustFontSize(false)}
           className={`p-2 rounded-md hover:bg-violet-100 transition-colors disabled:opacity-50 cursor-${fontSize <= 14 ? "not-allowed" : "pointer"}`}
