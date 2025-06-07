@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Spinner from "@/components/Spinner";
 
 type Author = {
   username: string;
@@ -17,13 +18,17 @@ type BlogPost = {
 };
 
 type Story = {
-  id: number;
+  story_id: string;
   title: string;
+  author_name: string;
+  description: string;
   cover_image: string;
-  views: string;
-  completed: boolean;
-  recommended: boolean;
-  adult: boolean;
+  price: number;
+  status: "PUBLISHED" | "DRAFT" | "ARCHIVED" | string;
+  progress: "ON_GOING" | "COMPLETED" | "HIATUS" | string;
+  published_at: string;
+  like_counts: number;
+  rating_avg: number | null;
 };
 
 const shuffleArray = (array: Story[]) => {
@@ -79,6 +84,10 @@ const Blogs = () => {
 
     fetchData();
   }, []);
+
+  if ((blogs.length === 0 || stories.length === 0) && !error) {
+    return <Spinner />;
+  }
 
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
@@ -146,7 +155,7 @@ const Blogs = () => {
 
       <div className="flex justify-center items-center space-x-1 sm:space-x-2 mt-8">
         <button
-          className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full bg-zinc-700 hover:bg-zinc-600 ${
+          className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full bg-zinc-700 hover:bg-zinc-600 cursor-pointer dark:bg-zinc-300 dark:hover:bg-zinc-700 transition-all duration-400  ${
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => handlePageChange(currentPage - 1)}
@@ -157,10 +166,10 @@ const Blogs = () => {
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
-            className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full ${
+            className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full cursor-pointer transition-all duration-400 ${
               currentPage === index + 1
                 ? "bg-purple-600 text-white"
-                : "bg-gray-700 hover:bg-gray-600"
+                : "bg-zinc-700 hover:bg-zinc-600  dark:bg-zinc-300 dark:hover:bg-zinc-400 "
             }`}
             onClick={() => handlePageChange(index + 1)}
           >
@@ -168,7 +177,7 @@ const Blogs = () => {
           </button>
         ))}
         <button
-          className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full bg-zinc-700 hover:bg-zinc-600 ${
+          className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full bg-zinc-700 hover:bg-zinc-600 cursor-pointer dark:bg-zinc-300 dark:hover:bg-zinc-400 transition-all duration-400 ${
             currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => handlePageChange(currentPage + 1)}
@@ -178,13 +187,13 @@ const Blogs = () => {
         </button>
       </div>
 
-      <div className="w-full max-w-7xl mx-auto bg-zinc-800 rounded-lg shadow-lg p-4 sm:p-6 border border-gray-700 mt-8 sm:mt-12">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">
+      <div className="w-full max-w-7xl mx-auto bg-zinc-800 dark:bg-zinc-200 rounded-lg shadow-md p-4 sm:p-6 border border-zinc-700 dark:border-zinc-300 mt-8 sm:mt-12">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white dark:text-black">
           Truyện phổ biến bạn có thể thích
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {randomStories.map((story) => (
-            <div key={story.id} className="w-full">
+            <div key={story.story_id} className="w-full">
               <div className="w-full aspect-[2/3] overflow-hidden rounded-lg">
                 <img
                   src={story.cover_image}
@@ -192,18 +201,13 @@ const Blogs = () => {
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
               </div>
-              <div className="mt-2 sm:mt-3 text-center">
-                <h3 className="text-sm sm:text-lg font-bold text-white line-clamp-2">
+              <div className="mt-2 sm:mt-3 text-center flex flex-col h-full">
+                <h3 className="text-sm sm:text-lg font-bold text-white dark:text-black line-clamp-2 ">
                   {story.title}
                 </h3>
-                <p className="text-gray-400 text-xs sm:text-sm">
-                  {story.views} lượt xem
+                <p className="text-zinc-400 text-xs sm:text-sm ">
+                  {story.like_counts} Yêu thích
                 </p>
-                {story.adult && (
-                  <span className="text-xs bg-red-600 px-1 sm:px-2 py-0.5 sm:py-1 rounded text-white mt-1 inline-block">
-                    18+
-                  </span>
-                )}
               </div>
             </div>
           ))}

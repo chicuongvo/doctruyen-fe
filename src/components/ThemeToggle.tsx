@@ -28,7 +28,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={changeTheme}
-      className=" relative p-2 rounded-full dark:bg-white bg-gray-700 dark:hover:bg-gray-300 hover:bg-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+      className="cursor-pointer relative p-2 rounded-full dark:bg-white bg-gray-700 dark:hover:bg-gray-300 hover:bg-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl"
     >
       <div className="relative w-6 h-6">
         <Moon className="absolute inset-0 w-6 h-6 text-secondary transition-all duration-300 opacity-100 rotate-0 scale-100 dark:opacity-0 dark:rotate-90 dark:scale-0" />
