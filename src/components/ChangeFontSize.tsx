@@ -1,5 +1,4 @@
-import { AArrowDown, AArrowUp, Minus, Plus, Type } from "lucide-react";
-import { useState } from "react";
+import { Minus, Plus, Type } from "lucide-react";
 
 type ChangeFontSizeProps = {
   fontSize: number;
