@@ -97,7 +97,7 @@ const Blogs = () => {
   const randomStories = shuffleArray(stories).slice(0, 6);
 
   return (
-    <div className="w-full bg-zinc-900 text-white min-h-screen px-4 sm:px-6 md:px-12 py-6 sm:py-8">
+    <div className="w-full bg-zinc-900 text-white min-h-screen px-4 sm:px-6 md:px-12 py-6 sm:py-8 dark:bg-zinc-100 dark:text-black">
       <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8">
         Blogs
       </h1>
@@ -106,31 +106,32 @@ const Blogs = () => {
         {currentBlogs.map((blog) => (
           <div
             key={blog.blog_id}
-            className="w-full bg-zinc-800 rounded-lg shadow-lg overflow-hidden flex flex-col sm:flex-row group hover:scale-100 sm:hover:scale-105 transition-transform duration-300"
+            className="w-full h-80 sm:h-60 bg-zinc-800 dark:bg-zinc-200 rounded-lg shadow-lg overflow-hidden flex flex-col sm:flex-row group  transition-transform duration-300"
           >
-            <div className="relative w-full sm:w-80 h-48 sm:h-56 overflow-hidden border-4 border-gray-700 rounded-md">
+            <div className="relative w-full h-1/2 sm:h-full sm:w-80 h-48 sm:h-56 overflow-hidden rounded-sm">
               <img
                 src={blog.cover_image}
                 alt={`Hình bìa cho ${blog.title}`}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-120 transition-transform duration-1400"
               />
               <p className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
                 {new Date(blog.created_at).toLocaleDateString("vi-VN")}
               </p>
             </div>
-            <div className="p-4 sm:p-6 flex flex-col justify-between w-full">
+
+            <div className="p-4 sm:p-6 flex flex-col justify-between w-full h-auto sm:h-full ">
               <div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-zinc-400">
                   By {blog.author.username}
                 </p>
                 <h2 className="text-xl sm:text-2xl font-bold line-clamp-2">
                   {blog.title}
                 </h2>
-                <p className="text-gray-300 text-sm mt-2 line-clamp-3 sm:line-clamp-none">
+                <p className="text-zinc-300  dark:text-zinc-700 text-sm pt-2 line-clamp-3 lg:line-clamp-4">
                   {blog.description}
                 </p>
               </div>
-              <div className="flex justify-end mt-4">
+              <div className="flex justify-end">
                 <Link
                   to={`/blog/${blog.blog_id}`}
                   className="mt-2 sm:mt-4 px-4 sm:px-5 py-2 border border-secondary text-secondary font-semibold rounded-lg hover:bg-secondary hover:text-white transition duration-300 self-start"
