@@ -9,6 +9,8 @@ export default function Profile() {
   const [phone_number, setPhoneNumber] = useState("");
   const [fullname, setFullname] = useState("");
   const [profile_pic, setProfilePic] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const { userProfile, setUserChanged } = useUser();
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function Profile() {
       setPhoneNumber(userProfile.phone_number || "");
       setFullname(userProfile.fullname || "");
       setProfilePic(userProfile.profile_pic || "");
+      setSelectedFile(null); // reset khi có userProfile mới
     }
   }, [userProfile]);
 
@@ -27,41 +30,43 @@ export default function Profile() {
     setPhoneNumber(userProfile?.phone_number || "");
     setProfilePic(userProfile?.profile_pic || "");
     setFullname(userProfile?.fullname || "");
+    setSelectedFile(null);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        setProfilePic(reader.result);
-      } else {
-        console.error("Unexpected result type:", reader.result);
-      }
-    };
-
-    reader.onerror = () => {
-      console.error("Error reading file");
-    };
+    const imageUrl = URL.createObjectURL(file);
+    setProfilePic(imageUrl);
+    setSelectedFile(file);
   };
 
   const [api, contextHolder] = notification.useNotification();
   const [isLoading, setIsLoading] = useState(false);
+
   const handleUpdate = async () => {
     setIsLoading(true);
 
     try {
-      const response = await updateUser({
+      const payload: {
+        username?: string;
+        email?: string;
+        phone_number?: string;
+        fullname?: string;
+        profile_pic?: string;
+      } = {
         username,
         email,
         phone_number,
         fullname,
-        profile_pic,
-      });
+      };
+
+      if (selectedFile) {
+        payload.profile_pic = profile_pic;
+      }
+
+      const response = await updateUser(payload);
 
       const data = response.data;
 
@@ -79,6 +84,10 @@ export default function Profile() {
       }
     } catch (error) {
       console.log("Error updating user:", error);
+      api.error({
+        message: "CẬP NHẬT TÀI KHOẢN",
+        description: "Có lỗi xảy ra khi cập nhật.",
+      });
     }
 
     setIsLoading(false);
@@ -149,7 +158,7 @@ export default function Profile() {
               </label>
               <input
                 type="text"
-                name="username "
+                name="username"
                 placeholder="Nhập tên đăng nhập"
                 value={username}
                 required
