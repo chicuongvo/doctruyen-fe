@@ -77,7 +77,7 @@ const LikedStories = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-black min-h-screen p-8 text-white">
+      <div className="bg-black min-h-screen p-8 text-white dark:bg-white dark:text-black">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl font-bold mb-4">Vui lòng đăng nhập</h1>
           <p className="text-gray-400 mb-6">

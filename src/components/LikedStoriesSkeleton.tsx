@@ -1,6 +1,6 @@
 const LikedStoriesSkeleton = () => {
   return (
-    <div className="bg-black p-8 text-white">
+    <div className="bg-base-100 p-8 text-base-content">
       <div className="skeleton h-8 w-48 mb-8"></div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {[...Array(12)].map((_, index) => (

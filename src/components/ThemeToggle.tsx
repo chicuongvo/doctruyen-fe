@@ -9,6 +9,11 @@ export default function ThemeToggle() {
       localStorage.theme ||
       (document.documentElement.classList.contains("dark") ? "dark" : "light");
     setTheme(savedTheme);
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      savedTheme === "dark" ? "light" : "dark"
+    );
   }, []);
 
   const changeTheme = () => {
@@ -19,6 +24,11 @@ export default function ThemeToggle() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      newTheme === "dark" ? "light" : "dark"
+    );
 
     console.log("Theme changed to:", newTheme);
     localStorage.theme = newTheme;
