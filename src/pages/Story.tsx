@@ -33,6 +33,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Story = () => {
   const navigate = useNavigate();
+  const [fontSize, setFontSize] = useState(() => {
+    const saved = localStorage.getItem("fontSize");
+    return saved ? parseInt(saved) : 16; // Default size 16px
+  });
 
   const id = useParams().id || "1";
   const chapter = useParams().chapter || "1";
@@ -113,12 +117,56 @@ const Story = () => {
     navigate(`/story/${id}/${chapterNumber + 1}`);
   };
 
+  const increaseFontSize = () => {
+    const newSize = Math.min(fontSize + 2, 48);
+    setFontSize(newSize);
+    localStorage.setItem("fontSize", newSize.toString());
+  };
+
+  const decreaseFontSize = () => {
+    const newSize = Math.max(fontSize - 2, 12);
+    setFontSize(newSize);
+    localStorage.setItem("fontSize", newSize.toString());
+  };
+
+  const resetFontSize = () => {
+    setFontSize(16);
+    localStorage.setItem("fontSize", "16");
+  };
+
   if (!chapters.length) {
     return <StoryReadingSkeleton />;
   }
 
   return (
-    <div className="bg-black p-8 text-white font-spartan dark:bg-white dark:text-black ">
+    <div className="bg-black p-8 text-white font-spartan dark:bg-white dark:text-black">
+      {/* Font Size Controls (Floating) */}
+      <div className="fixed top-1/2 -translate-y-1/2 right-4 z-50">
+        <div className="bg-zinc-800 dark:bg-zinc-200 rounded-xl p-2 flex items-center gap-1 shadow-lg">
+          <button
+            onClick={decreaseFontSize}
+            className="btn btn-sm btn-ghost p-1 rounded-md"
+            title="Giảm cỡ chữ"
+          >
+            A-
+          </button>
+          <button
+            onClick={resetFontSize}
+            className="btn btn-sm btn-ghost p-1 rounded-md min-w-[30px]"
+            title="Reset cỡ chữ"
+          >
+            {fontSize}px
+          </button>
+          <button
+            onClick={increaseFontSize}
+            className="btn btn-sm btn-ghost p-1 rounded-md"
+            title="Tăng cỡ chữ"
+          >
+            A+
+          </button>
+        </div>
+      </div>
+
       {/* Chapter Content */}
       <div className="max-w-[800px] w-full m-auto mb-8">
         <div className="bg-zinc-800 rounded-xl p-4 dark:bg-zinc-200">
@@ -140,7 +188,10 @@ const Story = () => {
           <strong>Chương {currentChapter.chapter_number}: </strong>
           <strong>{currentChapter.title}</strong>
         </h2>
-        <div className=" text-white leading-relaxed whitespace-pre-wrap text-xl mb-8 dark:text-black">
+        <div
+          className="text-white leading-relaxed whitespace-pre-wrap mb-8 dark:text-black"
+          style={{ fontSize: `${fontSize}px` }}
+        >
           {currentChapter.content}
         </div>
       </div>
