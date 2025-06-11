@@ -27,9 +27,6 @@ import { banUser, getAllUsers } from "@/api/users.api";
 import { toast } from "react-toastify";
 
 export default function UsersPage() {
-  // const { toast } = useToast();
-  // const [users, setUsers] = useState<UserResponse[]>([]);
-  // const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [openDialogId, setOpenDialogId] = useState<string | null>(null);
   const queryClient = useQueryClient();
@@ -53,9 +50,6 @@ export default function UsersPage() {
   });
 
   const users = data?.data.data;
-  // console.log(users);
-
-  // Update the fetchUsers function to handle errors better
 
   const filteredUsers = users?.filter(
     (user: any) =>
@@ -80,7 +74,7 @@ export default function UsersPage() {
         {/* <CreateUserDialog /> */}
       </div>
 
-      <Card className="px-4">
+      <Card className="px-4 bg-foreground text-background">
         <CardHeader className="p-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex items-center gap-2 w-full max-w-sm">
@@ -91,11 +85,6 @@ export default function UsersPage() {
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
               />
-            </div>
-            <div className="flex items-center gap-2 ml-auto">
-              <Button variant="outline" size="sm" onClick={() => {}}>
-                Refresh
-              </Button>
             </div>
           </div>
         </CardHeader>
@@ -133,10 +122,10 @@ export default function UsersPage() {
                           <div
                             className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                               user.is_banned
-                                ? "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-300"
+                                ? "dark:bg-red-50 dark:text-red-700 bg-red-900/20 text-red-300"
                                 : user.is_verified
-                                  ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300"
-                                  : "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-300"
+                                  ? "dark:bg-green-50 dark:text-green-700 bg-green-900/20 text-green-300"
+                                  : "dark:bg-yellow-50 dark:text-yellow-700 bg-yellow-900/20 text-yellow-300"
                             }`}
                           >
                             {user.is_banned

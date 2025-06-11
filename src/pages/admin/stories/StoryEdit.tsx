@@ -203,14 +203,6 @@ export default function StoryEdit() {
                       onChange={handleInputChange}
                       className="flex-1"
                     />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="flex-shrink-0"
-                    >
-                      <ImageIcon className="h-4 w-4 mr-2" />
-                      Duyệt
-                    </Button>
                   </div>
                 </div>
 

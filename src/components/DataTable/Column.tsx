@@ -257,7 +257,7 @@ export const chapterColumns: ColumnDef<Chapter>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge variant={status === "published" ? "default" : "outline"}>
+        <Badge variant={status === "published" ? "outline" : "default"}>
           {status}
         </Badge>
       );

@@ -202,7 +202,7 @@ export function DataTable<TData, TValue>({
         </div>
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
             onClick={() => handlePageChange(1)}
             disabled={currentPage === 1}
@@ -210,7 +210,7 @@ export function DataTable<TData, TValue>({
             <ChevronsLeft className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -221,7 +221,7 @@ export function DataTable<TData, TValue>({
             Page {currentPage || 1} of {pageCount || 1}
           </div>
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === pageCount}
@@ -229,7 +229,7 @@ export function DataTable<TData, TValue>({
             <ChevronRight className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
             onClick={() => handlePageChange(pageCount)}
             disabled={currentPage === pageCount}

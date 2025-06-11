@@ -28,53 +28,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { formatDate } from "@/utils/date";
 import Spinner from "@/components/Spinner";
-// import { useToast } from "@/components/ui/use-toast";
-
-// Type definition for the response from the backend
-// interface StoryResponse {
-//   success: boolean;
-//   data: {
-//     story_id: string;
-//     title: string;
-//     author_name: string;
-//     description: string;
-//     cover_image: string;
-//     price: number;
-//     status: string;
-//     progress: string;
-//     published_at: string;
-//     like_counts: number;
-//     rating_avg: number;
-//     story_genres: {
-//       genre: {
-//         genre_id: string;
-//         name: string;
-//       };
-//     }[];
-//     story_comments: any[];
-//     story_chapters: any[];
-//   };
-// }
-
-// interface StoryData {
-//   id: string;
-//   title: string;
-//   author: string;
-//   genre: string;
-//   synopsis: string;
-//   status: string;
-//   tags: {
-//     genre: {
-//       genre_id: string;
-//       name: string;
-//     };
-//   }[];
-//   publishedAt: string;
-//   coverImage: string;
-//   rating: number;
-//   reads: number;
-//   progress: string;
-// }
 
 export default function StoryDetail() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -116,60 +69,8 @@ export default function StoryDetail() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <PageHeader
-        title={storyData.title}
-        description={`${storyData.genre} • ${storyChapters.length} chapters`}
-        breadcrumbs={[
-          { label: "Stories", to: "/stories" },
-          { label: storyData.title },
-        ]}
-        actions={
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" asChild>
-              <Link to="/stories">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link to={`/stories/${storyData.id}/edit`}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-              </Link>
-            </Button>
-            <AlertDialog
-              open={openDeleteDialog}
-              onOpenChange={setOpenDeleteDialog}
-            >
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="icon">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Story</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Are you sure you want to delete "{storyData.title}"? This
-                    action cannot be undone and will permanently delete the
-                    story and all its chapters.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleDeleteStory}
-                    disabled={isDeleting}
-                  >
-                    {isDeleting ? "Deleting..." : "Delete"}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        }
-      /> */}
       <div className="self-end">
-        <Button variant="outline" asChild className="mr-3">
+        <Button variant="default" asChild className="mr-3">
           <Link to={`edit`}>
             <Edit className="mr-2 h-4 w-4" />
             Chỉnh sửa
@@ -210,7 +111,7 @@ export default function StoryDetail() {
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="md:col-span-2">
+            <Card className="md:col-span-2 bg-foreground text-background">
               <CardHeader>
                 <CardTitle>Mô tả</CardTitle>
                 <CardDescription>Tóm tắt và tổng quan truyện</CardDescription>
@@ -223,7 +124,7 @@ export default function StoryDetail() {
             </Card>
 
             <div className="space-y-4">
-              <Card>
+              <Card className="bg-foreground text-background">
                 <CardHeader>
                   <CardTitle>Thông tin truyện</CardTitle>
                 </CardHeader>
@@ -271,7 +172,7 @@ export default function StoryDetail() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-foreground text-background">
                 <CardHeader>
                   <CardTitle>Ảnh bìa</CardTitle>
                 </CardHeader>
