@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Save, ImageIcon } from "lucide-react";
+import { Save } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getGenres, getStoryById, updateStory } from "@/api/stories.api";
 import { useQuery, useMutation } from "@tanstack/react-query";
