@@ -21,6 +21,11 @@ export default function ThemeToggle() {
       document.documentElement.classList.remove("dark");
     }
     localStorage.setItem("theme", theme);
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme === "dark" ? "light" : "dark"
+    );
   }, [theme]);
 
   const changeTheme = () => {
