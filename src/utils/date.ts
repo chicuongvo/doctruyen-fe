@@ -7,13 +7,3 @@ export const formatDate = (date: string) => {
     return date;
   }
 };
-
-export const createSlug = (title: string): string => {
-  return title
-    .toLowerCase()
-    .normalize("NFD") 
-    .replace(/[\u0300-\u036f]/g, "") 
-    .replace(/[^a-z0-9-]/g, "-") 
-    .replace(/-+/g, "-") 
-    .replace(/^-|-$/g, ""); 
-};

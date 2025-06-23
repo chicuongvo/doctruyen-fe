@@ -8,7 +8,7 @@ import { useUser } from "../contexts/userContext";
 import StorySkeleton from "../components/StorySkeleton";
 import { motion } from "framer-motion";
 import ItemCardV2 from "../components/ItemCard/ItemCardV2";
-import { createSlug } from "../utils/date"; // Giả sử bạn đã thêm hàm này trong utils/date.ts
+import.meta.env.VITE_API_BASE_URL;
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -55,8 +55,9 @@ interface CommentData {
 }
 
 const StoryOverview = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const id = useParams().id || "1";
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
   const [story, setStory] = useState<StoryData | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [newComment, setNewComment] = useState<string>("");
@@ -67,19 +68,6 @@ const StoryOverview = () => {
   const navigate = useNavigate();
   const [showLoginWarning, setShowLoginWarning] = useState(false);
 
-  // Hàm ánh xạ slug về story_id
-  const mapSlugToId = async (slug: string): Promise<string> => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/stories`);
-      const stories = response.data.data;
-      const foundStory = stories.find((s: StoryData) => createSlug(s.title) === slug);
-      return foundStory?.story_id || "";
-    } catch (error) {
-      console.error("Error mapping slug to id:", error);
-      return "";
-    }
-  };
-
   useEffect(() => {
     window.scrollTo(0, 0);
     setStory(null);
@@ -87,21 +75,15 @@ const StoryOverview = () => {
     setSimilarStories([]);
     setIsLiked(false);
     setIsCheckingLike(true);
-  }, [slug]);
+  }, [id]);
 
   useEffect(() => {
     const fetchStory = async () => {
       try {
         setIsCheckingLike(true);
-        const storyId = await mapSlugToId(slug || "");
-        if (!storyId) {
-          navigate("/404");
-          return;
-        }
-
         const [storyRes, similarRes] = await Promise.all([
-          axios.get(`${API_BASE_URL}/stories/${storyId}`),
-          axios.get(`${API_BASE_URL}/stories/${storyId}/similar`),
+          axios.get(`${API_BASE_URL}/stories/${id}`),
+          axios.get(`${API_BASE_URL}/stories/${id}/similar`),
         ]);
 
         setStory(storyRes.data.data);
@@ -110,7 +92,7 @@ const StoryOverview = () => {
 
         if (userProfile) {
           const isStoryLiked = userProfile.story_likes?.some(
-            (like) => like.story_id === storyId
+            (like) => like.story_id === id
           );
           setIsLiked(isStoryLiked || false);
         }
@@ -122,7 +104,7 @@ const StoryOverview = () => {
     };
 
     fetchStory();
-  }, [slug, userProfile, navigate]);
+  }, [id, userProfile]);
 
   useEffect(() => {
     if (showLoginWarning) {
@@ -141,15 +123,23 @@ const StoryOverview = () => {
 
     if (newComment.trim() !== "") {
       try {
-        const storyId = await mapSlugToId(slug || "");
         const res = await axios.post(
-          `${API_BASE_URL}/stories/${storyId}/comment`,
-          { content: newComment },
-          { withCredentials: true }
+          `${API_BASE_URL}/stories/${id}/comment`,
+          {
+            content: newComment,
+          },
+          {
+            withCredentials: true,
+          }
         );
 
-        if ((res.status === 200 || res.status === 201) && res.data.success && userProfile) {
+        if (
+          (res.status === 200 || res.status === 201) &&
+          res.data.success &&
+          userProfile
+        ) {
           const newCommentData = res.data.data;
+
           const updatedComment = {
             comment_id: newCommentData.comment_id,
             commented_at: newCommentData.commented_at,
@@ -158,6 +148,7 @@ const StoryOverview = () => {
             story_id: newCommentData.story_id,
             user: { username: userProfile.username },
           };
+
           setComments([...comments, updatedComment]);
           setNewComment("");
         } else {
@@ -170,12 +161,15 @@ const StoryOverview = () => {
   };
 
   const handleReadChapter1 = () => {
-    if (story) navigate(`/story/${slug}/${1}`);
+    navigate(`/story/${id}/${1}`);
   };
 
   const handleReadLastChapter = () => {
-    const savedProgress = JSON.parse(localStorage.getItem("readingProgress") || "{}");
-    if (story) navigate(`/story/${slug}/${savedProgress[story.story_id] || "1"}`);
+    const savedProgress = JSON.parse(
+      localStorage.getItem("readingProgress") || "{}"
+    );
+
+    navigate(`/story/${id}/${savedProgress[id] || "1"}`);
   };
 
   const handleLike = async () => {
@@ -186,14 +180,13 @@ const StoryOverview = () => {
 
     try {
       setIsCheckingLike(true);
-      const storyId = await mapSlugToId(slug || "");
       const res = await axios.post(
-        `${API_BASE_URL}/stories/${storyId}/like`,
+        `${API_BASE_URL}/stories/${id}/like`,
         {},
         { withCredentials: true }
       );
 
-      if (res.status === 200 || res.status === 201) {
+      if (res.status == 200 || res.status == 201) {
         setIsLiked(!isLiked);
       }
     } catch (error) {
@@ -220,7 +213,10 @@ const StoryOverview = () => {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-2xl"
         >
-          <div role="alert" className="alert alert-warning shadow-lg p-4 md:p-6">
+          <div
+            role="alert"
+            className="alert alert-warning shadow-lg p-4 md:p-6"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 shrink-0 stroke-current"
@@ -345,6 +341,7 @@ const StoryOverview = () => {
         </div>
       </div>
       {/* Bình luận */}
+
       <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 font-spartan dark:bg-zinc-100 dark:text-black">
         <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
         <div className="flex flex-col space-y-3 max-h-[300px] overflow-y-auto">
@@ -384,12 +381,7 @@ const StoryOverview = () => {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <ItemCardV2
-              key={story.story_id}
-              story={story}
-              showTags={true}
-              onClick={() => navigate(`/story/${createSlug(story.title)}`)}
-            />
+            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
           ))}
         </div>
       </div>

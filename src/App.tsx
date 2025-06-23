@@ -36,7 +36,6 @@ import BlogDetail from "./pages/admin/blogs/BlogDetail";
 import BlogEdit from "./pages/admin/blogs/BlogEdit";
 import BlogNew from "./pages/admin/blogs/BlogNew";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { createSlug } from "./utils/date"; 
 
 const queryClient = new QueryClient();
 
@@ -49,8 +48,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       { path: "/search", element: <Search /> },
-      { path: "/story/:slug", element: <StoryOverview /> },
-      { path: "/story/:slug/:chapter", element: <Story /> },
+      { path: "/story/:id", element: <StoryOverview /> },
+      { path: "/story/:id/:chapter", element: <Story /> },
       { path: "/blogs", element: <Blogs /> },
       { path: "/blog/:id", element: <Blog /> },
       { path: "/login", element: <Login /> },
@@ -113,8 +112,8 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/story/:slug", element: <StoryOverview /> },
-  { path: "/story/:slug/:chapter", element: <Story /> },
+  { path: "/story/:id", element: <StoryOverview /> },
+  { path: "/story/:id/:chapter", element: <Story /> },
   { path: "/blogs", element: <Blogs /> },
   { path: "/blog/:id", element: <Blog /> },
   { path: "/admin", element: <Admin /> },
