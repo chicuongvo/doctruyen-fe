@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import StoryReadingSkeleton from "../components/StoryReadingSkeleton";
 import ItemCardV2 from "../components/ItemCard/ItemCardV2";
 import ChangeFontSize from "@/components/ChangeFontSize";
-// import ChangeFontSize from "@/components/ChangeFontSize";
+import { createSlug } from "../utils/date"; // Đảm bảo đã thêm hàm này
 
 interface ChapterData {
   chapter_id: string;
@@ -35,9 +35,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Story = () => {
   const navigate = useNavigate();
-
-  const id = useParams().id || "1";
-  const chapter = useParams().chapter || "1";
+  const { slug, chapter } = useParams<{ slug: string; chapter: string }>();
   const [chapters, setChapters] = useState<ChapterData[]>([]);
   const [similarStories, setSimilarStories] = useState<StoryData[]>([]);
   const [currentChapter, setCurrentChapter] = useState<ChapterData>({
@@ -52,6 +50,19 @@ const Story = () => {
   const listRef = useRef<HTMLDivElement | null>(null);
   const currentChapterRef = useRef<HTMLDivElement | null>(null);
   const [fontSize, setFontSize] = useState(18);
+
+  // Hàm ánh xạ slug về story_id
+  const mapSlugToId = async (slug: string): Promise<string> => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/stories`);
+      const stories = response.data.data;
+      const foundStory = stories.find((s: StoryData) => createSlug(s.title) === slug);
+      return foundStory?.story_id || "";
+    } catch (error) {
+      console.error("Error mapping slug to id:", error);
+      return "";
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -75,16 +86,19 @@ const Story = () => {
 
   useEffect(() => {
     const fetchStory = async () => {
-      const chapterNumber = parseInt(chapter || "1", 10);
+      const chapterNumber = Math.max(1, Math.min(parseInt(chapter || "1", 10), 100)); // Giới hạn an toàn
       try {
-        const res = await axios.get(`${API_BASE_URL}/stories/${id}`);
+        const storyId = await mapSlugToId(slug || "");
+        if (!storyId) {
+          navigate("/404");
+          return;
+        }
 
+        const res = await axios.get(`${API_BASE_URL}/stories/${storyId}`);
         setChapters(res.data.data.story_chapters);
-        setCurrentChapter(res.data.data.story_chapters[chapterNumber - 1]);
+        setCurrentChapter(res.data.data.story_chapters[chapterNumber - 1] || res.data.data.story_chapters[0]);
 
-        const similarRes = await axios.get(
-          `${API_BASE_URL}/stories/${id}/similar`
-        );
+        const similarRes = await axios.get(`${API_BASE_URL}/stories/${storyId}/similar`);
         setSimilarStories(similarRes.data.data.slice(0, 6));
       } catch (error) {
         console.error("Error getting story data", error);
@@ -92,28 +106,30 @@ const Story = () => {
     };
 
     fetchStory();
-  }, [id, chapter]);
+  }, [slug, chapter, navigate]);
 
   useEffect(() => {
-    const currentChapter: string = chapter;
-    const mangaId: string = id;
+    const fetchAndSaveProgress = async () => {
+      const currentChapterNum: string = chapter || "1";
+      const storyId = await mapSlugToId(slug || ""); // Await để lấy giá trị string
+      if (!storyId) return;
 
-    const savedProgress = JSON.parse(
-      localStorage.getItem("readingProgress") || "{}"
-    );
+      const savedProgress = JSON.parse(localStorage.getItem("readingProgress") || "{}");
+      savedProgress[storyId] = currentChapterNum; // Bây giờ storyId là string
+      localStorage.setItem("readingProgress", JSON.stringify(savedProgress));
+    };
 
-    savedProgress[mangaId] = currentChapter;
+    fetchAndSaveProgress();
+  }, [slug, chapter]);
 
-    localStorage.setItem("readingProgress", JSON.stringify(savedProgress));
-  }, [id, chapter]);
   const handlePreviousChapter = () => {
     const chapterNumber = parseInt(chapter || "1", 10);
-    navigate(`/story/${id}/${chapterNumber - 1}`);
+    navigate(`/story/${slug}/${chapterNumber - 1}`);
   };
 
   const handleNextChapter = () => {
     const chapterNumber = parseInt(chapter || "1", 10);
-    navigate(`/story/${id}/${chapterNumber + 1}`);
+    navigate(`/story/${slug}/${chapterNumber + 1}`);
   };
 
   if (!chapters.length) {
@@ -122,7 +138,7 @@ const Story = () => {
 
   return (
     <div className="bg-black p-8 text-white font-spartan dark:bg-white dark:text-black relative">
-      <div className="sticky top-20  z-50 flex justify-end">
+      <div className="sticky top-20 z-50 flex justify-end">
         <ChangeFontSize fontSize={fontSize} setFontSize={setFontSize} />
       </div>
 
@@ -153,7 +169,7 @@ const Story = () => {
           {currentChapter.content}
         </div>
       </div>
-      {/*Next And Previous Chapter*/}
+      {/* Next And Previous Chapter */}
       <div className="flex justify-center gap-4 mb-8">
         {/* Previous Chapter Button */}
         {currentChapter.chapter_number > 1 && (
@@ -206,23 +222,15 @@ const Story = () => {
       {/* All chapters */}
       <div className="bg-zinc-900 text-white p-6 rounded-xl mt-10 dark:bg-zinc-100 dark:text-black">
         <h2 className="text-2xl font-bold mb-4">Tất cả các chương</h2>
-
-        <div
-          ref={listRef}
-          className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto"
-        >
+        <div ref={listRef} className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
           {chapters.map((chapter: ChapterData) => (
             <div
-              ref={
-                chapter.chapter_number === currentChapter.chapter_number
-                  ? currentChapterRef
-                  : null
-              }
+              ref={chapter.chapter_number === currentChapter.chapter_number ? currentChapterRef : null}
               className={`${chapter.chapter_number === currentChapter.chapter_number ? "text-purple-600" : ""}`}
             >
               <Chapter
                 key={chapter.chapter_id}
-                id={id}
+                id={chapter.story_id}
                 chapter={chapter.chapter_number}
               />
             </div>
@@ -236,7 +244,12 @@ const Story = () => {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
           {similarStories.map((story) => (
-            <ItemCardV2 key={story.story_id} story={story} showTags={true} />
+            <ItemCardV2
+              key={story.story_id}
+              story={story}
+              showTags={true}
+              onClick={() => navigate(`/story/${createSlug(story.title)}`)}
+            />
           ))}
         </div>
       </div>
